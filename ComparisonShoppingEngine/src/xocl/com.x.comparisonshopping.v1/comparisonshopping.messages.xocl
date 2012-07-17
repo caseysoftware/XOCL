@@ -39,7 +39,7 @@ package com.x.comparisonshopping.v1 {
 
 		IN_STOCK "Indicates the product is in stock and ready to ship within the required number of days.",
 		OUT_OF_STOCK "Indicates the product is currently out of stock.",
-		AVAILAILABLE_FOR_ORDER "Indicates the product is not in stock but can be ordered.",	
+		AVAILABLE_FOR_ORDER "Indicates the product is not in stock but can be ordered.",	
 		UNKNOWN "Indicates that the availability of the product is not known."
 	}
 	
@@ -192,7 +192,7 @@ package com.x.comparisonshopping.v1 {
 		datetime? salePriceExpiryDate "Date the override salePrice activates."
 		string? priceDescription "Used for a free form entry."
 		int? quantity "How many of a product are at this location."
-		AvailabilityType availabile = Unknown "True with no quantity specified if inventory is not tracked."
+		AvailabilityType availability = Unknown "True with no quantity specified if inventory is not tracked."
 		datetime? availableDate "Timestamp specifying when the item will be available."
 		boolean shipFromStore = false "Whether this item is available to be shipped from this location." 
 	}

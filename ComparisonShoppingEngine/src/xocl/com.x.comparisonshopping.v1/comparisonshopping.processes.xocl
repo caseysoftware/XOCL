@@ -55,7 +55,6 @@ package com.x.comparisonshopping.v1
         }
     }
     
-    // Publish inventory and stores locations that reference previoulsy uploaded products
     process PublishInventoryFeed(DataFeed inventoryFeed) {
         summary "Publishes an inventory feed to a CSE."
         description "Sends an inventory feed to a comparison shopping engine and links the inventory to the merchant's products."
@@ -67,7 +66,6 @@ package com.x.comparisonshopping.v1
         
         preconditions(inventoryFeed[DataFeed.New])
         
-	    // The baseline workflow for processing inventory feeds
 	    workflow
 	    {
 	    	summary "Baseline workflow for publishing inventory and stores using an inventory feed."
@@ -103,7 +101,7 @@ package com.x.comparisonshopping.v1
         }
     }
     
-    // Publish stores locations that reference previoulsy uploaded products
+    // Publish stores locations that reference previously uploaded products
     process PublishStoreFeed(DataFeed storeFeed) {
         summary "Publishes an store feed to a CSE."
         description "Sends an store feed to a comparison shopping engine and links the store to the merchant's products."
