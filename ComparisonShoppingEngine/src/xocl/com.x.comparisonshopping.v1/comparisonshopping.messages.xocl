@@ -171,9 +171,9 @@ package com.x.comparisonshopping.v1 {
 		array<string>? brands "Brands sold by the store."
 		boolean shipFromStore = false "Indicates whether the store support shipping directly from the store."
 		boolean eligibleForInStorePickup = false "Indicates whether the store support in-store pickup."
-		boolean onlineStore = false "Indicates whether this store have an online store."
-		string? onlineStoreUrl "URL of the store's online store."
-		array<string>? photoUrls "URLs of images associated with the store."
+		boolean onlineStore = false "Indicates whether this store is on online store."
+		string? onlineStoreUrl "URL of the online store."
+		array<string>? photoUrls "URLs of the images associated with the store."
 		string? logoUrl "URL of the store's logo."
 		array<string>? services "Services provided by the store."
 	}
