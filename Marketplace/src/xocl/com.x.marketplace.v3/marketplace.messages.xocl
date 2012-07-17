@@ -38,7 +38,7 @@ package com.x.marketplace.v3{
 	
 	record PackageType{
 		string packageName "The name of the package type used by the system"
-		string packageDescription "The desciption of the package type"
+		string packageDescription "The description of the package type"
 	}
 	
 	 /*
