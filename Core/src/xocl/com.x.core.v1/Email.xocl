@@ -1,9 +1,11 @@
 package com.x.core.v1
 {
-	packagetitle "Core"
 
 	record Email
 	{
+		summary "Specifies fields for an email address."
+		description "Contains fields for an email address."
+		
 		string emailAddress "Email address."
 	}
 }

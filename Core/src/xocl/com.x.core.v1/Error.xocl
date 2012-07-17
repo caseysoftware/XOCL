@@ -1,9 +1,11 @@
 package com.x.core.v1
 {
-	packagetitle "Core"
 
 	record Error
 	{
+		summary "Specifies fields for error messages."
+		description "Contains fields for the code and details of an error message."
+		
 		string code "Value that indicates the type of error.  Should be stable, short, and easily comparable.";
  		string? _AVDL_message "Explanation of the error."
 

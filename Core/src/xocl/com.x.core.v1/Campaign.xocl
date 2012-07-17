@@ -1,30 +1,28 @@
 package com.x.core.v1
 {
-	packagetitle "Core"
-
 	enum CampaignStatus
 	{
-		DRAFT,
-		SCHEDULED,
-		EXECUTING,
-		COMPLETED
+		summary "Specifies the status of a marketing campaign."
+ 		description "Defines the values used to specify the status of a marketing campaign."
+		
+		DRAFT "Indicates that the campaign is a draft.",
+		SCHEDULED "Indicates that the campaign is scheduled.",
+		EXECUTING "Indicates that the campaign is being used.",
+		COMPLETED "Indicates that the campaign has finished."
 	}
 
 	record Campaign
 	{
-		string? id
-
-		/** The account this campaign belongs to */
-		string accountId
-
-		string name
-		string? _avdl_description
+		string? id "Identifier of the campaign."
+		string accountId "Identifier of the campaign account."
+		string name "Name of the campaign."
+		string? _avdl_description "Description of the campaign."
 
 		/** Date Time Format: ISO 8601 */
-		 datetime? startTime
-		 datetime? endTime
+		 datetime? startTime "Date the campaign is to start."
+		 datetime? endTime "Date the campaign is to end."
 
 		/** Provider specific types can be specified as strings */
-		union{CampaignStatus,string} status
+		union{CampaignStatus,string} status "Status of the campaign."
 	}
 }

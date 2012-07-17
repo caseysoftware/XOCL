@@ -1,7 +1,5 @@
 package com.x.core.v1
 {
-	packagetitle "Core"
-
 	enum PhoneType
 	{
 		summary "Specifies the type of phone."
@@ -16,6 +14,8 @@ package com.x.core.v1
 
 	record Phone
 	{
+		summary "Specifies fields for phone numbers."
+		description "Contains fields for phone numbers."
 		string number "Phone number."
 		PhoneType type "Phone number type."
 	}

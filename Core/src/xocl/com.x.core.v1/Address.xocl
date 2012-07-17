@@ -1,7 +1,5 @@
 package com.x.core.v1
 {
-	packagetitle "Core"
-
 	enum AddressTag{
 		summary "Specifies the type of address."
  		description "Defines the values used to specify if the address is the billing or shipping address."
@@ -11,6 +9,9 @@ package com.x.core.v1
 	}
 	record Address
 	{
+		summary "Specifies fields for address information."
+		description "Contains fields for address information, such as street name, city, etc."
+		
 		string street1 "Street number and street name."
 		string? street2 "Street number and street name."
 		string? street3 "Street number and street name."

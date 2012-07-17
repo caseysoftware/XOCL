@@ -1,7 +1,5 @@
 package com.x.core.v1
 {
-	packagetitle "Core"
-
 	enum CommonPaymentMethod {
 		summary "Specifies the payment method."
  		description "Defines the values used to specify a payment method."
@@ -26,6 +24,9 @@ package com.x.core.v1
 	}
 
 	record PaymentMethod {
+		summary "Specifies fields for payment methods."
+		description "Contains fields for payment methods."
+		
 		//If the method is not a CommonPaymentMethod, use a string.
 		union{CommonPaymentMethod,string} method "Either one of the CommonPaymentMethod values or a string. Use a string when the payment is not a CommonPaymentMethod."
 	}

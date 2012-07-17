@@ -1,7 +1,5 @@
 package com.x.core.v1
 {
-	packagetitle "Core"
-
 	import com.x.core.v1.*
 
 	enum ContactAddressType
@@ -16,6 +14,9 @@ package com.x.core.v1
 
 	record Contact
 	{
+		summary "Specifies fields for contact information."
+		description "Contains fields for contact information, such as full name, email, etc."
+		
 		Name fullName "First and last name of the contact."
 	    array<Address>? addresses "Array of the contact's addresses."
 		Phone? primaryPhone "Primary telephone number."

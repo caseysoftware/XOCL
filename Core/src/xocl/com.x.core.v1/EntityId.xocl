@@ -1,7 +1,10 @@
-package com.x.core.v1 {
-	packagetitle "Core"
+package com.x.core.v1 
+{
 
 	record EntityId{
+		summary "Specifies fields for an entity identification."
+		description "Contains fields for an entity, such as guid and string ID."
+		
 		guid namespace "Stable guid for the system creating the record."
 		string Id "Local unique identifier.";
 	}

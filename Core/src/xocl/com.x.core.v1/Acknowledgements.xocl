@@ -3,76 +3,44 @@
  */
 package com.x.core.v1
 {
-	packagetitle "Core"
-
 	import com.x.core.v1.*
-    /*
-     * This enum defines the set of all well known reasons for cancelling a transaction.
-     *   as well as a value indicating that the reason is not specified.
-     */
+    
     enum Reason {
-        NotSpecified // The reason for cancellation is not specified.
-        ReceiptTimedOut // The sender timed out waiting for MessageReceived.
-        ReceiptOutOfSequence // The sender received MessageReceived unexpectedly.
-        ValidationTimedOut // The sender timed out waiting for MessageValidated.
-        ValidationOutOfSequence // The sender received MessageValidated unexpectedly.
-        ValidationError // The sender was not able to validate the message.
-        ResponseTimedOut // The sender timed out waiting for a response.
-        ResponseOutOfSequence // The sender received a response unexpectedly.
-        MessageOutOfSequence // The sender received a message unexpectedly.
+    	summary "Specifies the reason for canceling a transaction."
+    	description "Defines the values used to specify why a transaction was cancelled."
+    	
+        NotSpecified "Indicates the reason for cancellation is not specified."
+        ReceiptTimedOut "Indicates the sender timed out waiting for MessageReceived."
+        ReceiptOutOfSequence "Indicates the sender received MessageReceived unexpectedly."
+        ValidationTimedOut "Indicates the sender timed out waiting for MessageValidated."
+        ValidationOutOfSequence "Indicates the sender received MessageValidated unexpectedly."
+        ValidationError "Indicates the sender was not able to validate the message."
+        ResponseTimedOut "Indicates the sender timed out waiting for a response."
+        ResponseOutOfSequence "Indicates the sender received a response unexpectedly."
+        MessageOutOfSequence "Indicates the sender received a message unexpectedly."
     }
 
-    /*
-     * This message is sent to cancel a transaction for one of the reasons listed above.
-	 * A cancellation uses the standard message type com.x.core.v1.TransactionCancelled.
-	 * A cancellation must be sent to the standard topic com.x.core.v1/TransactionCancelled.
-     * A cancellation must be routed only to the intended recipient by setting the
-     *   X-XC-DESTINATION-ID header to the X-XC-PUBLISHER-PSEUDONYM.
-     *   If the transaction sender sends a cancellation, then the intended recipient must
-     *     be the transaction receiver.
-     *   If the transaction receiver sends a cancellation, then the intended recipient must
-     *     be the transaction sender.
-     */
-	record TransactionCancelled {
-	    Reason reason // The reason for cancellation.
-	    array<Error>? errors // Any errors related to the cancellation.
+ 	record TransactionCancelled {
+		summary "Requests that a transaction be cancelled."
+		description "Notification that a transaction was cancelled and the reason for this cancellation. This message is sent to cancel a transaction. A cancellation uses the standard message type com.x.core.v1.TransactionCancelled and must be sent to the standard topic com.x.core.v1/TransactionCancelled. A cancellation must be routed only to the intended recipient by setting the X-XC-DESTINATION-ID header to the X-XC-PUBLISHER-PSEUDONYM. If the transaction sender sends a cancellation, then the intended recipient must be the transaction receiver. If the transaction receiver sends a cancellation, then the intended recipient must be the transaction sender."
+		
+	    Reason reason "Reason for cancellation."
+	    array<Error>? errors "Any errors related to the cancellation."
 	}
 
-    /*
-     * This message is sent to notify the receiver that a transaction has completed.
-     * It is an optimization that allows the receiver to stop waiting for the transaction
-     *   to complete. If the receiver is not waiting for the transaction to complete, it
-     *   should ignore any completions that it may receive.
-	 * A completion uses the standard message type com.x.core.v1.TransactionCompleted.
-	 * A completion must be sent to the standard topic com.x.core.v1/TransactionCompleted.
-     * A completion must be routed only to the intended recipient by setting the
-     *   X-XC-DESTINATION-ID header to the X-XC-PUBLISHER-PSEUDONYM.
-     *   If the transaction sender sends a completion, then the intended recipient must
-     *     be the transaction receiver.
-     *   If the transaction receiver sends a completion, then the intended recipient must
-     *     be the transaction sender.
-     */
 	record TransactionCompleted {
+		summary "Signals that a transaction was completed. It is an optimization that allows the receiver to stop waiting for the transaction to complete. If the receiver is not waiting for the transaction to complete, it should ignore any completions that it may receive. A completion uses the standard message type com.x.core.v1.TransactionCompleted and must be sent to the standard topic com.x.core.v1/TransactionCompleted. A completion must be routed only to the intended recipient by setting the X-XC-DESTINATION-ID header to the X-XC-PUBLISHER-PSEUDONYM. If the transaction sender sends a completion, then the intended recipient must be the transaction receiver. If the transaction receiver sends a completion, then the intended recipient must be the transaction sender."
+		description "Notifies a receiver that a transaction was completed."
+		
 	}
 
-    /*
-     * The following message types are acknowledgements.
-     * An acknowledgement must be routed only to the sender of the message being acknowledged
-     *   by setting the X-XC-DESTINATION-ID header to the value of the X-XC-PUBLISHER-PSEUDONYM
-     *   header on the message being acknowledged.
-     */
+	record MessageReceived {
+		summary "Acknowledges the validation of a message."
+		description "Acknowledges the validation of a message. It must be routed only to the sender of the message being acknowledged by setting the X-XC-DESTINATION-ID header to the value of the X-XC-PUBLISHER-PSEUDONYM header on the message being acknowledged. If it is received out of order, the receiving capability may send a cancellation to abort the transaction with the Reason set to ValidationOutOfSequence."
+	}
 
-    /*
-     * This message type is used to acknowledge the receipt of a message.
-     * If it is received out of order, then the receiving capability may send a cancellation
-     *   to abort the transaction, with the Reason set to ReceiptOutOfSequence.
-     */
-	record MessageReceived {}
-
-    /*
-     * This message type is used to acknowledge the validation of a message.
-     * If it is received out of order, then the receiving capability may send a cancellation
-     *   to abort the transaction, with the Reason set to ValidationOutOfSequence.
-     */
-	record MessageValidated {}
+	record MessageValidated {
+		summary "Acknowledges that a message was validated."
+		description "Acknowledges that a message was validated. It must be routed only to the sender of the message being acknowledged by setting the X-XC-DESTINATION-ID header to the value of the X-XC-PUBLISHER-PSEUDONYM header on the message being acknowledged. If it is received out of order, the receiving capability may send a cancellation to abort the transaction with the Reason set to ValidationOutOfSequence."
+	}
 }

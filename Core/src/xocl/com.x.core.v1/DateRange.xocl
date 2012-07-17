@@ -1,10 +1,11 @@
 package com.x.core.v1
 {
-	packagetitle "Core"
-
 	record DateRange
 	{
-		datetime? beginDate
-		datetime? endDate
+		summary "Specifies fields for a date range."
+		description "Contains fields for a date range."
+		
+		datetime? beginDate "Beginning of date range."
+		datetime? endDate "End of date range."
 	}
 }
