@@ -7,7 +7,7 @@ package com.x.marketplace.v3{
 	
     contract EBayMarketplace 
     {
-    	description "An adapter to Ebay Marketplace"
+    	description "An adapter to the eBay marketplace."
     	
     	roles
     	{   		
@@ -48,7 +48,7 @@ package com.x.marketplace.v3{
 	 	
 	contract EbayMarketplaceOfferProducer extends EbayMarketplaceOfferProducerBaseRoleSet
     {
-    	description "A system that creates offers on ebay marketplace and processes the orders from the marketplace and depends on PIM for product data"
+    	description "A system that creates offers on the eBay marketplace and processes the orders from the marketplace. It depends on ProductInventoryManagement for its product data."
     	
     	roles
     	{
@@ -72,7 +72,7 @@ package com.x.marketplace.v3{
 	}	
     contract EbayMarketplaceOfferProducerBaseRoleSet
     {
-    	description "A base role set for ebay marketplace consumers."
+    	description "A base role set for eBay marketplace consumers."
     
     	roles
     	{
