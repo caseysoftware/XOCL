@@ -6,7 +6,8 @@
 	
 	record EbayOfferDetails extends OfferDetails{
 		string listingFormat;
-		string duration;
+		//this will be optional in v4 of this package
+		string duration  "The duration of the offer.  Empty string indicates that the duration should come from the policy"
         string countryCode;
         //these are only applicable for auction
 		CurrencyAmount? buyItNowPrice;
