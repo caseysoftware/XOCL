@@ -1,0 +1,42 @@
+package com.x.invoicingcontract.v1 0.0 earlydraft {
+	packagetitle "Invoicing Client contract"
+
+	import com.x.invoicing.v1.*
+
+	contract InvoicingClient {
+		description "Client of invoicing services"
+		roles
+		{
+			InvoiceProcessing.InvoicingClient
+			InvoiceLookup.InvoicingClient
+			InvoiceSearch.InvoicingClient
+		}
+	}
+	
+	contract InvoicingManager {
+		description "Provider of invoicing services"
+		roles
+		{
+			InvoiceProcessing.InvoicingManager
+			InvoiceCreated.InvoicingManager
+			InvoiceSent.InvoicingManager
+			InvoiceLookup.InvoicingManager
+			InvoiceSearch.InvoicingManager
+			InvoiceCancelled.InvoicingManager
+			InvoiceStatusUpdated.InvoicingManager
+			InvoiceContentsUpdated.InvoicingManager
+		}
+	}
+	
+	contract InvoicingObserver {
+		description "Observer of invoicing services"
+		roles
+		{
+			InvoiceCreated.InvoicingObserver
+			InvoiceSent.InvoicingObserver
+			InvoiceCancelled.InvoicingObserver
+			InvoiceStatusUpdated.InvoicingObserver
+			InvoiceContentsUpdated.InvoicingObserver
+		}
+	}
+}

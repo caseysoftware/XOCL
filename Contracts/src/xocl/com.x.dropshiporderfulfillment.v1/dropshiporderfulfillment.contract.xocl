@@ -1,0 +1,26 @@
+package com.x.dropshiporderfulfillment.v1 0.0 earlydraft {
+	packagetitle "Drop Ship Order Fulfillment contract"
+
+	import com.x.orderfulfillment.v1.*
+	import com.x.inventory.v1.*
+	import com.x.pim.v1.*
+    
+	contract OrderProcessorWithDropShipFulfillment {
+		description "A capability that does order processing and interacts with a drop ship fulfillment provider"
+		roles {
+			DropshipFulfillmentProcessing.OrderProcessor
+			ReturnProcessing.OrderProcessor
+			ReturnReceiptProcessing.OrderProcessor 
+		}
+	}
+	
+	contract DropShipFulfillmentProvider {
+    	description "A capability that performs drop shipment functions"
+    	roles {
+	        DropshipFulfillmentProcessing.DropshipProcessor
+	        ReturnProcessing.FulfillmentProcessor
+	       	ProductLookup.ProductInformationConsumer
+	       	StockItemUpdate.StockItemConsumer
+	    }
+    }
+}
