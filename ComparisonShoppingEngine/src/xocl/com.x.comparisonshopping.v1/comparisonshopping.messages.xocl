@@ -227,7 +227,7 @@ package com.x.comparisonshopping.v1 {
    		string? channelId "Identifier of the comparison shopping engine channel."
    		array<InventoryByLocation>? inventoryByLocation "Collection of inventory levels by physical location."
    		ConditionType condition = NEW "Condition of the product."
-   		string language = "2-letter language code (ISO 639-1). For example, en (English) or fr (French)."
+   		string language = "Name of the language used. For example, English or French."
    		boolean onlineOnly = true "Whether the product is available only online." 
 	}
 		
