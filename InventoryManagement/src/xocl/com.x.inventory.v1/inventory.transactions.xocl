@@ -49,6 +49,7 @@ package com.x.inventory.v1
 	
  
     transaction UpdateStockItemSnapshot response {
+    	description "Updates items in a snapshot and returns either a succeeded or failed message."
     	sender{
     		message UpdateStockItemSnapshot{
     			timeouts(receipt=10s, response=1m) 
@@ -70,6 +71,8 @@ package com.x.inventory.v1
     }
     
     transaction UpdateStockItemDelta response {
+    	description "Updates the delta of items in a snapshot and returns either a succeeded or failed message."
+    	
     	sender{
     		message UpdateStockItemDelta{
     			timeouts(receipt=10s, response=1m) 
