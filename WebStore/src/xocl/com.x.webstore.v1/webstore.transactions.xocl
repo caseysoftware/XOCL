@@ -4,6 +4,9 @@ package com.x.webstore.v1{
 	import com.x.webstore.v1.*
 	
 	entity WebStoreOffer
+	{
+		description "Product that a merchant is offering to sell."
+	}
     
     transaction GetAllWebStoreProvider broadcast query 
     {
