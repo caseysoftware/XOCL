@@ -11,17 +11,16 @@ package com.x.invoicing.v1{
         state Complete
 	}
 	
-	process InvoiceCreation(Invoice invoice) 
+	process InvoiceProcessing(Invoice invoice)
 	{
-		summary "Create an invoice in the Invoicing Manager"
-		description "Create an invoice in the Invoicing Manager"
-		
+		description "Invoice processing"
 		roles
 		{
-			InvoicingClient "Client of the invoicing system"
-			InvoicingManager "Manager of the invoicing system"
-			InvoicingObserver "Observer of invoicing transactions"
-		}
+			InvoicingClient
+			InvoicingManager
+			InvoicingObserver
+		}	
+		
 		preconditions (!exists(invoice))
 		
 		workflow
@@ -32,14 +31,128 @@ package com.x.invoicing.v1{
 			}
 			workflow InvoiceCreated
 			{
-				roles (InvoicingManager, InvoicingObserver)
+				roles (InvoicingManager, null)
+			}
+			
+			do(!invoice[Invoice.Complete] && !invoice[Invoice.Cancelled]) {
+				description "While the invoice is not complete or cancelled, several things can occur in any order"	 	 		 	    	
+		 	 	any {
+		 	 		noop
+		 	 		all
+		 	 		{
+		 	 			description "Send invoice to customer"
+		 	 			transaction SendInvoice
+						{
+							roles (InvoicingClient, InvoicingManager)
+						}
+						workflow InvoiceSent
+						{
+							roles (InvoicingManager, null) // make this change throughout
+						}
+		 	 		}
+		 	 		all
+		 	 		{
+		 	 			description "Cancel an invoice"
+		 	 			transaction CancelInvoice
+						{
+							roles (InvoicingClient, InvoicingManager)
+						}
+						workflow InvoiceCancelled
+						{
+							roles(InvoicingManager, null)
+						}
+		 	 		}
+		 	 		all
+		 	 		{
+		 	 			description "Update invoice status (paid, unpaid, refunded)"
+		 	 			transaction UpdateInvoiceStatus
+						{
+							roles (InvoicingClient, InvoicingManager)
+						}
+						workflow InvoiceStatusUpdated
+						{
+							roles(InvoicingManager, null)
+						}
+		 	 		}
+		 	 		all
+		 	 		{
+		 	 			description "Update invoice details"
+		 	 			transaction UpdateInvoiceDetails
+						{
+							roles (InvoicingClient, InvoicingManager)
+						}
+						workflow InvoiceContentsUpdated
+						{
+							roles(InvoicingManager, null)
+						}
+		 	 		}
+		 	 		all
+		 	 		{
+		 	 			description "Update merchant details"
+		 	 			transaction UpdateInvoiceMerchantData
+						{
+							roles (InvoicingClient, InvoicingManager)
+						}
+						workflow InvoiceContentsUpdated
+						{
+							roles(InvoicingManager, null)
+						}
+		 	 		}
+		 	 		all
+		 	 		{
+		 	 			description "Update invoice customer details"
+		 	 			transaction UpdateInvoiceCustomerData
+						{
+							roles (InvoicingClient, InvoicingManager)
+						}
+						workflow InvoiceContentsUpdated
+						{
+							roles(InvoicingManager, null)
+						}
+		 	 		}
+		 	 		all
+		 	 		{
+		 	 			description "Update invoice shipping details"
+		 	 			transaction UpdateInvoiceShippingData
+						{
+							roles (InvoicingClient, InvoicingManager)
+						}
+						workflow InvoiceContentsUpdated
+						{
+							roles(InvoicingManager, null)
+						}
+		 	 		}
+		 	 		all
+		 	 		{
+		 	 			description "Update invoice billing details"
+		 	 			transaction UpdateInvoiceBillingData
+						{
+							roles (InvoicingClient, InvoicingManager)
+						}
+						workflow InvoiceContentsUpdated
+						{
+							roles(InvoicingManager, null)
+						}
+		 	 		}
+		 	 		all
+		 	 		{
+		 	 			description "Update invoice item data"
+		 	 			transaction UpdateInvoiceItemData
+						{
+							roles (InvoicingClient, InvoicingManager)
+						}
+						workflow InvoiceContentsUpdated
+						{
+							roles(InvoicingManager, null)
+						}
+		 	 		}
+		 	 	}
 			}
 		}
 		
 		postconditions
 		{
-			success (exists(invoice), invoice[Invoice.Created])
-			failure (!exists(invoice))
+			success (invoice[Invoice.Cancelled] || invoice[Invoice.Complete])
 		}
 	}
 	
@@ -59,38 +172,7 @@ package com.x.invoicing.v1{
 			roles (InvoicingManager, InvoicingObserver)
 		}
 	}
-	
-	process InvoiceSend(Invoice invoice)
-	{
-		summary "Send an invoice from the Invoicing Manager"
-		description "Send an invoice from the Invoicing Manager"
-		
-		roles
-		{
-			InvoicingClient "Client of the invoicing system"
-			InvoicingManager "Manager of the invoicing system"
-			InvoicingObserver "Observer of invoicing transactions"
-		}
-		preconditions (exists(invoice))
-		
-		workflow
-		{
-			transaction SendInvoice
-			{
-				roles (InvoicingClient, InvoicingManager)
-			}
-			workflow InvoiceSent
-			{
-				roles (InvoicingManager, InvoicingObserver)
-			}
-		}
-		
-		postconditions
-		{
-			success (invoice[Invoice.Sent])
-		}
-	}
-	
+
 	process InvoiceSent	{
 		roles
 		{
@@ -143,39 +225,6 @@ package com.x.invoicing.v1{
 		}
 	}
 	
-	process InvoiceCancellation(Invoice invoice)
-	{
-		roles
-		{
-			InvoicingClient "Client of the invoicing system"
-			InvoicingManager "Manager of the invoicing system"
-			InvoicingObserver "Observer of invoicing transactions"
-		}
-		
-		preconditions
-		{
-			exists(invoice)
-			invoice[Invoice.Created] || invoice[Invoice.Sent]
-		}
-		
-		workflow
-		{
-			transaction CancelInvoice
-			{
-				roles (InvoicingClient, InvoicingManager)
-			}
-			workflow InvoiceCancelled
-			{
-				roles(InvoicingManager, InvoicingObserver)
-			}
-		}
-		
-		postconditions
-		{
-			success (invoice[Invoice.Cancelled])
-		}
-	}
-	
 	process InvoiceCancelled
 	{
 		roles
@@ -192,36 +241,7 @@ package com.x.invoicing.v1{
 			roles (InvoicingManager, InvoicingObserver)
 		}
 	}
-	
-	process InvoiceStatusUpdate(Invoice invoice)
-	{
-		roles
-		{
-			InvoicingClient "Client of the invoicing system"
-			InvoicingManager "Manager of the invoicing system"
-			InvoicingObserver "Observer of invoicing transactions"
-		}
-		
-		preconditions
-		{
-			exists(invoice)
-			invoice[Invoice.Created] || invoice[Invoice.Sent]
-		}
-		
-		workflow
-		{
-			transaction UpdateInvoiceStatus
-			{
-				roles (InvoicingClient, InvoicingManager)
-			}
-			//--- Would we rather have a single "InvoiceUpdated" workflow/transaction/message ?
-			workflow InvoiceStatusUpdated
-			{
-				roles(InvoicingManager, InvoicingObserver)
-			}
-		}
-	}
-	
+
 	process InvoiceStatusUpdated
 	{
 		roles
@@ -238,37 +258,8 @@ package com.x.invoicing.v1{
 			roles (InvoicingManager, InvoicingObserver)
 		}
 	}
-	
-	process InvoiceDetailsUpdate(Invoice invoice)
-	{
-		roles
-		{
-			InvoicingClient "Client of the invoicing system"
-			InvoicingManager "Manager of the invoicing system"
-			InvoicingObserver "Observer of invoicing transactions"
-		}
-		
-		preconditions
-		{
-			exists(invoice)
-			invoice[Invoice.Created] || invoice[Invoice.Sent]
-		}
-		
-		workflow
-		{
-			transaction UpdateInvoiceDetails
-			{
-				roles (InvoicingClient, InvoicingManager)
-			}
-			//--- Would we rather have a single "InvoiceUpdated" workflow/transaction/message ?
-			workflow InvoiceDetailsUpdated
-			{
-				roles(InvoicingManager, InvoicingObserver)
-			}
-		}
-	}
-	
-	process InvoiceDetailsUpdated
+
+	process InvoiceContentsUpdated
 	{
 		roles
 		{
@@ -277,239 +268,9 @@ package com.x.invoicing.v1{
 		}
 	}
 	
-	workflow InvoiceDetailsUpdated implements InvoiceDetailsUpdated
+	workflow InvoiceContentsUpdated implements InvoiceContentsUpdated
 	{
-		transaction InvoiceDetailsUpdated
-		{
-			roles (InvoicingManager, InvoicingObserver)
-		}
-	}
-	
-	process InvoiceMerchantDataUpdate(Invoice invoice)
-	{
-		roles
-		{
-			InvoicingClient "Client of the invoicing system"
-			InvoicingManager "Manager of the invoicing system"
-			InvoicingObserver "Observer of invoicing transactions"
-		}
-		
-		preconditions
-		{
-			exists(invoice)
-			invoice[Invoice.Created] || invoice[Invoice.Sent]
-		}
-		
-		workflow
-		{
-			transaction UpdateInvoiceMerchantData
-			{
-				roles (InvoicingClient, InvoicingManager)
-			}
-			//--- Would we rather have a single "InvoiceUpdated" workflow/transaction/message ?
-			workflow InvoiceMerchantDataUpdated
-			{
-				roles(InvoicingManager, InvoicingObserver)
-			}
-		}
-	}
-	
-	process InvoiceMerchantDataUpdated
-	{
-		roles
-		{
-			InvoicingManager "Manager of the invoicing system"
-			InvoicingObserver "Observer of invoicing transactions"
-		}
-	}
-	
-	workflow InvoiceMerchantDataUpdated implements InvoiceMerchantDataUpdated
-	{
-		transaction InvoiceMerchantDataUpdated
-		{
-			roles (InvoicingManager, InvoicingObserver)
-		}
-	}
-	
-	process InvoiceCustomerDataUpdate(Invoice invoice)
-	{
-		roles
-		{
-			InvoicingClient "Client of the invoicing system"
-			InvoicingManager "Manager of the invoicing system"
-			InvoicingObserver "Observer of invoicing transactions"
-		}
-		
-		preconditions
-		{
-			exists(invoice)
-			invoice[Invoice.Created] || invoice[Invoice.Sent]
-		}
-		
-		workflow
-		{
-			transaction UpdateInvoiceCustomerData
-			{
-				roles (InvoicingClient, InvoicingManager)
-			}
-			//--- Would we rather have a single "InvoiceUpdated" workflow/transaction/message ?
-			workflow InvoiceCustomerDataUpdated
-			{
-				roles(InvoicingManager, InvoicingObserver)
-			}
-		}
-	}
-	
-	process InvoiceCustomerDataUpdated
-	{
-		roles
-		{
-			InvoicingManager "Manager of the invoicing system"
-			InvoicingObserver "Observer of invoicing transactions"
-		}
-	}
-	
-	workflow InvoiceCustomerDataUpdated implements InvoiceCustomerDataUpdated
-	{
-		transaction InvoiceCustomerDataUpdated
-		{
-			roles (InvoicingManager, InvoicingObserver)
-		}
-	}
-	
-	process InvoiceShippingDataUpdate(Invoice invoice)
-	{
-		roles
-		{
-			InvoicingClient "Client of the invoicing system"
-			InvoicingManager "Manager of the invoicing system"
-			InvoicingObserver "Observer of invoicing transactions"
-		}
-		
-		preconditions
-		{
-			exists(invoice)
-			invoice[Invoice.Created] || invoice[Invoice.Sent]
-		}
-		
-		workflow
-		{
-			transaction UpdateInvoiceShippingData
-			{
-				roles (InvoicingClient, InvoicingManager)
-			}
-			//--- Would we rather have a single "InvoiceUpdated" workflow/transaction/message ?
-			workflow InvoiceShippingDataUpdated
-			{
-				roles(InvoicingManager, InvoicingObserver)
-			}
-		}
-	}
-	
-	process InvoiceShippingDataUpdated
-	{
-		roles
-		{
-			InvoicingManager "Manager of the invoicing system"
-			InvoicingObserver "Observer of invoicing transactions"
-		}
-	}
-	
-	workflow InvoiceShippingDataUpdated implements InvoiceShippingDataUpdated
-	{
-		transaction InvoiceShippingDataUpdated
-		{
-			roles (InvoicingManager, InvoicingObserver)
-		}
-	}
-	
-	process InvoiceBillingDataUpdate(Invoice invoice)
-	{
-		roles
-		{
-			InvoicingClient "Client of the invoicing system"
-			InvoicingManager "Manager of the invoicing system"
-			InvoicingObserver "Observer of invoicing transactions"
-		}
-		
-		preconditions
-		{
-			exists(invoice)
-			invoice[Invoice.Created] || invoice[Invoice.Sent]
-		}
-		
-		workflow
-		{
-			transaction UpdateInvoiceBillingData
-			{
-				roles (InvoicingClient, InvoicingManager)
-			}
-			//--- Would we rather have a single "InvoiceUpdated" workflow/transaction/message ?
-			workflow InvoiceBillingDataUpdated
-			{
-				roles(InvoicingManager, InvoicingObserver)
-			}
-		}
-	}
-	
-	process InvoiceBillingDataUpdated
-	{
-		roles
-		{
-			InvoicingManager "Manager of the invoicing system"
-			InvoicingObserver "Observer of invoicing transactions"
-		}
-	}
-	
-	workflow InvoiceBillingDataUpdated implements InvoiceBillingDataUpdated
-	{
-		transaction InvoiceBillingDataUpdated
-		{
-			roles (InvoicingManager, InvoicingObserver)
-		}
-	}
-	
-	process InvoiceItemDataUpdate(Invoice invoice)
-	{
-		roles
-		{
-			InvoicingClient "Client of the invoicing system"
-			InvoicingManager "Manager of the invoicing system"
-			InvoicingObserver "Observer of invoicing transactions"
-		}
-		
-		preconditions
-		{
-			exists(invoice)
-			invoice[Invoice.Created] || invoice[Invoice.Sent]
-		}
-		
-		workflow
-		{
-			transaction UpdateInvoiceItemData
-			{
-				roles (InvoicingClient, InvoicingManager)
-			}
-			//--- Would we rather have a single "InvoiceUpdated" workflow/transaction/message ?
-			workflow InvoiceItemDataUpdated
-			{
-				roles(InvoicingManager, InvoicingObserver)
-			}
-		}
-	}
-	
-	process InvoiceItemDataUpdated
-	{
-		roles
-		{
-			InvoicingManager "Manager of the invoicing system"
-			InvoicingObserver "Observer of invoicing transactions"
-		}
-	}
-	
-	workflow InvoiceItemDataUpdated implements InvoiceItemDataUpdated
-	{
-		transaction InvoiceItemDataUpdated
+		transaction InvoiceContentsUpdated
 		{
 			roles (InvoicingManager, InvoicingObserver)
 		}

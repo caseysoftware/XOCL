@@ -3,9 +3,10 @@ package com.x.invoicing.v1
 	import com.x.invoicing.v1.*
 	import com.x.core.v1.*
 	
-	transaction CreateInvoice response
+	transaction CreateInvoice(Invoice invoice) response
 	{
     	description "Create invoice."
+    	preconditions (!exists(invoice))
         sender
         {
         	message CreateInvoice
@@ -27,6 +28,11 @@ package com.x.invoicing.v1
             	timeouts(receipt=30s)
             }
         }
+        postconditions
+        {
+        	success (exists(invoice) && invoice[Invoice.Created])
+        	failure (!exists(invoice))
+        }
     }
     
     transaction InvoiceCreated inform
@@ -39,9 +45,10 @@ package com.x.invoicing.v1
         }
     }
     
-    transaction SendInvoice response
+    transaction SendInvoice(Invoice invoice) response
     {
     	description "Send invoice"
+    	preconditions (invoice[Invoice.Created] || invoice[Invoice.Sent])
     	sender
     	{
     		message SendInvoice
@@ -54,7 +61,7 @@ package com.x.invoicing.v1
     	{
     		success SendInvoiceSucceeded
 			{       
-				timeouts(receipt=30s, validation=3m)
+				timeouts(receipt=30s, validation=3m)  // check others - validation needed if business data returned.
             	retries=3
             }
             
@@ -63,15 +70,56 @@ package com.x.invoicing.v1
             	timeouts(receipt=30s)
             }
     	}
+    	postconditions
+    	{
+    		success (invoice[Invoice.Sent])
+    	}
     }
     
     transaction InvoiceSent inform
     {
     	sender
         {
-        	message InvoiceSent{
-        		   topic "/com.x.invoicing.v1/InvoiceSend/InvoiceSent"
-        	}
+        	message InvoiceSent
+        }
+    }
+    
+    transaction CompleteInvoice(Invoice invoice) response
+    {
+    	description "Complete invoice"
+    	preconditions (invoice[Invoice.Created] || invoice[Invoice.Sent])
+    	sender
+    	{
+    		message CompleteInvoice
+    		{
+    			timeouts(receipt=30s, response=3m)     		
+        		retries=3
+    		}
+    	}
+    	receiver
+    	{
+    		success CompleteInvoiceSucceeded
+			{       
+				timeouts(receipt=30s, validation=3m)  // check others - validation needed if business data returned.
+            	retries=3
+            }
+            
+            failure CompleteInvoiceFailed
+            {
+            	timeouts(receipt=30s)
+            }
+    	}
+    	postconditions
+    	{
+    		success (invoice[Invoice.Complete])
+    	}
+    }
+    
+    transaction InvoiceCompleted inform
+    {
+    	sender
+        {
+        	message InvoiceCompleted
         }
     }
     
@@ -109,9 +157,10 @@ package com.x.invoicing.v1
         } 
     }
     
-    transaction CancelInvoice response
+    transaction CancelInvoice(Invoice invoice) response
     {
     	description "Cancels the invoice based on id."
+    	preconditions (exists(invoice), !invoice[Invoice.Cancelled], !invoice[Invoice.Complete])
     	sender
     	{
     		message CancelInvoice
@@ -133,21 +182,24 @@ package com.x.invoicing.v1
             	timeouts(receipt=30s)
             }
     	}
+    	postconditions
+    	{
+    		success (invoice[Invoice.Cancelled])
+    	}
     }
     
     transaction InvoiceCancelled inform
     {
     	sender
         {
-        	message InvoiceCancelled{
-        		   topic "/com.x.invoicing.v1/InvoiceCancelled/InvoiceCancelled"
-        	}
+        	message InvoiceCancelled
         }
     }
     
-    transaction UpdateInvoiceStatus response
+    transaction UpdateInvoiceStatus(Invoice invoice) response
     {
     	description "Updates the invoice status based on id."
+    	preconditions (exists(invoice), invoice[Invoice.Created] || invoice[Invoice.Sent])
     	sender
     	{
     		message UpdateInvoiceStatus
@@ -175,15 +227,14 @@ package com.x.invoicing.v1
     {
     	sender
         {
-        	message InvoiceStatusUpdated{
-        		   topic "/com.x.invoicing.v1/InvoiceStatusUpdated/InvoiceStatusUpdated"
-        	}
+        	message InvoiceStatusUpdated
         }
     }
     
-    transaction UpdateInvoiceDetails response
+    transaction UpdateInvoiceDetails(Invoice invoice) response
     {
     	description "Updates the invoice details based on id."
+    	preconditions (exists(invoice), invoice[Invoice.Created] || invoice[Invoice.Sent])
     	sender
     	{
     		message UpdateInvoiceDetails
@@ -207,19 +258,18 @@ package com.x.invoicing.v1
     	}
     }
     
-    transaction InvoiceDetailsUpdated inform
+    transaction InvoiceContentsUpdated inform
     {
     	sender
         {
-        	message InvoiceDetailsUpdated{
-        		   topic "/com.x.invoicing.v1/InvoiceDetailsUpdated/InvoiceDetailsUpdated"
-        	}
+        	message InvoiceContentsUpdated
         }
     }
     
-    transaction UpdateInvoiceMerchantData response
+    transaction UpdateInvoiceMerchantData(Invoice invoice) response
     {
     	description "Updates the invoice merchant data based on id."
+    	preconditions (exists(invoice), invoice[Invoice.Created] || invoice[Invoice.Sent])
     	sender
     	{
     		message UpdateInvoiceMerchantData
@@ -243,19 +293,10 @@ package com.x.invoicing.v1
     	}
     }
     
-    transaction InvoiceMerchantDataUpdated inform
-    {
-    	sender
-        {
-        	message InvoiceMerchantDataUpdated{
-        		   topic "/com.x.invoicing.v1/InvoiceMerchantDataUpdated/InvoiceMerchantDataUpdated"
-        	}
-        }
-    }
-    
-    transaction UpdateInvoiceCustomerData response
+    transaction UpdateInvoiceCustomerData(Invoice invoice) response
     {
     	description "Updates the invoice customer data based on id."
+    	preconditions (exists(invoice), invoice[Invoice.Created] || invoice[Invoice.Sent])
     	sender
     	{
     		message UpdateInvoiceCustomerData
@@ -278,20 +319,11 @@ package com.x.invoicing.v1
             }
     	}
     }
-    
-    transaction InvoiceCustomerDataUpdated inform
-    {
-    	sender
-        {
-        	message InvoiceCustomerDataUpdated{
-        		   topic "/com.x.invoicing.v1/InvoiceCustomerDataUpdated/InvoiceCustomerDataUpdated"
-        	}
-        }
-    }
-    
-    transaction UpdateInvoiceShippingData response
+
+    transaction UpdateInvoiceShippingData(Invoice invoice) response
     {
     	description "Updates the invoice shipping data based on id."
+    	preconditions (exists(invoice), invoice[Invoice.Created] || invoice[Invoice.Sent])
     	sender
     	{
     		message UpdateInvoiceShippingData
@@ -314,20 +346,11 @@ package com.x.invoicing.v1
             }
     	}
     }
-    
-    transaction InvoiceShippingDataUpdated inform
-    {
-    	sender
-        {
-        	message InvoiceShippingDataUpdated{
-        		   topic "/com.x.invoicing.v1/InvoiceShippingDataUpdated/InvoiceShippingDataUpdated"
-        	}
-        }
-    }
-    
-    transaction UpdateInvoiceBillingData response
+
+    transaction UpdateInvoiceBillingData(Invoice invoice) response
     {
     	description "Updates the invoice billing data based on id."
+    	preconditions (exists(invoice), invoice[Invoice.Created] || invoice[Invoice.Sent])
     	sender
     	{
     		message UpdateInvoiceBillingData
@@ -350,20 +373,11 @@ package com.x.invoicing.v1
             }
     	}
     }
-    
-    transaction InvoiceBillingDataUpdated inform
-    {
-    	sender
-        {
-        	message InvoiceBillingDataUpdated{
-        		   topic "/com.x.invoicing.v1/InvoiceBillingDataUpdated/InvoiceBillingDataUpdated"
-        	}
-        }
-    }
-    
-    transaction UpdateInvoiceItemData response
+ 
+    transaction UpdateInvoiceItemData(Invoice invoice) response
     {
     	description "Updates the invoice item data based on id."
+    	preconditions (exists(invoice), invoice[Invoice.Created] || invoice[Invoice.Sent])
     	sender
     	{
     		message UpdateInvoiceItemData
@@ -385,15 +399,5 @@ package com.x.invoicing.v1
             	timeouts(receipt=30s)
             }
     	}
-    }
-    
-    transaction InvoiceItemDataUpdated inform
-    {
-    	sender
-        {
-        	message InvoiceItemDataUpdated{
-        		   topic "/com.x.invoicing.v1/InvoiceItemDataUpdated/InvoiceItemDataUpdated"
-        	}
-        }
     }
 }

@@ -37,6 +37,14 @@ package com.x.invoicing.v1{
 		string? taxRate;
 	}
 	
+	enum InvoiceState
+	{
+		CREATED,
+		SENT,
+		CANCELLED,
+		COMPLETED	
+	}
+	
 	enum InvoiceStatus 
 	{
 		PAID,
@@ -46,8 +54,8 @@ package com.x.invoicing.v1{
 	
 	record InvoiceDetails
 	{
-		string? referenceId;
-		string? dueDate;
+		string referenceId;
+		datetime? dueDate;
 		string? terms;
 		string? note;
 		string? logoUrl;
@@ -55,7 +63,6 @@ package com.x.invoicing.v1{
 	
 	record InvoiceData
 	{
-		string? id;
 		MerchantData merchantData;
 		CustomerData customerData;
 		ShippingData shippingData;
@@ -63,6 +70,11 @@ package com.x.invoicing.v1{
 		array<ItemData> itemList;
 		InvoiceDetails? details;
 		InvoiceStatus? status;
+	}
+	
+	record Invoice extends InvoiceData
+	{
+		string id;
 	}
 	
 	record CreateInvoice
@@ -107,6 +119,27 @@ package com.x.invoicing.v1{
 		string id;
 	}
 	
+	record CompleteInvoice
+    {
+        string id;
+    }
+    
+    record CompleteInvoiceSucceeded
+    {
+    	string id;	
+    }
+    
+    record CompleteInvoiceFailed
+    {
+    	string id;
+    	array<Error> errors;
+    }
+	
+	record InvoiceCompleted
+	{
+		string id;
+	}
+	
 	record LookupInvoice
     {
     	array<string> ids "IDs of the invoices to be looked up.";
@@ -126,44 +159,21 @@ package com.x.invoicing.v1{
     //--- Search filter -------------------------
 	enum SearchableFieldName
 	{
-		CUSTOMER_LAST_NAME,
-		CUSTOMER_PHONE,
-		CUSTOMER_EMAIL,
 		REFERENCE_ID,
-		ITEM_NAME,
-		ITEM_ID,
 		INVOICE_PAYMENT_STATUS,
 		INVOICE_STATE,
-		INVOICE_CREATION_DATE,
+		LAST_CHANGED_DATE,
 		INVOICE_DUE_DATE,
+		INVOICE_COMPLETED_DATE,
 		INVOICE_CANCELLATION_DATE
 	}
 	
-	record FilterExpression
+	record InvoiceSearchFilter
 	{
 		SearchableFieldName field;
 		Operator operator;
-		array<string> values;
+		union{string, InvoiceStatus, InvoiceState} value;
 	}
-	
-	enum BooleanOperator
-	{
-		AND,
-		OR,
-		NOT
-	}
-	
-	record BooleanExpression
-	{
-		FilterExpression? leftOperand;
-		BooleanOperator operator;
-		FilterExpression rightOperand;
-	}
-    
-    record InvoiceSearchFilter
-    {
-    	union{FilterExpression, BooleanExpression} filter;
-    }
     //--- end of Search Filter section -------------------------------
     
     record SearchInvoice
@@ -246,10 +256,9 @@ package com.x.invoicing.v1{
     	array<Error> errors;
     }
 	
-	record InvoiceDetailsUpdated
+	record InvoiceContentsUpdated
 	{
-		string id;
-		InvoiceDetails details;
+		Invoice invoice;
 	}
 	
 	//--- UpdateInvoiceMerchantData ------
@@ -270,13 +279,7 @@ package com.x.invoicing.v1{
     	MerchantData merchantData;
     	array<Error> errors;
     }
-	
-	record InvoiceMerchantDataUpdated
-	{
-		string id;
-		MerchantData merchantData;
-	}
-	
+
 	//--- UpdateInvoiceCustomerData ------
 	record UpdateInvoiceCustomerData
     {
@@ -296,12 +299,6 @@ package com.x.invoicing.v1{
     	array<Error> errors;
     }
 	
-	record InvoiceCustomerDataUpdated
-	{
-		string id;
-		CustomerData customerData;
-	}
-	
 	//--- UpdateInvoiceShippingData ------
 	record UpdateInvoiceShippingData
     {
@@ -320,13 +317,7 @@ package com.x.invoicing.v1{
     	ShippingData shippingData;
     	array<Error> errors;
     }
-	
-	record InvoiceShippingDataUpdated
-	{
-		string id;
-		ShippingData shippingData;
-	}
-	
+
 	//--- UpdateInvoiceBillingData ------
 	record UpdateInvoiceBillingData
     {
@@ -345,13 +336,7 @@ package com.x.invoicing.v1{
     	BillingData billingData;
     	array<Error> errors;
     }
-	
-	record InvoiceBillingDataUpdated
-	{
-		string id;
-		BillingData billingData;
-	}
-		
+
 	//--- UpdateInvoiceBillingData ------
 	record UpdateInvoiceItemData
     {
@@ -370,13 +355,4 @@ package com.x.invoicing.v1{
     	array<ItemData> itemList;
     	array<Error> errors;
     }
-	
-	record InvoiceItemDataUpdated
-	{
-		string id;
-		array<ItemData> itemList;
-	}
-		
-		
-	
 }
