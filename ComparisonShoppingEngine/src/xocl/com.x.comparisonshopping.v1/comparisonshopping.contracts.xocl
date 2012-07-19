@@ -4,9 +4,6 @@
 
 package com.x.comparisonshopping.v1
 {	
-	packagetitle "Comparison Shopping Engine"
-	description "The Comparison Shopping Engine package specifies the processes for publishing products to comparison shopping engines."
-
 	import com.x.comparisonshopping.v1.* 
 	
     contract ComparisonShoppingEngine {
