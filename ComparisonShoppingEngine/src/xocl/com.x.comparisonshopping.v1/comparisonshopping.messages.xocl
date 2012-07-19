@@ -105,7 +105,7 @@ package com.x.comparisonshopping.v1 {
 
 		string id "Unique identifier for this data feed."
 		string? name "Name assigned to this data feed."
-		DataFeedType feedType = FULL "Classification of this feed being started."
+		DataFeedType feedType = FULL "Classification of this feed being started. The default is FULL."
 		datetime startDate "Date and time when the feed was started."
 		string? xAccountId "Account ID that will be used for this data feed."		
 	}
@@ -169,9 +169,9 @@ package com.x.comparisonshopping.v1 {
 		array<string>? paymentOptions "Types of payment accepted by the store."
 		string? email "Email address of the store."
 		array<string>? brands "Brands sold by the store."
-		boolean shipFromStore = false "Indicates whether the store support shipping directly from the store."
-		boolean eligibleForInStorePickup = false "Indicates whether the store support in-store pickup."
-		boolean onlineStore = false "Indicates whether this store is on online store."
+		boolean shipFromStore = false "Indicates whether the store support shipping directly from the store. The default is false."
+		boolean eligibleForInStorePickup = false "Indicates whether the store support in-store pickup. The default is false."
+		boolean onlineStore = false "Indicates whether this store is on online store. The default is false."
 		string? onlineStoreUrl "URL of the online store."
 		array<string>? photoUrls "URLs of the images associated with the store."
 		string? logoUrl "URL of the store's logo."
@@ -185,16 +185,16 @@ package com.x.comparisonshopping.v1 {
 		string storeId "Unique identifier for the store where this inventory resides."
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
 		Store? store "Store where this inventory resides."
-		boolean eligibleForInStorePickup = false "Whether a shopper can visit the location to pickup the product."
+		boolean eligibleForInStorePickup = false "Whether a shopper can visit the location to pickup the product. The default is false."
 		CurrencyAmount? price "Overrides for the price. If omitted the price will be taken from the base product."
 		CurrencyAmount? salePrice "Overrides of the sale price. If omitted the sale price will be taken from the base product."
 		datetime? salePriceEffectiveDate "Date the override salePrice activates."
 		datetime? salePriceExpiryDate "Date the override salePrice activates."
 		string? priceDescription "Used for a free form entry."
 		int? quantity "How many of a product are at this location."
-		AvailabilityType availability = Unknown "True with no quantity specified if inventory is not tracked."
+		AvailabilityType availability = UNKNOWN "True with no quantity specified if inventory is not tracked. The default is UNKNOWN."
 		datetime? availableDate "Timestamp specifying when the item will be available."
-		boolean shipFromStore = false "Whether this item is available to be shipped from this location." 
+		boolean shipFromStore = false "Whether this item is available to be shipped from this location. The default is false." 
 	}
 	
 	record Product {
@@ -217,7 +217,7 @@ package com.x.comparisonshopping.v1 {
    		array<ProductImage> images  "Collection of  URLs for the product images (with assigned roles)."
    		string link "Link to the product landing page on the merchant's storefront."
    		CurrencyAmount originalPrice "Original price of the item before any discounting."
-   		AvailabilityType availability = Unknown "Availability status of the product."
+   		AvailabilityType availability = UNKNOWN "Availability status of the product. The default is UNKNOWN."
    		TaxRate? taxRate "Tax rate based on the country and region of the product's location (where the product is shipped from)."
    		Shipping? shipping "Shipping profile of a product and its shipping price."
    		double? shippingWeight "Shipping weight of the product."
@@ -226,9 +226,9 @@ package com.x.comparisonshopping.v1 {
    		CurrencyAmount? cpc "Amount the merchant is willing to pay per click (cost per click)."
    		string? channelId "Identifier of the comparison shopping engine channel."
    		array<InventoryByLocation>? inventoryByLocation "Collection of inventory levels by physical location."
-   		ConditionType condition = NEW "Condition of the product."
-   		string language = "Name of the language used. For example, English or French."
-   		boolean onlineOnly = true "Whether the product is available only online." 
+   		ConditionType condition = NEW "Condition of the product. The default is NEW."
+   		string language = "en_US" "Name of the language used. The default is en_US."
+   		boolean onlineOnly =  true "Whether the product is available only online. The default is true." 
 	}
 		
 	record PublishProduct {
