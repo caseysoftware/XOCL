@@ -1,6 +1,6 @@
 package com.x.core.v1 0.1{
 	packagetitle "Core"
-	description "The Core package specifies record types that are generic and can be used in other XOCL packages."
+	description "The Core package specifies record types that are generic and can be used in other packages."
 
 	import com.x.core.v1.*
 }
