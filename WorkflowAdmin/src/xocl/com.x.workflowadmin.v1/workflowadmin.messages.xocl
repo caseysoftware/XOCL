@@ -15,6 +15,7 @@ package com.x.workflowadmin.v1 {
 		union{null, map<NodeControls>} nodeControls = null
 		union{null, TransactionControls} commonTransactionControls = null
 		union{null, map<TransactionControls>} transactionControls = null
+		boolean? clearAllControls
 	}
 	
 	record NodeControls {
@@ -33,6 +34,7 @@ package com.x.workflowadmin.v1 {
 		union{null, string} softCrashNode = null;
 		union{null, string} sleepNode = null;
 		long? sleepTimeInMillis;
+		boolean? clearAllControls;
 	}
 }
 	
