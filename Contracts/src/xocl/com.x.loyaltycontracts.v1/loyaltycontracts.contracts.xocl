@@ -1,0 +1,50 @@
+package com.x.loyaltycontracts.v1 0.0 earlydraft
+{
+	import com.x.loyalty.v1.*
+	import com.x.customer.v1.*
+	import com.x.ordermanagement.v2.*
+	
+	
+	contract LoyaltyMarketingProvider 
+    {
+    	description "A provider of Loyalty Marketing services"
+    	
+    	roles
+    	{   		
+			RewardCreation.LoyaltyMarketingProvider
+			RewardPointQuery.LoyaltyMarketingProvider
+			RewardPointUsage.LoyaltyMarketingProvider
+			RewardPointPrediction.LoyaltyMarketingProvider
+	   		LoyaltyReportGet.LoyaltyMarketingProvider
+	   		ProcessSalesChannelOrder.OrderObserver
+	   		CustomerSearch.CustomerConsumer<NameAndId>
+	   		//do we need events for customer creation, etc?
+	   		//how does the loyalty provider or cart know the conversion ration (points to $)
+	    }
+	    
+	}
+	
+	contract LoyaltyMarketingConsumer
+    {
+    	description "A consumer of Loyalty Marketing services, such as a cart application"
+    	
+    	roles
+    	{   		
+			RewardCreation.LoyaltyMarketingConsumer
+			RewardPointQuery.LoyaltyMarketingConsumer
+			RewardPointUsage.LoyaltyMarketingConsumer
+			RewardPointPrediction.LoyaltyMarketingConsumer
+	    }
+	    
+	}
+	contract MarketingAnalyticsProvider
+    {
+    	description "A provider of analytics that will consume loyalty information"
+    	
+    	roles
+    	{   		
+	   		LoyaltyReportGet.LoyaltyAnalyticsConsumer
+	    }
+	    
+	 }		
+}

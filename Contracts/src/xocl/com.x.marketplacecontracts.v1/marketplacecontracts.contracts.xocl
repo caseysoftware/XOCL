@@ -1,0 +1,100 @@
+package com.x.marketplacecontracts.v1 0.0 earlydraft
+{
+	import com.x.marketplace.v3.*
+	import com.x.ordermanagement.v2.*
+	import com.x.authz.v1.*
+	import com.x.pim.v1.*
+	import com.x.customer.v1.*
+	
+    contract Marketplace 
+    {
+    	description "An adapter to an online marketplace, such as eBay"
+    	
+    	roles
+    	{
+    			   		
+	   		//Marketplace  roles 
+	   		MarketplaceSetup.MarketplaceMetadataProvider
+	   		PolicyGroupCreation.MarketplacePolicyManager
+	   		PolicyGroupUpdate.MarketplacePolicyManager 
+	   		PolicyGroupDeletion.MarketplacePolicyManager 
+	   		PolicyGroupLookup.MarketplacePolicyManager 
+	   		OfferPublication.Marketplace 
+	   		OfferPublicationWithProductData.Marketplace 
+	   		PublishedOfferRevision.Marketplace
+	   		PublishedOfferRevisionWithProductData.Marketplace
+	   		PublishedOfferRevocation.Marketplace
+	   		OfferSearch.Marketplace
+
+	   		TopSellingProductSearch.Marketplace
+	   
+	   		//Order roles
+	   		ProcessSalesChannelOrder.SalesChannel<MarketplaceOrder> 
+	   		
+	   		//Auth roles
+	   		AuthorizationGrant.AuthorizationProvider
+	   		AuthorizedAccountSearch.AuthorizationProvider
+	   		AuthorizationRevoke.AuthorizationProvider
+	   		
+	   	    
+	   	    //PIM roles
+	   		ProductLookup.ProductInformationConsumer
+	   		
+	    }
+	    
+	 }
+	
+
+	contract MarketplaceOfferProducer extends MarketplaceOfferProducerBaseRoleSet
+    {
+    	description "A system that places offers on a marketplace and processes orders from the marketplace, depending on PIM for product data"
+    	roles
+    	{
+	   		//Marketplace  roles 
+	   		OfferPublication.OfferManager
+	   		PublishedOfferRevision.OfferManager
+	   		CustomerUpsert.CustomerConsumer
+
+	    }
+	    
+	 }
+	 contract MarketplaceOfferProducerWithProductDataPublication extends MarketplaceOfferProducerBaseRoleSet
+     {
+    	description "A system that places offers on a marketplace and processes orders from the marketplace and passes product data with offer publication"
+    	
+    	roles{
+	   		OfferPublicationWithProductData.OfferManager 
+			PublishedOfferRevisionWithProductData.OfferManager
+	    }
+	    
+	 }
+	 
+	 
+	contract MarketplaceOfferProducerBaseRoleSet 
+    {
+    	description "A base set of roles for use by producer contracts"
+    
+    	roles
+    	{
+	   		//Marketplace  roles 
+			MarketplaceSetup.MarketplaceMetadataConsumer
+	   		PolicyGroupCreation.MarketplaceMerchantConsole
+	   		PolicyGroupUpdate.MarketplaceMerchantConsole
+	   		PolicyGroupDeletion.MarketplaceMerchantConsole
+	   		PolicyGroupLookup.MarketplacePolicyManager 
+	   		PublishedOfferRevocation.OfferManager
+	   		OfferSearch.OfferManager
+	
+	   		//Order roles
+	   		ProcessSalesChannelOrder.OrderProcessor<MarketplaceOrder> 
+	   		OrderSearch.OrderManager<MarketplaceOrderSearch> 
+	   		
+	   		//Auth roles
+	   		AuthorizationGrant.AuthorizedUser
+	   		AuthorizedAccountSearch.AuthorizedUser
+	   		AuthorizationRevoke.AuthorizedUser	   		
+	    }
+	    
+	 }
+	 
+}

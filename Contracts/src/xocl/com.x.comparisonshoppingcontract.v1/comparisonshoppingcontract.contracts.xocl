@@ -1,0 +1,30 @@
+/*
+ * This file contains the contract declarations for the CSE domain
+ */
+
+package com.x.comparisonshoppingcontracts.v1 0.0 earlydraft
+{	
+	packagetitle "Comparison Shopping contracts"
+
+	import com.x.comparisonshopping.v1.* 
+	
+    contract ComparisonShoppingEngine {
+    	description "A provider that supports the publishing (adding) of products to a comparison shopping engines and linking the products to the merchant's store."
+    	
+    	roles {
+	        PublishProductFeed.ProductFeedManager
+	        PublishInventoryFeed.InventoryFeedManager
+	        PublishStoreFeed.StoreFeedManager
+	    }
+    }
+    
+    contract ComparisonShoppingPublisher {
+    	description "A provider that supports the publishing (adding) of products to a comparison shopping engines and linking the products to the merchant's store."
+    	
+    	roles {
+	        PublishProductFeed.ProductFeedPublisher
+	        PublishInventoryFeed.InventoryFeedPublisher
+	        PublishStoreFeed.StoreFeedPublisher
+	    }
+    }
+}

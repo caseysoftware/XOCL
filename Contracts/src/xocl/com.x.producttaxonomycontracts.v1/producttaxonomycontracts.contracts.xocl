@@ -1,0 +1,24 @@
+package com.x.producttaxonomycontracts.v1 0.0 earlydraft
+{
+	packagetitle "Product Taxonomy contracts"
+	
+	import com.x.producttaxonomy.v1.*
+	
+	contract ProductTaxonomyManager {
+		
+		description "A system used to store the product taxonomy."
+    		roles {
+					ProductTaxonomyRetrieval.ProductTaxonomyManager "Returns information based on a search of the product taxonomy."
+					ProductTaxonomyUpdate.ProductTaxonomyManager "Updates information in the product taxonomy."
+	 		}			
+	}	
+	
+	contract ProductTaxonomyConsumer {
+		
+		description "An entity that uses or needs to access the information in the product taxonomy system."
+    		roles {
+					ProductTaxonomyRetrieval.ProductTaxonomyConsumer "Searches the product taxonomy."
+					ProductTaxonomyUpdate.ProductTaxonomyObserver "Receives notifications when the product taxonomy has been updated."
+	 		}			
+	}
+}

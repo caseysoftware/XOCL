@@ -1,0 +1,33 @@
+package com.x.paidsearchadvertisingcontracts.v1 0.0 earlydraft
+{
+	
+	import com.x.paidsearchadvertising.v1.*
+	import com.x.webstore.v1.*
+
+	contract PaidSearchAdvertisingProvider{
+		roles{
+			AdvertiserAccountCreation.PaidSearchAdvertisingProvider
+			CampaignCreation.PaidSearchAdvertisingProvider
+			CampaignUpdate.PaidSearchAdvertisingProvider
+			CampaignSuspension.PaidSearchAdvertisingProvider
+			CampaignResumption.PaidSearchAdvertisingProvider
+			CampaignDeletion.PaidSearchAdvertisingProvider
+			CampaignPerformanceReportLookup.PaidSearchAdvertisingProvider
+			AddOffersToCampaign.PaidSearchAdvertisingProvider
+			WebStoreOfferLookup.WebStoreOfferConsumer
+		}
+	}
+
+	contract PaidSearchAdvertisingAdmin{
+		roles{
+			AdvertiserAccountCreation.PaidSearchAdvertisingAdmin
+			CampaignCreation.PaidSearchAdvertisingAdmin
+			CampaignUpdate.PaidSearchAdvertisingAdmin
+			CampaignSuspension.PaidSearchAdvertisingAdmin
+			CampaignResumption.PaidSearchAdvertisingAdmin
+			CampaignDeletion.PaidSearchAdvertisingAdmin
+			CampaignPerformanceReportLookup.PaidSearchAdvertisingAdmin
+			AddOffersToCampaign.PaidSearchAdvertisingAdmin
+		}
+	}
+}

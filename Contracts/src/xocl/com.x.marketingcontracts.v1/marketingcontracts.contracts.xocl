@@ -1,0 +1,31 @@
+package com.x.marketingcontracts.v1 0.0 earlydraft
+{
+	import com.x.webstore.v1.*
+	import com.x.customer.v1.*
+	import com.x.ordermanagement.v2.*
+	import com.x.pim.v1.*
+	
+    contract TAN 
+    {
+    	// A description defines the purpose of the contract
+    	description "True Action Marketing Services"
+    	
+    	// A set of roles collectivley define the implementer's responsibilities
+    	roles
+    	{
+	 		WebStoreOfferSearch.WebStoreOfferConsumer
+	 		WebStoreOfferUpdated.WebStoreOfferObserver
+	 		WebStoreOfferCreated.WebStoreOfferObserver
+	 		WebStoreOfferDeleted.WebStoreOfferObserver
+	 		ProductSearch.ProductInformationConsumer
+	 		ProductLookup.ProductInformationConsumer
+	 		OrderSearch.OrderConsumer<NonSensitive>
+	 		ProcessSalesChannelOrder.OrderObserver<MarketplaceOrder> 
+	 		OrderCancelled.OrderObserver
+	 		CustomerSearch.CustomerConsumer
+	 	    CustomerCreatedOrUpdated.CustomerObserver  
+	    }
+	    
+	 }
+	
+}

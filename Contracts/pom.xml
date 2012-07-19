@@ -44,6 +44,56 @@
 			<artifactId>pim-xocl</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.x.ocl</groupId>
+			<artifactId>webstore-xocl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.x.ocl</groupId>
+			<artifactId>customer-xocl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.x.ocl</groupId>
+			<artifactId>ordermanagement-xocl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.x.ocl</groupId>
+			<artifactId>comparison-shopping-engine-xocl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.x.ocl</groupId>
+			<artifactId>ecosystem-management-xocl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.x.ocl</groupId>
+			<artifactId>emailmarketing-xocl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.x.ocl</groupId>
+			<artifactId>loyaltymarketing-xocl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.x.ocl</groupId>
+			<artifactId>marketplace-xocl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.x.ocl</groupId>
+			<artifactId>paidsearchadvertising-xocl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.x.ocl</groupId>
+			<artifactId>product-taxonomy-xocl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 
 </project>

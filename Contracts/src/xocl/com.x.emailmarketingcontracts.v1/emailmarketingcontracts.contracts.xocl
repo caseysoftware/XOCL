@@ -1,0 +1,56 @@
+package com.x.emailmarketingcontracts.v1 0.0 earlydraft
+{
+	description "Email Marketing contracts"
+	import com.x.core.v1.*
+	import com.x.emailmarketing.v1.*
+	import com.x.customer.v1.*
+	
+	contract EmailMarketingProvider{
+		description "A provider of e-mail marketing services"
+		roles{
+				CustomerSearch.CustomerConsumer<Email>
+				EmailCampaignCreation.MarketingManager
+				EmailCampaignUpdate.MarketingManager
+				EmailCampaignDeletion.MarketingManager
+				CampaignStatisticsLookup.MarketingManager
+				CampaignSearch.MarketingManager
+				CreateContactList.MarketingManager
+				CreateContactList.MarketingManager<Dynamic>
+				UpdateContactList.MarketingManager
+				UpdateContactList.MarketingManager<Dynamic>
+				DeleteContactList.MarketingManager
+				ContactListsSearch.MarketingManager
+				CreateMessage.MarketingManager
+				UpdateMessage.MarketingManager
+				DeleteMessage.MarketingManager
+				AddContactListsToCampaign.MarketingManager
+				AddCustomersToContactList.MarketingManager
+				RemoveCustomersFromContactList.MarketingManager
+		}
+	}
+	
+	contract EmailMarketingAdminConsole{
+		description "An administrative console for an e-mail marketing provider"
+		roles{
+				EmailCampaignCreation.MarketingConsole
+				EmailCampaignUpdate.MarketingConsole
+				EmailCampaignDeletion.MarketingConsole
+				CampaignStatisticsLookup.MarketingConsole
+				CampaignSearch.MarketingConsole
+				CreateContactList.MarketingConsole
+				CreateContactList.MarketingConsole<Dynamic>
+				UpdateContactList.MarketingConsole
+				UpdateContactList.MarketingConsole<Dynamic>
+				DeleteContactList.MarketingConsole
+				ContactListsSearch.MarketingConsole
+				CreateMessage.MarketingConsole
+				UpdateMessage.MarketingConsole
+				DeleteMessage.MarketingConsole
+				AddContactListsToCampaign.MarketingConsole
+				AddCustomersToContactList.MarketingConsole
+				RemoveCustomersFromContactList.MarketingConsole
+				
+		}
+	}
+	
+}

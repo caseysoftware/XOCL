@@ -1,0 +1,108 @@
+package com.x.ebaymarketplacecontracts.v1 0.0 earlydraft
+{
+	import com.x.marketplace.v3.*
+	import com.x.ordermanagement.v2.*
+	import com.x.authz.v1.*
+	import com.x.pim.v1.*
+	import com.x.customer.v1.*
+	
+    contract EBayMarketplace 
+    {
+    	description "An adapter to the eBay marketplace."
+    	
+    	roles
+    	{   		
+	   		//Marketplace  roles 
+	   		MarketplaceSetup.MarketplaceMetadataProvider
+	   		PolicyGroupCreation.MarketplacePolicyManager<Ebay>
+	   		PolicyGroupUpdate.MarketplacePolicyManager<Ebay> 
+	   		PolicyGroupDeletion.MarketplacePolicyManager
+	   		PolicyGroupLookup.MarketplacePolicyManager<Ebay> 
+	   		OfferPublicationWithProductData.Marketplace<Ebay> 
+	   		OfferPublication.Marketplace<Ebay> 
+	   		PublishedOfferRevision.Marketplace<Ebay>
+	   		PublishedOfferRevisionWithProductData.Marketplace<Ebay>
+	   		PublishedOfferRevocation.Marketplace
+	   		OfferSearch.Marketplace<Ebay>
+
+	   		TopSellingProductSearch.Marketplace<Ebay>
+	   		
+	   		//Ebay roles
+	        StoreLookup.MarketplaceMetadataProvider
+			AccountProfileLookup.MarketplaceMetadataProvider
+	        
+	   		//Order roles
+	   		ProcessSalesChannelOrder.SalesChannel<MarketplaceOrder> 
+	   		OrderSearch.OrderConsumer<MarketplaceOrderSearch>
+	   		SubmitShippedOrder.SalesChannel<MarketplaceOrder>
+	   		
+	   		//Auth roles
+	   		AuthorizationGrant.AuthorizationProvider
+	   		AuthorizedAccountSearch.AuthorizationProvider
+	   		AuthorizationRevoke.AuthorizationProvider
+	   		
+	   		//PIM roles
+	   		ProductLookup.ProductInformationConsumer
+	   		
+	    }
+	 }
+	 	
+	contract EbayMarketplaceOfferProducer extends EbayMarketplaceOfferProducerBaseRoleSet
+    {
+    	description "A system that creates offers on the eBay marketplace and processes the orders from the marketplace. It depends on ProductInventoryManagement for its product data."
+    	
+    	roles
+    	{
+	   		OfferPublication.OfferManager<Ebay>  
+	   		PublishedOfferRevision.OfferManager<Ebay>
+	   		CustomerUpsert.CustomerConsumer
+	    }
+	    
+	}	
+	
+	contract EbayMarketplaceOfferProducerWithProductDataPublication extends EbayMarketplaceOfferProducerBaseRoleSet
+    {
+    	description "A system that creates offers on ebay marketplace and processes the orders from the marketplace and sends product data with offer publication"
+    	
+    	roles
+    	{
+	   		OfferPublicationWithProductData.OfferManager<Ebay>  
+	   		PublishedOfferRevisionWithProductData.OfferManager<Ebay>
+	    }
+	    
+	}	
+    contract EbayMarketplaceOfferProducerBaseRoleSet
+    {
+    	description "A base role set for eBay marketplace consumers."
+    
+    	roles
+    	{
+	   		//Marketplace  roles 
+			MarketplaceSetup.MarketplaceMetadataConsumer
+	   		PolicyGroupCreation.MarketplaceMerchantConsole<Ebay>
+	   		PolicyGroupUpdate.MarketplaceMerchantConsole<Ebay> 
+	   		PolicyGroupDeletion.MarketplaceMerchantConsole
+	   		PolicyGroupLookup.MarketplacePolicyManager<Ebay> 
+	   		PublishedOfferRevocation.OfferManager
+	   		OfferSearch.OfferManager<Ebay>
+
+	   		
+	   		//Ebay roles
+	        StoreLookup.MarketplaceMetadataConsumer
+	        AccountProfileLookup.MarketplaceMetadataConsumer
+	        
+	   		//Order roles
+	   		ProcessSalesChannelOrder.OrderProcessor<MarketplaceOrder> 
+	   		OrderSearch.OrderManager<MarketplaceOrderSearch> 
+	   		
+	   		//Auth roles
+	   		AuthorizationGrant.AuthorizedUser
+	   		AuthorizedAccountSearch.AuthorizedUser
+	   		AuthorizationRevoke.AuthorizedUser
+	    }
+	    
+	 }
+	
+	 
+	
+}
