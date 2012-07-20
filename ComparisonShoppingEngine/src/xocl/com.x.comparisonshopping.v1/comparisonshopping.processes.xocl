@@ -56,7 +56,7 @@ package com.x.comparisonshopping.v1
     }
     
     process PublishInventoryFeed(DataFeed inventoryFeed) {
-        summary "Publishes an inventory feed to a CSE."
+        summary "Publishes an inventory feed to a comparison shopping engine."
         description "Sends an inventory feed to a comparison shopping engine and links the inventory to the merchant's products."
         
         roles {
