@@ -140,7 +140,7 @@ package com.x.comparisonshopping.v1 {
 		description "Provides the ID and date/time the feed successfully was completed."
 
 		string id "Unique identifier for this data feed that completed."
-		datetime startDate "Date and time when the feed was started."
+		datetime endDate "Date and time when the feed ended."
 	}
 	
 	record CompleteDataFeedFailure {
@@ -214,7 +214,7 @@ package com.x.comparisonshopping.v1 {
    		string? category "Category that will be used to determine where the product will appear in the comparison shopping engine taxonomy."
    		string? xProductTypeId  "Product type identifier as defined by the taxonomy manager." 
    		array<string>? productTypes "Product types associated with the product as defined by the taxonomy manager."
-   		array<ProductImage> images  "Collection of  URLs for the product images (with assigned roles)."
+   		array<ProductImage>? images  "Collection of  URLs for the product images (with assigned roles)."
    		string link "Link to the product landing page on the merchant's storefront."
    		CurrencyAmount originalPrice "Original price of the item before any discounting."
    		AvailabilityType availability = UNKNOWN "Availability status of the product. The default is UNKNOWN."
@@ -228,7 +228,7 @@ package com.x.comparisonshopping.v1 {
    		array<InventoryByLocation>? inventoryByLocation "Collection of inventory levels by physical location."
    		ConditionType condition = NEW "Condition of the product. The default is NEW."
    		string language = "en_US" "County and language code. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used."
-   		boolean onlineOnly =  true "Whether the product is available only online. The default is true." 
+   		boolean onlineOnly =  false "Whether the product is available only online. The default is false." 
 	}
 		
 	record PublishProduct {

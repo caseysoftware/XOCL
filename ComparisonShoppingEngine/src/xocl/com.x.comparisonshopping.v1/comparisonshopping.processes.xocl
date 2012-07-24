@@ -8,7 +8,7 @@ package com.x.comparisonshopping.v1
 	import com.x.comparisonshopping.v1.* 
 	
     // Publish a set of products on a comparison shopping engine site
-    process PublishProductFeed(DataFeed productFeed) {
+    process PublishProductFeed(DataFeed dataFeed) {
         summary "Publishes (adds) products to a comparison shopping engine."
         description "Sends a product feed to a comparison shopping engine and links the products to the merchant's store."
         
@@ -17,7 +17,7 @@ package com.x.comparisonshopping.v1
 			ProductFeedManager "Consumes the published products and manages them on the comparison shopping sites."
 		}
         
-        preconditions(productFeed[DataFeed.New])
+        preconditions(dataFeed[DataFeed.New])
         
 	    // The baseline workflow for processing product feeds
 	    workflow
@@ -30,7 +30,7 @@ package com.x.comparisonshopping.v1
 	        	roles (ProductFeedPublisher, ProductFeedManager)
 	        }
 	    	
-	    	do (!productFeed[DataFeed.Completed] || productFeed[DataFeed.Failed]) {
+	    	do ((!dataFeed[DataFeed.Completed]) && (!dataFeed[DataFeed.Failed])) {
 		        one {
 			        transaction PublishProduct {
 			        	roles (ProductFeedPublisher, ProductFeedManager)
@@ -42,7 +42,7 @@ package com.x.comparisonshopping.v1
 		        }
 		    }
 		    
-		    if (productFeed[DataFeed.Completed]) {
+		    if (dataFeed[DataFeed.Completed]) {
 			    transaction ProductFeedProcessed {
 					roles (ProductFeedManager, ProductFeedPublisher)
 			    }
@@ -50,12 +50,12 @@ package com.x.comparisonshopping.v1
 	    }
 	    
         postconditions {
-			success(productFeed[DataFeed.Completed])
-			failure(productFeed[DataFeed.Failed])
+			success(dataFeed[DataFeed.Completed])
+			failure(dataFeed[DataFeed.Failed])
         }
     }
     
-    process PublishInventoryFeed(DataFeed inventoryFeed) {
+    process PublishInventoryFeed(DataFeed dataFeed) {
         summary "Publishes an inventory feed to a comparison shopping engine."
         description "Sends an inventory feed to a comparison shopping engine and links the inventory to the merchant's products."
         
@@ -64,7 +64,7 @@ package com.x.comparisonshopping.v1
 			InventoryFeedManager "Updates the inventory and stores associated with the matching products."
 		}
         
-        preconditions(inventoryFeed[DataFeed.New])
+        preconditions(dataFeed[DataFeed.New])
         
 	    workflow
 	    {
@@ -76,7 +76,7 @@ package com.x.comparisonshopping.v1
 	        	roles (InventoryFeedPublisher, InventoryFeedManager)
 	        }
 	    	
-	    	do (!inventoryFeed[DataFeed.Completed] || inventoryFeed[DataFeed.Failed]) {
+	    	do ((!dataFeed[DataFeed.Completed]) && (!dataFeed[DataFeed.Failed])) {
 		        one {
 			        transaction PublishProductInventory {
 			        	roles (InventoryFeedPublisher, InventoryFeedManager)
@@ -88,7 +88,7 @@ package com.x.comparisonshopping.v1
 		        }
 		    }
 		    
-		    if (inventoryFeed[DataFeed.Completed]) {
+		    if (dataFeed[DataFeed.Completed]) {
 			    transaction ProductInventoryFeedProcessed {
 					roles (InventoryFeedManager, InventoryFeedPublisher)
 			    }
@@ -96,13 +96,13 @@ package com.x.comparisonshopping.v1
 	    }
 	    
         postconditions {
-			success(inventoryFeed[DataFeed.Completed])
-			failure(inventoryFeed[DataFeed.Failed])
+			success(dataFeed[DataFeed.Completed])
+			failure(dataFeed[DataFeed.Failed])
         }
     }
     
     // Publish stores locations that reference previously uploaded products
-    process PublishStoreFeed(DataFeed storeFeed) {
+    process PublishStoreFeed(DataFeed dataFeed) {
         summary "Publishes an store feed to a CSE."
         description "Sends an store feed to a comparison shopping engine and links the store to the merchant's products."
         
@@ -111,7 +111,7 @@ package com.x.comparisonshopping.v1
 			StoreFeedManager "Updates the store and associates stores with matching inventory."
 		}
         
-        preconditions(storeFeed[DataFeed.New])
+        preconditions(dataFeed[DataFeed.New])
         
 	    // The baseline workflow for processing store feeds
 	    workflow
@@ -124,7 +124,7 @@ package com.x.comparisonshopping.v1
 	        	roles (StoreFeedPublisher, StoreFeedManager)
 	        }
 	    	
-	    	do (!storeFeed[DataFeed.Completed] || storeFeed[DataFeed.Failed]) {
+	    	do ((!dataFeed[DataFeed.Completed]) && (!dataFeed[DataFeed.Failed])) {
 		        one {
 			        transaction PublishStore {
 			        	roles (StoreFeedPublisher, StoreFeedManager)
@@ -136,7 +136,7 @@ package com.x.comparisonshopping.v1
 		        }
 		    }
 	    
-		    if (storeFeed[DataFeed.Completed]) {
+		    if (dataFeed[DataFeed.Completed]) {
 			    transaction StoreFeedProcessed {
 					roles (StoreFeedManager, StoreFeedPublisher)
 			    }
@@ -144,8 +144,8 @@ package com.x.comparisonshopping.v1
 		    
 		}
         postconditions {
-			success(storeFeed[DataFeed.Completed])
-			failure(storeFeed[DataFeed.Failed])
+			success(dataFeed[DataFeed.Completed])
+			failure(dataFeed[DataFeed.Failed])
         }
     }
 }
