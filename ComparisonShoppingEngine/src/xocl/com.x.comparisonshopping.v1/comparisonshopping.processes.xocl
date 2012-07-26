@@ -31,7 +31,7 @@ package com.x.comparisonshopping.v1
 	        }
 	    	
 	    	do ((!dataFeed[DataFeed.Completed]) && (!dataFeed[DataFeed.Failed])) {
-		        one {
+		        any {
 			        transaction PublishProduct {
 			        	roles (ProductFeedPublisher, ProductFeedManager)
 			        }
@@ -77,7 +77,7 @@ package com.x.comparisonshopping.v1
 	        }
 	    	
 	    	do ((!dataFeed[DataFeed.Completed]) && (!dataFeed[DataFeed.Failed])) {
-		        one {
+		        any {
 			        transaction PublishProductInventory {
 			        	roles (InventoryFeedPublisher, InventoryFeedManager)
 			        }
@@ -125,7 +125,7 @@ package com.x.comparisonshopping.v1
 	        }
 	    	
 	    	do ((!dataFeed[DataFeed.Completed]) && (!dataFeed[DataFeed.Failed])) {
-		        one {
+		        any {
 			        transaction PublishStore {
 			        	roles (StoreFeedPublisher, StoreFeedManager)
 			        }
@@ -133,7 +133,7 @@ package com.x.comparisonshopping.v1
 		        	transaction CompleteDataFeed {
 			        	roles (StoreFeedPublisher, StoreFeedManager)
 			        }
-		        }
+		        }		        
 		    }
 	    
 		    if (dataFeed[DataFeed.Completed]) {

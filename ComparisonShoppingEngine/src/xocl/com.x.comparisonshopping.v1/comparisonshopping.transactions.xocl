@@ -13,7 +13,7 @@ package com.x.comparisonshopping.v1
     	description "Represents a product feed file and its state, which can be published to a comparison shopping engine."
 
         state New[Started,Failed] "The feed is new and ready for publishing."           
-        state Started[Completed, Failed] "The publishing of a product feed has started."        
+        state Started[Completed, Failed] "The publishing of a product feed has started."  
         state Completed "The publishing of the product feed completed successfully."        
         state Failed "The publishing of the product feed failed."
 	}
