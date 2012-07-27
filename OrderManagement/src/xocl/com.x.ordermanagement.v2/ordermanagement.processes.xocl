@@ -118,7 +118,7 @@ package com.x.ordermanagement.v2 {
        		}
        		
 	    	
-	    	do (!order[Order.Cancelled] && (!order[Order.Shipped] && !order[Order.Returned])) {  
+	    	do ((!order[Order.Cancelled]) && (!order[Order.Shipped]) && (!order[Order.Returned])) {  
 	    		any {
 	    			noop //TN: Noop added to allow for polling semantic	
 		    		
