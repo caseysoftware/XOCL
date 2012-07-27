@@ -17,7 +17,7 @@ package com.x.ordermanagement.v2 {
     	state Returned "Order has been returned."
     }
     
-     process OrderSearch<NonSensitive, MarketplaceOrderSearch> {
+    process OrderSearch<NonSensitive, MarketplaceOrderSearch> {
     	
     	summary "Searches for orders based on the search criteria provided."
     	description "Searches for orders based on the search criteria provided."
@@ -25,7 +25,6 @@ package com.x.ordermanagement.v2 {
     	roles {
     		OrderManager "Searches for orders." 
     		OrderConsumer "Submits a request to query for orders."
-    		
     	}
     	
     	workflow {
@@ -39,14 +38,32 @@ package com.x.ordermanagement.v2 {
     	}
     }
     
+    process UpdateSalesChannelShippingInformation<MarketplaceOrder> {
+		summary "Submit updated shipping information to a sales channel."
+    	description "Submit updated shipping information to a sales channel." 
+    	
+    	roles {   		
+    		OrderProcessor "Submits updated shipping information to a sales channel." 
+    		SalesChannel "Receives updated shipping information from a sales channel."
+    	}
+    	
+    	workflow {
+			summary "Submit updated shipping information to a sales channel."
+	    	description "Submit updated shipping information to a sales channel." 
+		
+			transaction ShippingInformationUpdate<MarketplaceOrder> {
+				roles(OrderProcessor, SalesChannel)
+			}
+		}
+	}
+    
     
     process SubmitShippedOrder<MarketplaceOrder>(Order order) {
     	
     	summary "Submits an order to the processor that has already been shipped."
     	description "Submits an order to the OrderProcessor that has already been shipped." 
     	
-    	roles {
-    		
+    	roles {		
     		SalesChannel "Submits an order to the order processor." 
     		OrderProcessor "Receives an order from a sales channel."
     	}
@@ -104,9 +121,6 @@ package com.x.ordermanagement.v2 {
 	    	do (!order[Order.Cancelled] && (!order[Order.Shipped] && !order[Order.Returned])) {  
 	    		any {
 	    			noop //TN: Noop added to allow for polling semantic	
-		    		transaction ShippingInformationUpdate<MarketplaceOrder> {
-		    			roles(OrderProcessor, SalesChannel)
-		    		}
 		    		
 		    		transaction OrderAdjust {
 		    			roles(OrderProcessor, OrderObserver)
@@ -155,6 +169,7 @@ package com.x.ordermanagement.v2 {
 			}
 		}
 	}
+	
 	process OrderCancelled <MarketplaceOrder> {
 		summary "Notification that an order was cancelled."
 		description "Notification that an order was cancelled."

@@ -61,6 +61,15 @@ package com.x.ordermanagement.v2 {
 		NONE "Indicates that no payment has been received for the order."
 	}
 	
+	enum CancellationReason {
+		summary "Specifies the cancellation values."
+		description "Defines the values used to specify the cancellation reasons for cancelling an order."
+		BUYER_CANCELED "Indicates that a buyer has cancelled the order.", 
+		MERCHANT_CANCELED "Indicates that a merchant has cancelled the order.",  
+		DUPLICATE_INVALID "Indicates that the order was cancelled because it is a duplicate.", 
+		FRAUD_FAKE "Indicates that a the order was cancelled because it was classified as fraud." 
+	}
+	
 	record PackageDimensions {
 		summary "Contains the package dimensions."
 		description "Captures the depth, length, width, and unit of dimension measurement for a package."
@@ -244,7 +253,7 @@ package com.x.ordermanagement.v2 {
 		datetime? dateReturned "Date the item was returned."
 		datetime? dateInvoiced "Date the invoice for the item was generated."
 		ShipTo destination "Location the item was shipped to."
-		string shipmentId "Unique identifier of the shipment that was used to send the item to the customer. Note: The value must be unique only within a given order. "
+		string? shipmentId "Unique identifier of the shipment that was used to send the item to the customer. Note: The value must be unique only within a given order. "
 		string? offerId "Identifier of the offer. This ID is assigned by the channel that published the offer. Note: offerId and offerURL provide information that can be used to construct a link to the product on the sales channel where it was purchased."
 		string? offerUrl "URL of the offer. Note: offerId and offerURL provide information that can be used to construct a link to the product on the sales channel where it was purchased."
 	}
@@ -491,12 +500,14 @@ package com.x.ordermanagement.v2 {
 		summary "Signals an order was cancelled."
 		description "Returns the order information of the cancelled order."
 		array<SimpleOrder> cancelledOrders "Order that was cancelled."
+		string? reason "The reason the order was cancelled."
 	}
 	
 	record MarketplaceOrderCancelled {
 		summary "Signals that marketplace orders were cancelled."
 		description "Returns the marketplace orders that were cancelled."
 		array<Order> cancelledOrders "Array of the orders that were cancelled."
+		string? reason "The reason the order was cancelled."
 	}
 	
     record SearchOrder {
