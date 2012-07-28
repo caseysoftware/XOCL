@@ -3,8 +3,12 @@ package com.x.marketplace.v3{
 	import com.x.marketplace.v3.*
 	
 	entity PolicyGroup
+	{
+		description ""
+	}
     	
  	entity Offer {
+ 	description ""
     	state Created[Active]
     	state Active[Inactive]	
     	state Inactive
@@ -13,6 +17,7 @@ package com.x.marketplace.v3{
 
     
     transaction GetAllAvailableChannels broadcast query {
+    	description "query by consumer to get the marketplaces associated with the consumer."
         sender {
         	message GetAllAvailableChannels {
         		 timeouts(response=30s)
@@ -27,6 +32,7 @@ package com.x.marketplace.v3{
     }
     
  	transaction GetAllSites unicast query {
+ 		description "get site from one marketplace"
         sender {
         	message GetAllSites {
         		 timeouts(response=30s)
@@ -41,6 +47,7 @@ package com.x.marketplace.v3{
     }
     
  	transaction LookupSiteMetadata unicast query {
+ 		description "get metadata for a site by ID"
         sender {
         	message LookupSiteMetadata {
         		 timeouts(response=30s)
@@ -63,6 +70,7 @@ package com.x.marketplace.v3{
     
    
     transaction SearchCategories unicast query {
+    	description "categories of that site"
         sender {
         	message SearchCategories {
         		 timeouts(response=1m)   //1m per Jay Rutten's request
@@ -82,6 +90,7 @@ package com.x.marketplace.v3{
     }
     
     transaction CreatePolicyGroup<Ebay> unicast response {
+    	description "create policy groups shipping payment  see messages"
         sender {
         	message CreatePolicyGroup {
         		timeouts(receipt=30s, response=3m)     		
@@ -112,6 +121,7 @@ package com.x.marketplace.v3{
     }
     
     transaction UpdatePolicyGroup<Ebay> unicast response {
+    	description "update"
         sender {
         	message UpdatePolicyGroup{
         	    timeouts(receipt=30s, response=3m)     		

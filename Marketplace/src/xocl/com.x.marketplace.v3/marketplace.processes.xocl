@@ -6,12 +6,20 @@ package com.x.marketplace.v3{
 	import com.x.pim.v1.*
 	
 	process MarketplaceSetup {
-		description "A consumer queries one sales channel, gets sites and metadata back"
 
-		roles(MarketplaceMetadataConsumer, MarketplaceMetadataProvider, AuthorizedMarketplaceUser, Marketplace)
+		description "A consumer queries for all the available channels, picks a channel, then retrieves the site and category metadata for that channel."
+		roles
+		{
+			MarketplaceMetadataConsumer "Requests a query for channels."
+			MarketplaceMetadataProvider "Returns the results of a query."
+			AuthorizedMarketplaceUser "Authorizes the consumer making the request. This is used in the authorization grant workflow."
+			Marketplace "Associates the marketplace account with merchant account."
+		}
 	}
 	
-	workflow MarketplaceSetup implements MarketplaceSetup {		
+	workflow MarketplaceSetup implements MarketplaceSetup {	
+			
+		description "Finds the marketplaces, then finds a specific site within the marketplace, and returns the metadata and categories for that specific site."
 		any {
 			do {
 				any {
@@ -36,22 +44,28 @@ package com.x.marketplace.v3{
 				}	
 			}
 		    workflow AuthorizationGrant {
+		    	
+		    	description "Authorizes the software to act on the merchants behalf."
 					roles(MarketplaceSetup.AuthorizedMarketplaceUser, MarketplaceSetup.Marketplace)
 			}	
 		}
-		
 		
 	}
 	
 	
     process PolicyGroupCreation<Ebay> (PolicyGroup policyGroup) {
-		description "A merchant creates a policy group"
-		
-		roles(MarketplaceMerchantConsole, MarketplacePolicyManager)
+    	
+		description "A merchant creates a group of policies. A policy group is a set of reusable metadata, such as shipping policies, payment method policies, etc. that can be used in the offer of many products."
+		roles
+		{
+			MarketplaceMerchantConsole "Defines the groups and the policies within a group."
+			MarketplacePolicyManager "Stores the policies and policy groups."
+		}
 		
 		preconditions(!exists(policyGroup)) 
 	
 		workflow {
+			description "Creates a policy group."
 		    transaction CreatePolicyGroup<Ebay> {
 				   roles(MarketplaceMerchantConsole, MarketplacePolicyManager)
 			}
@@ -64,13 +78,18 @@ package com.x.marketplace.v3{
 	}	
 	
     process PolicyGroupUpdate<Ebay> (PolicyGroup policyGroup) {
-		description "A merchant updates a policy group"
-		
-		roles(MarketplaceMerchantConsole, MarketplacePolicyManager)
+    	
+		description "Updates the policies in a group."
+		roles
+		{
+			MarketplaceMerchantConsole "Updates the groups and the policies within a group."
+			MarketplacePolicyManager "Stores the policies and policy groups."
+		}
 		
 		preconditions(exists(policyGroup))
 	
 		workflow {
+			description "Updates the policies in a group."
 		     transaction UpdatePolicyGroup<Ebay> {
 				  roles(MarketplaceMerchantConsole, MarketplacePolicyManager)
 			}
@@ -84,13 +103,18 @@ package com.x.marketplace.v3{
 	
 		
     process PolicyGroupDeletion (PolicyGroup policyGroup) {
-		description "A merchant deletes a policy group"
-		
-		roles(MarketplaceMerchantConsole, MarketplacePolicyManager)
+    	
+		description "A merchant deletes a policy group."
+		roles
+		{
+			MarketplaceMerchantConsole "Deletes a policies group."
+			MarketplacePolicyManager "Stores the policies and policy groups."
+		}
 		
 		preconditions(exists(policyGroup))
 	
 		workflow {
+			description "Deletes a policy group."
 		     transaction DeletePolicyGroup {
 				  roles(MarketplaceMerchantConsole, MarketplacePolicyManager)
 			}
@@ -103,10 +127,16 @@ package com.x.marketplace.v3{
 	}
 	
     process PolicyGroupLookup<Ebay> {
-		description "A merchant looks up a policy group by ID"
-		roles(MarketplaceMerchantConsole, MarketplacePolicyManager)
+
+		description "A merchant looks up a policy group by ID."
+		roles
+		{
+			MarketplaceMerchantConsole "Looks up a policy group by ID."
+			MarketplacePolicyManager "Stores the policies and policy groups."
+		}
 	
 		workflow {
+			description "Looks up a policy group by ID."
 			transaction LookupPolicyGroup<Ebay> {
 				roles(MarketplaceMerchantConsole, MarketplacePolicyManager)
 			}
@@ -114,12 +144,20 @@ package com.x.marketplace.v3{
 	}
 	
 	process OfferPublication<Ebay>(Offer offer) {
-		description "A merchant publishes offers to a marketplace"
-		roles(OfferManager, Marketplace, ProductInformationManager)
+    	
+		description "A merchant publishes offers to a marketplace."
+		roles
+		{
+			OfferManager "Publishes the offer to a marketplace."
+			Marketplace "Receives the offer."
+			ProductInformationManager "Adds the product details to the offer."
+		}
 	
 		preconditions(offer[Offer.Created])
 			
 	     workflow [12h]  { //timeout: Ontology-492
+	     
+	     	description "Publishes offers to a marketplace. Note: There is only one response to the workflow."
 			transaction PublishOffer<Ebay> {
 				roles(OfferManager, Marketplace)
 			}
@@ -140,12 +178,18 @@ package com.x.marketplace.v3{
 	}
 		
     process OfferPublicationWithProductData<Ebay>(Offer offer) {
-		description "A merchant publishes offers to a marketplace"
-		roles(OfferManager, Marketplace)
+
+		description "A merchant publishes offers to marketplace without using a Product Information Management system."
+		roles
+		{
+			OfferManager "Publishes the offer to a marketplace."
+			Marketplace "Receives the offer."
+	}		
 	
 		preconditions(offer[Offer.Created])
 	
 		workflow [12h]  { //timeout: Ontology-492
+			description "Publishes an offer without using a Product Information Management system. Note: There is only one response to the workflow."
 	
 			transaction PublishOfferWithProductData<Ebay> {
 				roles(OfferManager, Marketplace)
@@ -162,12 +206,19 @@ package com.x.marketplace.v3{
 	}
 
     process PublishedOfferRevision<Ebay>(Offer offer) {
-		description "A merchant updates published offers in a marketplace"
-		roles(OfferManager, Marketplace, ProductInformationManager)
+
+		description "A merchant updates published offers in a marketplace using a Product Information Management system."
+		roles
+		{
+			OfferManager "Updates published offers in a marketplace."
+			Marketplace "Receives the offer updates."
+			ProductInformationManager "Adds the updated product details to the offer."
+		}
 	
 		preconditions(offer[Offer.Created])
 			
 		workflow [12h]  { //timeout: Ontology-492
+			description "Updates published offers using a Product Information Management system. Note: There is only one response to the workflow."
 			transaction RevisePublishedOffer<Ebay> {
 				roles(OfferManager, Marketplace)
 			}
@@ -188,12 +239,19 @@ package com.x.marketplace.v3{
 	}
 
  	process PublishedOfferRevisionWithProductData<Ebay>(Offer offer) {
-		description "A merchant updates published offers in a marketplace"
-		roles(OfferManager, Marketplace, ProductInformationManager)
+
+		description "A merchant updates published offers in a marketplace without using a Product Information Management system."
+		roles
+		{
+			OfferManager "Updates published offers in a marketplace."
+			Marketplace "Receives the offer updates."
+			ProductInformationManager ""
+		}
 	
 		preconditions(offer[Offer.Created])
 			
 		workflow [12h]  { //timeout: Ontology-492
+			description "Updates published offers without using a Product Information Management system. Note: There is only one response to the workflow."
 			transaction RevisePublishedOfferWithProductData<Ebay> {
 				roles(OfferManager, Marketplace)
 			}
@@ -211,13 +269,17 @@ package com.x.marketplace.v3{
 	
 	process PublishedOfferRevocation(Offer offer) {
 		
-		description "A merchant cancels an offer in a sales channel"
-		
-		roles(OfferManager, Marketplace)
+		description "A merchant cancels an offer in a marketplace."
+		roles
+		{
+			OfferManager "Cancels published offers in a marketplace."
+			Marketplace "Receives the offer cancellation."
+		}	
 	
 		preconditions(offer[Offer.Active])
 	
 		workflow {
+				description "Cancels published offers."
 				transaction RevokePublishedOffer {
 					roles(OfferManager, Marketplace)
 				}
@@ -229,11 +291,15 @@ package com.x.marketplace.v3{
 	
 	process OfferSearch<Ebay> {
 	    
-	    description "Offer Manager queries the marketplace to reconcile offer data"
-		
-		roles( OfferManager, Marketplace)
+	    description "The Offer Manager searches a marketplace for published offers by specifics, such as SKUs. This is used to reconcile offer data with a web store."
+		roles
+		{
+			OfferManager "Requests a search for offer data."
+			Marketplace "Returns the results."
+		}	
 		
 		workflow {
+			description "Searches for published offers by specifics in order to reconcile information with the web store."
 				transaction SearchOffers<Ebay> {
 						roles(OfferManager, Marketplace)
 				}	
@@ -242,17 +308,18 @@ package com.x.marketplace.v3{
 	
 	process TopSellingProductSearch<Ebay> {
 	    
-	    description "Metadata consumer queries the marketplace to retrieve the top selling products"
-		
-		roles( MarketplaceMetadataConsumer, Marketplace)
+	    description "Metadata consumer queries the marketplace to retrieve the top selling products."
+		roles
+		{
+			MarketplaceMetadataConsumer "Requests a search for the top selling productd."
+			Marketplace "Returns the results."
+		}	
 		
 		workflow {
+				description "Queries the marketplace to retrieve the top selling products."
 				transaction SearchTopSellingProducts<Ebay> {
 						roles(MarketplaceMetadataConsumer, Marketplace)
 				}	
 		}
-	}
-	
-    
-
+	}	
 }
