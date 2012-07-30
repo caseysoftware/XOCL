@@ -164,7 +164,7 @@ package com.x.marketplace.v3{
     	description "Captures information associated by the marketplace with the offer, such as ID, offer URL, etc."
 
 		OfferState offerState "State of the offer.";
-	    string channelAssignedofferId "Identifier of the offer, which is provided by the marketplace."; 
+	    string channelAssignedOfferId "Identifier of the offer, which is provided by the marketplace."; 
 		string? channelOfferUrl "URL of the offer, which is provided by the marketplace.";
 		string? channelStatus "Status of the marketplace, which is provided by the marketplace.";	
 	}
