@@ -6,8 +6,8 @@ package com.x.inventorycontracts.v1 0.0 earlydraft
     {
     		description "The InventoryManager contract models a standard inventory system."
     		roles{
-	 			StockItemLookup.InventoryManager "Returns information based on a search of the inventory."
-	 			StockItemUpdated.InventoryManager "Notifies observers when inventory has been updated."
+	 			StockItemLookup.InventoryManager
+	 			StockItemUpdated.InventoryManager
 	 		}
 	}
 	
@@ -15,8 +15,8 @@ package com.x.inventorycontracts.v1 0.0 earlydraft
     {
     		description "The InventoryManager contract models a standard inventory system."
     		roles{
-	 			StockItemUpdate.InventoryManager "Updates stock information in the inventory."
-	 			StockItemUpdated.InventoryManager "Notifies observers when inventory has been updated."
+	 			StockItemUpdate.InventoryManager
+	 			StockItemUpdated.InventoryManager
 	 		}
 	}
     
@@ -24,9 +24,9 @@ package com.x.inventorycontracts.v1 0.0 earlydraft
     {
     		description "The InventoryConsumer contract models a read-only system for a consumer and observer of inventory data."
     		roles{
-	 			StockItemLookup.InventoryConsumer "Retrieved information from the inventory."
-	 			StockItemUpdate.InventoryObserver "Receives notifications when the inventory has been updated."
-	 			StockItemUpdated.InventoryObserver "Receives notifications when the inventory has been updated."
+	 			StockItemLookup.InventoryConsumer
+	 			StockItemUpdate.InventoryObserver
+	 			StockItemUpdated.InventoryObserver
 	 		}
 	}
 

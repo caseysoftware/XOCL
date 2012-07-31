@@ -4,8 +4,6 @@
 
 package com.x.comparisonshoppingcontracts.v1 0.0 earlydraft
 {	
-	packagetitle "Comparison Shopping contracts"
-
 	import com.x.comparisonshopping.v1.* 
 	
     contract ComparisonShoppingEngine {
