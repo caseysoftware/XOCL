@@ -1,0 +1,113 @@
+/*
+ * This file contains a sample of the X.commerce Open Commerce Language (XOCL).
+ * By convention, entities and transactions for a domain reside in the file <domain>.Transactions.xocl
+ */
+
+package com.x.fraudmanagement.v1 {	
+	import com.x.fraudmanagement.v1.* 
+	
+    
+    /*
+	 * CheckoutSignatureCreate delivers an encoded signature from the cart checkout to a fraud management system.
+     */
+    transaction CheckoutSignatureCreate response {
+        sender {
+        	message CheckoutSignatureCreate {
+        		timeouts(receipt=30s, response=30s)
+            	retries=3
+        	}
+        }
+        
+        /*
+         */
+        receiver {
+        	success CheckoutSignatureCreateSucceeded {
+            	timeouts(receipt=30s, validation=30s)
+            	retries=3
+            }
+            
+            failure CheckoutSignatureCreateFailed {
+            	timeouts(receipt=30s)
+            	retries=3
+            }
+        }
+	}
+
+
+    transaction CheckoutDetailCreate response {
+        sender {
+        	message CheckoutDetailCreate {
+        		timeouts(receipt=30s, response=30s)  
+            	retries=3
+        	}
+        }
+        
+        /*
+         */
+        receiver {
+        	success CheckoutDetailCreateSucceeded {
+            	timeouts(receipt=30s, validation=1m)
+            	retries=3
+            }
+
+            failure CheckoutDetailCreateFailed {
+            	timeouts(receipt=30s)
+            	retries=3
+            }
+        }
+	}
+
+
+    /*
+	 */
+ 	transaction LookupCheckoutSignature query
+    {
+        sender
+        {
+        	message LookupCheckoutSignature
+        	{
+        		 timeouts(receipt=30s, response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success LookupCheckoutSignatureSucceeded            
+            failure LookupCheckoutSignatureFailed
+        } 
+    }
+    
+
+ 	transaction LookupFraudExposure query
+    {
+        sender
+        {
+        	message LookupFraudExposure
+        	{
+        		 timeouts(receipt=30s, response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success LookupFraudExposureSucceeded            
+            failure LookupFraudExposureFailed
+        } 
+    }
+    
+    
+ 	transaction LookupScreenCapture query
+    {
+        sender
+        {
+        	message LookupScreenCapture
+        	{
+        		 timeouts(receipt=30s, response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success LookupScreenCaptureSucceeded            
+            failure LookupScreenCaptureFailed
+        } 
+    }
+
+}
