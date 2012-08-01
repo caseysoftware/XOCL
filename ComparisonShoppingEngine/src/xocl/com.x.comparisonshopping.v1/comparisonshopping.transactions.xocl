@@ -18,6 +18,22 @@ package com.x.comparisonshopping.v1
         state Failed "The publishing of the product feed failed."
 	}
 	
+	transaction GetAllComparisonShoppingProviders broadcast query {
+        description "Retrieves a list of all the CSE providers for a tenant."
+        sender {
+        	message GetAllComparisonShoppingProviders {
+        		 timeouts(response=30s)
+        		 //In a broadcast query, the client should wait for the entire timeout before assuming all 
+        		 //available channels have responded     		
+        	}
+        }
+        receiver {
+        	success GetAllComparisonShoppingProvidersSucceeded {  		
+        	} 
+        	//there is no failure message here because the implementation should not respond if it cannot identify itself                	
+        } 
+    }
+	
 	// Start the processing of a new data feed
 	transaction StartDataFeed(DataFeed dataFeed) response {
 		description "Signal the beginning of a new data feed."

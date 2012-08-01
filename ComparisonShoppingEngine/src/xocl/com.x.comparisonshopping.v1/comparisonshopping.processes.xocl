@@ -7,6 +7,26 @@ package com.x.comparisonshopping.v1
 {	
 	import com.x.comparisonshopping.v1.* 
 	
+	process GetAllComparisonShoppingProviders {
+        summary "Retrieve a list of CSE providers."
+        description "Sends a request to retrieve a list of all the CSE providers for a tenant."
+        
+        roles {
+			ComparisonShoppingProviderConsumer "Consumes the list of comparison shopping providers."
+			ComparisonShoppingProvider "A provider that supports comparison shopping."
+		}
+        
+	    workflow {
+	        summary "Retrieve a list of CSE providers."
+	        description "Sends a request to retrieve a list of all the CSE providers for a tenant."
+	    	
+	    	transaction GetAllComparisonShoppingProviders {
+	        	roles (ComparisonShoppingProviderConsumer, ComparisonShoppingProvider)
+	        }
+	     }
+
+    }
+	
     // Publish a set of products on a comparison shopping engine site
     process PublishProductFeed(DataFeed dataFeed) {
         summary "Publishes (adds) products to a comparison shopping engine."

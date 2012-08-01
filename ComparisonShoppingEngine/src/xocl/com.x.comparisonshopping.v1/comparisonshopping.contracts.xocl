@@ -13,6 +13,7 @@ package com.x.comparisonshopping.v1
 	        PublishProductFeed.ProductFeedManager
 	        PublishInventoryFeed.InventoryFeedManager
 	        PublishStoreFeed.StoreFeedManager
+	        GetAllComparisonShoppingProviders.ComparisonShoppingProvider
 	    }
     }
     
@@ -23,6 +24,7 @@ package com.x.comparisonshopping.v1
 	        PublishProductFeed.ProductFeedPublisher
 	        PublishInventoryFeed.InventoryFeedPublisher
 	        PublishStoreFeed.StoreFeedPublisher
+	        GetAllComparisonShoppingProviders.ComparisonShoppingProviderConsumer
 	    }
     }
 }

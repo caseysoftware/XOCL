@@ -99,6 +99,20 @@ package com.x.comparisonshopping.v1 {
 		string value "Value assigned to the variation."
 	}
 	
+	record GetAllComparisonShoppingProviders {
+        summary "Retrieve a list of CSE providers."
+        description "Sends a request to retrieve a list of all the CSE providers for a tenant."
+	}
+	
+    record GetAllComparisonShoppingProvidersSucceeded {
+    	summary "Signals that the search for providers was successful."
+    	description "Notification that searching for providers was successful. Returns the search results and the query request."
+
+		string? providerName
+		string? providerDescription
+	    //Caller must get destination ID from header - X-XC-PUBLISHER-ID
+	}
+	
 	record StartDataFeed {
 		summary "Contains data that describes the data feed that was started."
 		description "Captures the ID, name, feed type, and start date for a data feed."
@@ -186,16 +200,14 @@ package com.x.comparisonshopping.v1 {
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
 		Store? store "Store where this inventory resides."
 		boolean eligibleForInStorePickup = false "Whether a shopper can visit the location to pickup the product. The default is false."
-		CurrencyAmount? price "Overrides for the price. If omitted the price will be taken from the base product."
-		CurrencyAmount? salePrice "Overrides of the sale price. If omitted the sale price will be taken from the base product."
-		datetime? salePriceEffectiveDate "Date the override salePrice activates."
-		datetime? salePriceExpiryDate "Date the override salePrice activates."
-		string? priceDescription "Used for a free form entry."
+		CurrencyAmount? price "Overrides of the price. If omitted the price will be taken from the product."
+		CurrencyAmount? originalPrice "Overrides for the original price. If omitted the original price will be taken from the product."
 		int? quantity "How many of a product are at this location."
 		AvailabilityType availability = UNKNOWN "True with no quantity specified if inventory is not tracked. The default is UNKNOWN."
 		datetime? availableDate "Timestamp specifying when the item will be available."
 		boolean shipFromStore = false "Whether this item is available to be shipped from this location. The default is false." 
-	}
+  		array<ProductAttribute>? attributes "Name/value attributes pairs used to represent inventory attributes."
+ 	}
 	
 	record Product {
 		summary "Contains the product information needed to represent a product on a comparison shopping engine channel."
