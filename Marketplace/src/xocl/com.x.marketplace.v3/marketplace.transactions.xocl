@@ -4,24 +4,23 @@ package com.x.marketplace.v3{
 	
 	entity PolicyGroup
 	{
-		description ""
+		description "Collection of policies used in the offer, such as payment methods accepted, return policy, shipping services supported."
 	}
     	
  	entity Offer {
- 	description ""
-    	state Created[Active]
-    	state Active[Inactive]	
-    	state Inactive
+ 	description "Defines the values used to specify the state of an offer."
+    	state Created[Active] "Offer has been created."
+    	state Active[Inactive] "The offer is has been published."
+    	state Inactive "The offer has been revoked."
     }
 	
 
     
     transaction GetAllAvailableChannels broadcast query {
-    	description "query by consumer to get the marketplaces associated with the consumer."
+    	description "Queries for all the marketplaces that are associated with the consumer that sends the query."
         sender {
         	message GetAllAvailableChannels {
         		 timeouts(response=30s)
-        		 //In a broadcast query, the client should wait for the entire timeout before assuming all available channels have responded     		
         	}
         }
         receiver {
@@ -32,7 +31,7 @@ package com.x.marketplace.v3{
     }
     
  	transaction GetAllSites unicast query {
- 		description "get site from one marketplace"
+ 		description "Searches for all the sites from one marketplace."
         sender {
         	message GetAllSites {
         		 timeouts(response=30s)
@@ -47,7 +46,7 @@ package com.x.marketplace.v3{
     }
     
  	transaction LookupSiteMetadata unicast query {
- 		description "get metadata for a site by ID"
+ 		description "Looks up the metadata for a site by ID."
         sender {
         	message LookupSiteMetadata {
         		 timeouts(response=30s)
@@ -65,12 +64,10 @@ package com.x.marketplace.v3{
         		retries=3
         	}
         } 
-    }
-    
-    
+    }    
    
     transaction SearchCategories unicast query {
-    	description "categories of that site"
+    	description "Searches for all the categories of the site that was looked up."
         sender {
         	message SearchCategories {
         		 timeouts(response=1m)   //1m per Jay Rutten's request
@@ -90,7 +87,7 @@ package com.x.marketplace.v3{
     }
     
     transaction CreatePolicyGroup<Ebay> unicast response {
-    	description "create policy groups shipping payment  see messages"
+    	description "Creates policy groups."
         sender {
         	message CreatePolicyGroup {
         		timeouts(receipt=30s, response=3m)     		
@@ -121,7 +118,7 @@ package com.x.marketplace.v3{
     }
     
     transaction UpdatePolicyGroup<Ebay> unicast response {
-    	description "update"
+    	description "Updates policy group information."
         sender {
         	message UpdatePolicyGroup{
         	    timeouts(receipt=30s, response=3m)     		
@@ -153,6 +150,7 @@ package com.x.marketplace.v3{
     }
     
     transaction DeletePolicyGroup unicast response {
+    	description "Deletes a policy group."
         sender {
         	message DeletePolicyGroup {
         		timeouts(receipt=30s, response=3m)     		
@@ -171,6 +169,7 @@ package com.x.marketplace.v3{
     }
      
     transaction LookupPolicyGroup<Ebay> unicast query {
+    	description "Looks up a policy group by ID."
         sender {
         	message LookupPolicyGroup {
         		 timeouts(response=30s)     		
@@ -189,9 +188,9 @@ package com.x.marketplace.v3{
             
         } 
     }
- 
     
     transaction PublishOffer<Ebay>  (Offer offer) unicast notify {
+    	description "Publishes an offer using the data from a Product Information Management system."
         preconditions(offer[Offer.Created])
         sender {
         	message PublishOffer {
@@ -206,6 +205,7 @@ package com.x.marketplace.v3{
     }
     
     transaction PublishOfferWithProductData<Ebay>(Offer offer) unicast notify {
+    	description "Publishes an offer without using the data from a Product Information Management system."
         preconditions(offer[Offer.Created])
         sender {
         	message PublishOfferWithProductData {
@@ -220,6 +220,7 @@ package com.x.marketplace.v3{
     }
     
     transaction PublishOfferSucceeded<Ebay>(Offer offer) unicast notify {
+    	description "Notification that the offer was published."
         preconditions(offer[Offer.Active])
         sender {
         	message PublishOfferSucceeded {
@@ -234,6 +235,7 @@ package com.x.marketplace.v3{
     }
     
     transaction PublishOfferFailed<Ebay>(Offer offer) unicast notify {
+    	description "Notification that the attempt to publish an offer failed."
         preconditions(!offer[Offer.Active])
         sender {
         	message PublishOfferFailed {
@@ -246,9 +248,9 @@ package com.x.marketplace.v3{
         	}
         }
     }
-    
  
     transaction RevisePublishedOffer<Ebay> unicast notify {
+    	description "Updates an offer using a Product Information Management system."
         sender {
         	message RevisePublishedOffer {
         		timeouts(receipt=30s)		
@@ -261,6 +263,7 @@ package com.x.marketplace.v3{
         }
       }
       transaction RevisePublishedOfferWithProductData<Ebay> unicast notify {
+      	description "Updates an offer without using a Product Information Management system."
         sender {
         	message RevisePublishedOfferWithProductData {
         		timeouts(receipt=30s)		
@@ -272,9 +275,9 @@ package com.x.marketplace.v3{
         	}
         }
       }
-      
              
     transaction RevisePublishedOfferSucceeded<Ebay> unicast notify {
+    	description "Notification that an offer was updated."
         sender {
         	message RevisePublishedOfferSucceeded {
         		timeouts(receipt=30s)		
@@ -288,6 +291,7 @@ package com.x.marketplace.v3{
       }
       
       transaction RevisePublishedOfferFailed<Ebay> unicast notify {
+      	description "Notification that the attempt to update an offer failed."
         sender {
         	message RevisePublishedOfferFailed {
         		timeouts(receipt=30s)		
@@ -301,6 +305,7 @@ package com.x.marketplace.v3{
       }
       
     transaction RevokePublishedOffer unicast response {
+    	description "Revokes an offer."
         sender {
         	message RevokePublishedOffer {
         		timeouts(receipt=30s, response=2h)     		
@@ -319,6 +324,7 @@ package com.x.marketplace.v3{
     }
     
     transaction SearchOffers<Ebay> unicast query {
+    	description "Searches for offers."
         sender {
         	message SearchOffers {
         		 timeouts(response=30s)
@@ -342,6 +348,7 @@ package com.x.marketplace.v3{
     } 
     
     transaction SearchTopSellingProducts<Ebay> unicast query {
+    	description "Searches for the top selling products."
         sender {
         	message SearchTopSellingProducts {
         		 timeouts(response=30s)

@@ -4,6 +4,7 @@
  	
     transaction LookupStore unicast query
     {
+    	description "Looks up the metadata of the consumer's eBay store."
         sender
         {
         	message LookupStore
@@ -27,6 +28,7 @@
     
     transaction LookupAccountProfile unicast query
     {
+    	description "Looks up eBay profiles based on a merchant's request."
         sender
         {
         	message LookupAccountProfile

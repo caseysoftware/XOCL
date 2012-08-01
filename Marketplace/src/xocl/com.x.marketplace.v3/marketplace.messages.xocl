@@ -115,7 +115,6 @@ package com.x.marketplace.v3{
 		FREIGHT "Shipping costs are freight rate."
 	}
 	
-	
 	record SupportedShippingService {
     	summary "Contains detailed information about a shipping service supported by a site."
     	description "Captures the information for a single shipping service that is supported by a site."
@@ -149,7 +148,6 @@ package com.x.marketplace.v3{
 		SUSPENDED "Offer has been removed from the marketplace."
 	}
 
-
 	record Offer {
     	summary "Contains the offer information."
     	description "Captures information about the offer from both the site and the marketplace."
@@ -157,7 +155,6 @@ package com.x.marketplace.v3{
 		OfferChannelData channelData "Information such as the marketplace-assigned ID, offer ID, and status."; 
 		OfferDetails offerDetails "Detailed information about the offer, such as title, categories, ID, SKU, etc.";	
 	}
-	
 	
 	record OfferChannelData{
     	summary "Contains marketplace-assigned information."
@@ -207,7 +204,6 @@ package com.x.marketplace.v3{
 		PackageWeight weight "Weight of the package that is being shipped.";
 	}
 	
-	
     record ShippingServiceOption {
     	summary "Contains information for a specific shipping service."
     	description "Captures the information that defines the rules for a specific shipping service."
@@ -254,32 +250,31 @@ package com.x.marketplace.v3{
 	}
 
 	record PolicyGroup extends PolicyGroupData{
-    	summary "Adds the ID field to the PolicyGroupData record."
-    	description "Adds the ID field to the PolicyGroupData record."
+    	summary "Contains the ID field, which is added to the PolicyGroupData record."
+    	description "Captures the ID field, which is added to the PolicyGroupData record."
 
         string id "Identifier of the offer, which is provided by the capability.";
 	}
 
 	record PolicyGroupData {
-    	summary ""
-    	description ""
+    	summary "Contains the data for a policy group."
+    	description "Captures the data for a policy group, such as payment, shipping, return policies, etc."
 
-		string name; //Unique identifier to the tenant
+		string name "Unique identifier of the tenant."; 
 
-		//Site the item should be listed to.  In most cases, this will be the ISO country code.
-		string? siteCode;
-		
-		PaymentPolicy? paymentPolicy;
-		ShippingPolicy? shippingPolicy;
-		ReturnPolicy? returnPolicy;
-		CalculatedShippingPolicy? calculatedShippingPolicy 
-		string xAccountId;
-		string? offerDuration "The duration of the offer, before it expires"
+		string? siteCode "Identifier of the site the offer is published to. In most cases, this will be the country code.";
+		PaymentPolicy? paymentPolicy "Data that defines the payment policy.";
+		ShippingPolicy? shippingPolicy "Data that defines the shipping policy.";
+		ReturnPolicy? returnPolicy "Data that defines the return policy.";
+		CalculatedShippingPolicy? calculatedShippingPolicy  "Data that defines the calculated shipping policy."
+//Travis?? is this correct
+		string xAccountId "Identifier of the tenant's account.";
+		string? offerDuration "Duration of the offer, before it expires"
 	}
 
 	record CancelOfferError {
-    	summary ""
-    	description ""
+    	summary "Signals that the attempt to cancel an offer had errors."
+    	description "Notification that the attempt to cancel an offer had errors and returns the offer ID and information about the errors."
 
 		string offerId "Identifier of the offer.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
@@ -287,81 +282,63 @@ package com.x.marketplace.v3{
 
 
     record Sku  {
-    	summary ""
-    	description ""
+    	summary "Contains the SKU, price, and quantity of the item being offered."
+    	description "Captures the SKU, price, and quantity of the item being offered."
 
-    	/** Identifier of the SKU that is being offered */
-		string sku;
-		CurrencyAmount price;
-		int quantity;
+		string sku "SKU of the item being offered.";
+		CurrencyAmount price "Selling price of the item being offered.";
+		int quantity "Number of these items available.";
 	}
 	
-	
 	record OfferDetailsWithProductData  {
-    	summary ""
-    	description ""
-
+    	summary "Contains information about a product being offered."
+    	description "Captures the product details of a product being offered. This is for offers that do not use a Product Information Management system."
+//Travis?? 2 offer details? what is product - name?
 		   OfferDetails 
 		   offerDetails "Detailed information about the offer, such as title, categories, ID, SKU, etc.";
 	       Product product;
 	}
 	
 	record OfferDetails  {
-    	summary ""
-    	description ""
+    	summary "Contains the offer details. Note: This is not the product details."
+    	description "Captures information needed for the offer such as, the policies, SKUs, etc."
 
-        /** The ID in the system that creates the offer  */
-		string id;
-
-		datetime? startTime;
-	    
-		datetime? endTime;
-    	  	
-		string? title;
-
+		string id "Identifier of the system that creates the offer.";
+		datetime? startTime "Offer start time.";
+		datetime? endTime "Offer end time.";
+		string? title "Title for the offer.";
+//Travis?  commented out  leave it?
 		//string? offerDescription;  //description for this offer that can override the product description
-		/*
-			Following are fields that are optionally supported
-			across marketplaces.  Will be ignored if market does
-			not support this.
-		*/
-		string? subTitle;
-		boolean? giftWrapAvailable;
-		//Indicates where in the marketplace category to list
-		array<string>? marketCategories;
-
-		//Following data can override data in a specified profile
-		PaymentPolicy? paymentPolicy;
-		ShippingPolicy? shippingPolicy;
-	    ReturnPolicy? returnPolicy;
-	    CalculatedShippingPolicy? calculatedShippingPolicy
-	    
-	    array<Sku> skus;
-	    array<string>? customCategories;
+		string? subTitle "Subtitle for the offer.";
+		boolean? giftWrapAvailable "Whether gift wrapping is available.";
+		array<string>? marketCategories "Marketplace categories for the item being offered.";
+		PaymentPolicy? paymentPolicy "Payment policy data specific to this offer. This overrides the data in the payment policy profile.";
+		ShippingPolicy? shippingPolicy "Shipping policy data specific to this offer. This overrides the data in the shipping policy profile.";
+	    ReturnPolicy? returnPolicy "Return policy data specific to this offer. This overrides the data in the return policy profile.";
+	    CalculatedShippingPolicy? calculatedShippingPolicy "Calculated shipping policy data specific to this offer. This overrides the data in the calculated shipping policy profile."
+	    array<Sku> skus "SKUs of the items being offered.";
+	    array<string>? customCategories "Custom categories for the items being offered.";
 	}
 	
-	
 	record GetAllAvailableChannels {
+//Travis 
     	summary ""
     	description ""
-
-
 	}
 	
     record GetAllAvailableChannelsSucceeded {
     	summary "Signals that the search for channels was successful."
     	description "Notification that searching for channels was successful. Returns the search results and the query request."
-
-		string channelName;
+//Travis  is channel name a site and channelProvider a marketplace. Add comment information?
+		string channelName "";
 		string channelProviderName;
 	    //Caller must get destination ID from header - X-XC-PUBLISHER-ID
 	}
 
 	record GetAllSites {  //goes to a specific channel
+//Travis  //
     	summary ""
     	description ""
-
-	
 	}
 	
     record GetAllSitesSucceeded {
@@ -370,12 +347,13 @@ package com.x.marketplace.v3{
 
 		array<SiteWithEnvironments> sitesWithEnvironments "List of sites and their environment found.";
 	}
+	
 	record SiteWithEnvironments{
-    	summary ""
-    	description ""
+    	summary "Contains a site and their environments."
+    	description "Captures a site and all their available environments."
 
-		Site site;
-		array<Environment> environments "";
+		Site site "Site identification.";
+		array<Environment> environments "Name of the site environment, such as sandbox.";
 	}
 	
     record GetAllSitesFailed {
@@ -386,19 +364,19 @@ package com.x.marketplace.v3{
 	}
 	
 	record LookupSiteMetadata {  
-    	summary ""
-    	description ""
+    	summary "Contains the information needed to query for the metadata of a specific site."
+    	description "Captures the site code and environment name used in the query for the site."
 
-		array<string> siteCode
-		string? environmentName
+		array<string> siteCode "Site identifier."
+		string? environmentName "Name of the site environment."
 	}
 	
 	record LookupSiteMetadataSucceeded {  
     	summary "Signals that the metadata for a site was found."
     	description "Notification that searching for the metadata of a site was successful. Returns the search results and the query request."
 
-		array<SiteMetadata> siteMetadata
-		string? environmentName
+		array<SiteMetadata> siteMetadata "Metadata retrieved."
+		string? environmentName "Name of the site environment used."
 	}
 	
 	record LookupSiteMetadataFailed {  
@@ -406,7 +384,7 @@ package com.x.marketplace.v3{
     	description "Notification that the attempt to find a site by ID failed."
 
 		array<string> siteCode "Identifiers used in the look up."
-		string? environmentName "Environment of the site used in the loop up."
+		string? environmentName "Name of the site environment used in the loop up."
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
 	}
 	
@@ -416,7 +394,7 @@ package com.x.marketplace.v3{
 
 		string? siteCode "Identifier for a site.";
 		string? xProductTypeId "Identifier of a product.";  
-		string? environmentName "Environment of a site.";
+		string? environmentName "Name of the site environment.";
 	}
 
 	record SearchCategoriesSucceeded {
@@ -425,7 +403,7 @@ package com.x.marketplace.v3{
 
 		array<Category> categories "List of categories found."; 
 		string? siteCode "Identifier of the site used in the search.";
-		string? environmentName "Environment of the site.";
+		string? environmentName "Name of the site environment.";
 	}
 
 	record SearchCategoriesFailed {
@@ -433,7 +411,7 @@ package com.x.marketplace.v3{
     	description "Notification that the attempt search for categories failed."
 
 		string? siteCode "Identifier for a site used in the search.";
-		string? environmentName "Environment of a site used in the search.";
+		string? environmentName "Name of the site environment used in the search.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
 	}
 	
@@ -447,7 +425,7 @@ package com.x.marketplace.v3{
 	record LookupPolicyGroupSucceeded {
     	summary "Signals that the policy group was found."
     	description "Notification that searching for a policy group was successful. Returns the search results and the query request."
-//Travis is this name of the policy group, or it's ID or what.  I think it's the ID, but then why isn't this PolicyGroupID?
+//Travis is this the name of the policy group, or it's ID or what.  I think it's the ID, but then why isn't this PolicyGroupID?
 		PolicyGroup p "Information TBD.";
 	}
 	
@@ -590,8 +568,7 @@ package com.x.marketplace.v3{
 		OfferDetails updatedOffer "Offer update information sent in the update request";
 		array<Error>errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
 		string? policyGroupId "Identifier of the policy group.";
-	}
-	
+	}	
 	
 	record RevokePublishedOffer {
     	summary "Contains the information needed to revoke an offer."
@@ -630,17 +607,18 @@ package com.x.marketplace.v3{
     	summary "Contains the information needed to search for offers."
     	description "Captures the information needed to search for offers, such as SKUs, marketplace account ID, etc."
 
-		array<string>? skus;
-		datetime? startTime;
-		datetime? endTime;
-		string? xAccountId;
+		array<string>? skus "SKUs to search for.";
+		datetime? startTime "Offer start time to search for.";
+		datetime? endTime "Offer end time to search for.";
+//Travis is this correct?
+		string? xAccountId "Merchant's X.commerce identifier.";
 	}	
 
 	record SearchOffersSucceeded{	
     	summary "Signals that the search for offers was successful."
     	description "Notification that the search for offers was successful. Returns the search results and the query request."
 
-		array<Offer> offers;
+		array<Offer> offers "Array of offers found.";
 		SearchOffers request "Search criteria used.";
 	}
 
@@ -656,9 +634,9 @@ package com.x.marketplace.v3{
     	summary "Contains the information needed to search for the top selling products."
     	description "Captures the information needed to search for the top selling products."
 
-		string? siteCode;
-		string? environmentName;
-		int numberOfProductsToReturn  "A number greater than 0 that indicates the number of products the consumer wishes to see"
+		string? siteCode "Identifier of the site to search.";
+		string? environmentName "Name of the site environment to search.";
+		int numberOfProductsToReturn  "Number greater than 0 that indicates the number of products the consumer wishes to see"
 	}
 	
 	record TopSellingProduct{

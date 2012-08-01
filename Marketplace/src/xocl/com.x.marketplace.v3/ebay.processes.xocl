@@ -4,17 +4,17 @@
  		
 	process StoreLookup
 	{
-		summary ""
-		description "A merchant looks up metadata about their eBay store."
+		description "A merchant looks up the metadata of their eBay store."
 		
 		roles
 		{
-			MarketplaceMetadataConsumer "requests"
-			MarketplaceMetadataProvider "results"
+			MarketplaceMetadataConsumer "Requests a query for the metadata of their eBay store."
+			MarketplaceMetadataProvider "Returns the results of a query."
 		}
 	
 		workflow
 		{
+			description "Looks up the metadata of the consumer's eBay store."
 			transaction LookupStore
 			{
 				roles(MarketplaceMetadataConsumer, MarketplaceMetadataProvider)
@@ -24,17 +24,17 @@
  	
  	process AccountProfileLookup
 	{
-		summary ""
 		description "A merchant looks up profiles they have set up in eBay."
 		
 		roles
 		{
-			MarketplaceMetadataConsumer ""
-			MarketplaceMetadataProvider ""
+			MarketplaceMetadataConsumer "Requests a search of the profiles they have set up in eBay."
+			MarketplaceMetadataProvider "Returns the results of the search."
 		}
 	
 		workflow
 		{
+			description "Looks up eBay profiles based on a merchant's request."
 			transaction LookupAccountProfile
 			{
 				roles(MarketplaceMetadataConsumer, MarketplaceMetadataProvider)

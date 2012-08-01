@@ -12,36 +12,36 @@ package com.x.marketplace.v3{
     	roles
     	{   		
 	   		//Marketplace  roles 
-	   		MarketplaceSetup.MarketplaceMetadataProvider ""
-	   		PolicyGroupCreation.MarketplacePolicyManager<Ebay> ""
-	   		PolicyGroupUpdate.MarketplacePolicyManager<Ebay>  ""
-	   		PolicyGroupDeletion.MarketplacePolicyManager ""
-	   		PolicyGroupLookup.MarketplacePolicyManager<Ebay> "" 
-	   		OfferPublicationWithProductData.Marketplace<Ebay> "" 
-	   		OfferPublication.Marketplace<Ebay> "" 
-	   		PublishedOfferRevision.Marketplace<Ebay> ""
-	   		PublishedOfferRevisionWithProductData.Marketplace<Ebay> ""
-	   		PublishedOfferRevocation.Marketplace ""
-	   		OfferSearch.Marketplace<Ebay> ""
+	   		MarketplaceSetup.MarketplaceMetadataProvider 
+	   		PolicyGroupCreation.MarketplacePolicyManager<Ebay> 
+	   		PolicyGroupUpdate.MarketplacePolicyManager<Ebay>  
+	   		PolicyGroupDeletion.MarketplacePolicyManager 
+	   		PolicyGroupLookup.MarketplacePolicyManager<Ebay> 
+	   		OfferPublicationWithProductData.Marketplace<Ebay>  
+	   		OfferPublication.Marketplace<Ebay>  
+	   		PublishedOfferRevision.Marketplace<Ebay> 
+	   		PublishedOfferRevisionWithProductData.Marketplace<Ebay> 
+	   		PublishedOfferRevocation.Marketplace 
+	   		OfferSearch.Marketplace<Ebay> 
 
-	   		TopSellingProductSearch.Marketplace<Ebay> ""
+	   		TopSellingProductSearch.Marketplace<Ebay> 
 	   		
 	   		//Ebay roles
-	        StoreLookup.MarketplaceMetadataProvider ""
-			AccountProfileLookup.MarketplaceMetadataProvider ""
+	        StoreLookup.MarketplaceMetadataProvider 
+			AccountProfileLookup.MarketplaceMetadataProvider 
 	        
 	   		//Order roles
-	   		ProcessSalesChannelOrder.SalesChannel<MarketplaceOrder> "" 
-	   		OrderSearch.OrderConsumer<MarketplaceOrderSearch> ""
-	   		SubmitShippedOrder.SalesChannel<MarketplaceOrder> ""
+	   		ProcessSalesChannelOrder.SalesChannel<MarketplaceOrder>  
+	   		OrderSearch.OrderConsumer<MarketplaceOrderSearch> 
+	   		SubmitShippedOrder.SalesChannel<MarketplaceOrder> 
 	   		
 	   		//Auth roles
-	   		AuthorizationGrant.AuthorizationProvider ""
-	   		AuthorizedAccountSearch.AuthorizationProvider ""
-	   		AuthorizationRevoke.AuthorizationProvider ""
+	   		AuthorizationGrant.AuthorizationProvider 
+	   		AuthorizedAccountSearch.AuthorizationProvider 
+	   		AuthorizationRevoke.AuthorizationProvider 
 	   		
 	   		//PIM roles
-	   		ProductLookup.ProductInformationConsumer ""
+	   		ProductLookup.ProductInformationConsumer 
 	   		
 	    }
 	 }
@@ -101,7 +101,5 @@ package com.x.marketplace.v3{
 	    }
 	    
 	 }
-	
-	 
 	
 }
