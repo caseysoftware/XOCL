@@ -3,8 +3,12 @@ package com.x.authz.v1 {
 	import com.x.authz.v1.*
 	
     process AuthorizationGrant(Authorization auth) {
-		description "Merchant authorizes software to act on Merchant's behalf"
-		roles(AuthorizedUser, AuthorizationProvider)
+		description "Merchant authorizes software to act on their behalf."
+		roles
+		{
+			AuthorizedUser ""
+			AuthorizationProvider ""
+		}
 		preconditions(!exists(auth))	
 	
 	    
@@ -15,7 +19,7 @@ package com.x.authz.v1 {
 		
 	}
 	workflow  AuthorizationGrant[5m] implements AuthorizationGrant {
-			
+			description "Merchant authorizes software to act on their behalf."			
 			transaction InitAuthorization {
 				roles(AuthorizedUser, AuthorizationProvider)
 			}
@@ -26,10 +30,15 @@ package com.x.authz.v1 {
 	}
 	
 	process AuthorizedAccountSearch (Authorization auth) {
-		description "A merchant retrieves their account information"
-		roles(AuthorizedUser, AuthorizationProvider)
+		description "A merchant retrieves their account information."
+		roles
+		{
+			AuthorizedUser ""
+			AuthorizationProvider ""
+		}
 		preconditions(exists(auth))
 		workflow {
+			description "A merchant retrieves their account information."
 			transaction GetAllAuthorizedAccounts {
 				roles(AuthorizedUser, AuthorizationProvider)
 			}
@@ -37,10 +46,15 @@ package com.x.authz.v1 {
 	}
 	
 	process AuthorizationRevoke (Authorization auth) {
-		description "A merchant disassociates their marketplace account"
-		roles(AuthorizedUser, AuthorizationProvider)
+		description "A merchant removes their authorization from a marketplace account."
+		roles
+		{
+			AuthorizedUser ""
+			AuthorizationProvider ""
+		}
 		preconditions(exists(auth))
 		workflow {
+			description "A merchant removes their authorization from a marketplace account."
 			transaction RevokeAuthorization {
 				roles(AuthorizedUser, AuthorizationProvider)
 			}

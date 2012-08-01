@@ -3,9 +3,13 @@ package com.x.authz.v1 {
 	import com.x.authz.v1.*
 	
 	entity Authorization
+	{
+		description "The process of granting software permission to act on your behalf."
+	}
 
     
     transaction InitAuthorization response {
+    	description "Grants permission for software to act on behalf of a merchant."
         sender {
         	message InitAuthorization {
         		timeouts(receipt=30s, response=1m)     		
@@ -26,6 +30,8 @@ package com.x.authz.v1 {
     }
     
     transaction CompleteAuthorization response {
+//Travis ???
+    	description "Returns either a succeeded or failed message regarding the authorization process."
         sender {
         	message CompleteAuthorization {
         		timeouts(receipt=30s, response =5m)     		
@@ -46,6 +52,8 @@ package com.x.authz.v1 {
     }
     
    	transaction GetAllAuthorizedAccounts unicast query {
+//Travis ??
+   		description "Merchant searches for all their authorized accounts."
         sender {
         	message GetAllAuthorizedAccounts	{
         		 timeouts(response=30s) 
@@ -65,6 +73,7 @@ package com.x.authz.v1 {
     }
     
     transaction RevokeAuthorization unicast response {
+    	description "Merchant resends their permission for the software to act on their behalf."
         sender {
         	message RevokeAuthorization {
         		timeouts(receipt=30s, response=3m)     		
