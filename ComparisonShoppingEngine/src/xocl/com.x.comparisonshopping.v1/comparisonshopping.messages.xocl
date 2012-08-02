@@ -230,6 +230,7 @@ package com.x.comparisonshopping.v1 {
    		string link "Link to the product landing page on the merchant's storefront."
    		CurrencyAmount originalPrice "Original price of the item before any discounting."
    		AvailabilityType availability = UNKNOWN "Availability status of the product. The default is UNKNOWN."
+		datetime? availableDate "Timestamp specifying when the item will be available."
    		TaxRate? taxRate "Tax rate based on the country and region of the product's location (where the product is shipped from)."
    		Shipping? shipping "Shipping profile of a product and its shipping price."
    		double? shippingWeight "Shipping weight of the product."
