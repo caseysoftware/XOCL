@@ -33,7 +33,7 @@ package com.x.ordermanagement.v2 {
     		description "Searches for orders and returns the results or a failed message."
     		
     		transaction SearchOrder<NonSensitive, MarketplaceOrderSearch> {
-    			roles (OrderManager, OrderConsumer)
+    			roles (OrderConsumer,OrderManager)
     		}   
     	}
     }
