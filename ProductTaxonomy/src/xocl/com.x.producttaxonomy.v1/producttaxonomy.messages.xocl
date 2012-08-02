@@ -1,5 +1,6 @@
 package com.x.producttaxonomy.v1{	
 	packagetitle "Product Taxonomy"
+	import com.x.core.v1.*
 	
 	record Locale {
 		summary "Contains the specifics of the product location, which is a combination of ISO language code, country code, and optional variant."
@@ -208,7 +209,8 @@ package com.x.producttaxonomy.v1{
 		description "Confirms the successful retrieval of details for the specified product type or types."
 		array<ProductType> productTypes "Versioned data-structure containing various product types.";
 	    Locale? locale "Optional filter used to request Country/Language specific product types.";
-		Filter? filter "Optional filter to request channel IDs or detail level. If filter is omitted, the detailed information is returned.";		
+		Filter? filter "Optional filter to request channel IDs or detail level. If filter is omitted, the detailed information is returned.";
+		array<Warning>? warnings "Warning, such as if one of the product types was not found";		
 	}
 
 	record GetProductTypeFailed {
