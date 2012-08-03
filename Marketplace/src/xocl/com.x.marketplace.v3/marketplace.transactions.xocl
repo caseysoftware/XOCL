@@ -4,12 +4,12 @@ package com.x.marketplace.v3{
 	
 	entity PolicyGroup
 	{
-		description "Collection of policies used in the offer, such as payment methods accepted, return policy, shipping services supported."
+		description "Collection of policies used in the offer, such as payment methods accepted, return policy, shipping services supported, etc."
 	}
     	
  	entity Offer {
  	description "Defines the values used to specify the state of an offer."
-    	state Created[Active] "Offer has been created."
+    	state Created[Active] "The offer has been created."
     	state Active[Inactive] "The offer is has been published."
     	state Inactive "The offer has been revoked."
     }

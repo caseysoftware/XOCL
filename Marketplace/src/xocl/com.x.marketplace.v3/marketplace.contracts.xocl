@@ -46,7 +46,7 @@ package com.x.marketplace.v3{
 
 	contract MarketplaceOfferProducer extends MarketplaceOfferProducerBaseRoleSet
     {
-    	description "A system that places offers on a marketplace and processes orders from the marketplace using a Product Information Management system for the product data."
+    	description "A system that publishes offers to a marketplace and processes orders from the marketplace using a Product Information Management system for the product data."
 
     	roles
     	{
@@ -60,7 +60,7 @@ package com.x.marketplace.v3{
 	 }
 	 contract MarketplaceOfferProducerWithProductDataPublication extends MarketplaceOfferProducerBaseRoleSet
      {
-    	description "A system that places offers on a marketplace and processes orders from the marketplace and passes product data with offer publication.  This contract does not use a Product Information Management system."
+    	description "A system that publishes offers to a marketplace, processes orders from the marketplace by passing the product data with offer publication request. This contract does not use a Product Information Management system."
     	
     	roles{
 	   		OfferPublicationWithProductData.OfferManager 
