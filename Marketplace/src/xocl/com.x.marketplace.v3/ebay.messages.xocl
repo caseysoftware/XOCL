@@ -22,7 +22,15 @@
 		string? domesticShippingDiscountProfileId "Identifier of the profile already created on eBay for domestic shipping discounts. Note: This overrides the value in the policy group."; 
 		string? internationalShippingDiscountProfileId "Identifier of the profile already created on eBay for international shipping discounts. Note: This overrides the value in the policy group.";
 		boolean? applyDomesticPromotionalShippingRule "Specifies whether to use the domestic Promotional Shipping Rule set up in MyeBay. Note: This overrides the value in the policy group."
+		array<SalesTaxTableEntry>? salesTaxTable "Sales tax rates by state"
 	}
+	
+	record SalesTaxTableEntry{
+		double salesTaxPercentage "The sales tax percentage"
+		string stateOrMunicipality "State or municipality code, such as MN, CA"
+		boolean shippingIncludedInTax "Whether shipping is included in the sales tax calculation"
+	}
+	
 	
 	record EbayOfferDetailsWithProductData{
 		summary "Contains the product and eBay listing details."
@@ -53,6 +61,7 @@
 		string? domesticShippingDiscountProfileId "Identifier of the profile already created on eBay for domestic shipping discounts. Note: This overrides the value in the policy group."; 
 		string? internationalShippingDiscountProfileId "Identifier of the profile already created on eBay for international shipping discounts. Note: This overrides the value in the policy group.";
 		boolean? applyDomesticPromotionalShippingRule "Specifies whether to use the domestic Promotional Shipping Rule set up in MyeBay. Note: This overrides the value in the policy group."
+		array<SalesTaxTableEntry>? salesTaxTable "Sales tax rates by state"
 	}
 	
 	record EbayPolicyGroup extends EbayPolicyGroupData{
