@@ -245,7 +245,6 @@ package com.x.marketplace.v3{
 		{
 			OfferManager "Updates published offers in a marketplace."
 			Marketplace "Receives the offer updates."
-			ProductInformationManager ""
 		}
 	
 		preconditions(offer[Offer.Created])
