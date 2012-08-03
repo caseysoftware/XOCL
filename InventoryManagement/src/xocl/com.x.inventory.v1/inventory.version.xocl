@@ -1,4 +1,4 @@
-package com.x.inventory.v1 0.1 workingdraft{
+package com.x.inventory.v1 0.1 candidaterecommendation {
 	packagetitle "Inventory Management"
 	description "The Inventory Management package specifies the processes used for maintaining an optimal level of products."
 	import com.x.inventory.v1.*
