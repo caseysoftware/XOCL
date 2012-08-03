@@ -9,19 +9,19 @@
 		description "Contains the listing detail fields that are added to the OfferDetails record."
 		
 		string listingFormat "Type of eBay listing, for example BuyItNow.";
-		string duration  "Duration of the offer. If this is blank, duration in the policy is used."
-        string countryCode "2-character country, such as US (United States) or FR (France).";
-		CurrencyAmount? buyItNowPrice "Price of the item if purchased with Buy It Now. Note: This field is applicable only for auction listings.";
+		string duration  "Duration of the offer. This overrides the duration in the policy. If this is blank, the duration in the policy is used."
+        string countryCode "2-character country code, such as US (United States) or FR (France).";
+		CurrencyAmount? buyItNowPrice "Price of the item if purchased with BuyItNow. Note: This field is applicable only for auction listings.";
 		CurrencyAmount? reservePrice "Reserved price for the item. Note: This field is applicable only for auction listings.";
 		string? payPalEmailAddress "Merchant's PayPal email address.";
 		int? handlingTime "Time needed to ship the item.";
-		boolean? useTaxTable "Whether to use a tax table at checkout. This must already be set up in eBay by the merchant.";
+		boolean? useTaxTable "Specifies whether to use a tax table at checkout. This must already be setup in eBay by the merchant.";
 		string? postalCode "Zip code of the product location.";
 		string? location "Location of the product.";
 		string? imageVariationName "Image name of a variation.";	
 		string? domesticShippingDiscountProfileId "Identifier of the profile already created on eBay for domestic shipping discounts. Note: This overrides the value in the policy group."; 
 		string? internationalShippingDiscountProfileId "Identifier of the profile already created on eBay for international shipping discounts. Note: This overrides the value in the policy group.";
-		boolean? applyDomesticPromotionalShippingRule "Whether to use the domestic Promotional Shipping Rule set up in MyeBay. Note: This overrides the value in the policy group."
+		boolean? applyDomesticPromotionalShippingRule "Specifies whether to use the domestic Promotional Shipping Rule set up in MyeBay. Note: This overrides the value in the policy group."
 	}
 	
 	record EbayOfferDetailsWithProductData{
@@ -46,13 +46,13 @@
 
 		string? location "Location of the product.";
 		string? postalCode "Zip code of the product location.";
-        string countryCode "2-character country, such as US (United States) or FR (France).";
+        string countryCode "2-character country code, such as US (United States) or FR (France).";
 		string? payPalEmailAddress "Merchant's PayPal email address.";
 		int? handlingTime "Time needed to ship the item.";
-		boolean? useTaxTable "Whether to use a tax table at checkout.";        
+		boolean? useTaxTable "Specifies whether to use the tax table. The merchant must have this already setup in eBay.";        
 		string? domesticShippingDiscountProfileId "Identifier of the profile already created on eBay for domestic shipping discounts. Note: This overrides the value in the policy group."; 
 		string? internationalShippingDiscountProfileId "Identifier of the profile already created on eBay for international shipping discounts. Note: This overrides the value in the policy group.";
-		boolean? applyDomesticPromotionalShippingRule "Whether to use the domestic Promotional Shipping Rule set up in MyeBay. Note: This overrides the value in the policy group."
+		boolean? applyDomesticPromotionalShippingRule "Specifies whether to use the domestic Promotional Shipping Rule set up in MyeBay. Note: This overrides the value in the policy group."
 	}
 	
 	record EbayPolicyGroup extends EbayPolicyGroupData{
@@ -80,7 +80,7 @@
 	
 	record PublishEbayOfferSucceeded { //Does not map 1:1 with request message - need to model this
 		summary "Signals that the eBay offer was published."
-		description "Notification that the eBay offer was published."
+		description "Notifies the requester that the eBay offer was published."
 		
 		EbayOffer offer "Offer information that was sent in the publish request.";
 		string? policyGroupId "Identifier of the policy group sent in the publish request.";
@@ -88,25 +88,24 @@
 
 	record PublishEbayOfferFailed {
 		summary "Signals that publishing an eBay offer failed."
-		description "Notification that the attempt to publish an eBay offer failed."
-//Travis is this only the listing settings?	
+		description "Notifies the requester that the attempt to publish an eBay offer failed and returns the information sent in the request and details about the cause of the failure."
+
 		EbayOfferDetails offer "eBay listing settings sent in the publish request.";
 		string? policyGroupId "Policy group ID sent in the publish request."; 
-		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
 	}
 
 	record ReviseEbayPublishedOffer {
 		summary "Contains information used to update an eBay offer."
-		description "Captures the information needed to update an eBay offer."
-//Travis ?? it looks like EbayOfferDetails in only listing information.  I assume the product details to be updated come from PIM?	
-		EbayOfferDetails update "Offer listing settings used to update an offer. Note: The channelOfferId must be included in this information.";
-//Travis?? needed only if you are updating policy info??
+		description "Captures the information needed to update an eBay offer using a Product Information Management system to obtain the product details."
+	
+		EbayOfferDetails update "Offer listing information used to update an offer. The product details are provided by the Product Information Management system. Note: The channelOfferId must be included in this information.";
 		string? policyGroupId "Policy group ID of the offer. This field is used only when updating policy group information.";
 	}
 	
 	record ReviseEbayPublishedOfferWithProductData {
 		summary "Contains information used to update an eBay offer."
-		description "Captures the information needed to update an eBay offer. This record contains product details and listing settings."
+		description "Captures the listing and product information and policy group ID needed to update an eBay offer. This record contains product details and listing settings."
 		
 		EbayOfferDetailsWithProductData update "Product details and listing settings used to update an offer. Note: The channelOfferId must be included in this information."; 
 		string? policyGroupId "Policy group ID of the offer.  This field is used only when updating policy group information.";
@@ -114,7 +113,7 @@
 	
 	record ReviseEbayPublishedOfferSucceeded {
 		summary "Signals that an offer was updated."
-		description "Notification that an offer was updated."
+		description "Notifies the requester that an offer was updated."
 		
 		EbayOffer updatedOffer "Offer update information sent in the update request."; 
 		string? policyGroupId "Policy group ID sent in the update request.";
@@ -122,18 +121,18 @@
 	
 	record ReviseEbayPublishedOfferFailed {
 		summary "Signals that an offer failed to be updated."
-		description "Notification that the attempt to update an offer failed."
+		description "Notifies the requester that the attempt to update an offer failed and returns the information sent in the request and details about the cause of the failure."
 		
 		EbayOfferDetails update "Offer update information sent in the update request";
 		string? policyGroupId "Policy group ID sent in the update request.";
-		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
 	}
 
 	record LookupEbayPolicyGroupSucceeded {
 		summary "Signals that looking up the policy group by ID was successful."
-		description "Notification that the eBay policy group was looked up by ID."
+		description "Notifies the requester that the eBay policy group was looked up by ID and returns the policy group information."
 		
-		EbayPolicyGroup p "Identifier of the eBay policy group that was looked up.";
+		EbayPolicyGroup p "Policy group information.";
 	}
 	
 	record CreateEbayPolicyGroup {
@@ -145,47 +144,45 @@
 
 	record CreateEbayPolicyGroupSucceeded {   
 		summary "Signals that an eBay policy group was created."
-//Travis correct?
-		description "Notification that an eBay policy group was created and returns the ID of the policy group."
+		description "Notifies the requester that an eBay policy group was created and returns the policy group information."
 
-		EbayPolicyGroup p "Identifier of the policy group that was created."; //id is filled in
+		EbayPolicyGroup p "Policy group information.";
 	}
 	
 	record CreateEbayPolicyGroupFailed {
 		summary "Signals that the eBay policy group was not created."
-		description "Notification that the attempt to create an eBay policy group failed."
+		description "Notifies the requester that the attempt to create an eBay policy group failed and returns the information sent in the request and details about the cause of the failure."
 		
 		EbayPolicyGroupData p "Information for the policy group sent in the original request.";
-		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
 	}
 	
 	record UpdateEbayPolicyGroup {
 		summary "Contains the ID of the policy group to update."
 		description "Captures the ID of the policy group to update."
-//Travis correct?		
-		EbayPolicyGroup p "Identifier of the policy group to update."; //idd must be filled in
+		
+		EbayPolicyGroup p "Policy group information.";
 	}
 
 	record UpdateEbayPolicyGroupSucceeded {
 		summary "Signals the policy group was updated."
-		description "Notification that the policy group was updated and returns the ID of the policy group."
+		description "Notifies the requester that the policy group was updated and returns the information sent in the request."
 		
-		EbayPolicyGroup p "Identifier of the policy group.";
+		EbayPolicyGroup p "Policy group information sent.";
 	}
 
 	record UpdateEbayPolicyGroupFailed {
 		summary "Signals that the policy group was not updated."
-		description "Notification that the attempt to update a policy group failed."
+		description "Notifies the requester that the attempt to update a policy group failed and returns the information sent in the request and details about the cause of the failure."
 		
-		EbayPolicyGroup p "Identifier of the policy group.";
-		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
+		EbayPolicyGroup p "Policy group information.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
 	}
 	
 	record LookupStore {
-//Travis how is the different from LookupAccountProfile line 234?
 		summary "Contains the information needed to lookup a site."
 		description "Captures the information needed to lookup a site, such as account and marketplace ID, site code, etc."
-//Travis right?		
+
 		string? xAccountId "Merchant's X.commerce ID.";
 		string? userMarketplaceId "Merchant's marketplace ID.";
 		string? siteCode "Identifier of the site to look up.";
@@ -194,26 +191,25 @@
 
 	record LookupStoreSucceeded {
 		summary "Signals that the site was found."
-		description "Notification that the site was looked up by ID."
-//Travis I'm not sure what this is. Is site and store that same thing?		
-		MarketplaceStore store;
+		description "Notifies the requester that the site was looked up by ID and returns the eBay store and query request."
+	
+		MarketplaceStore store "eBay store.";
 		LookupStore request "Original look up request.";
 	}
 
 	record LookupStoreFailed {
 		summary "Signals that looking up a site failed."
-		description "Notification that the attempt to look up a site failed."
+		description "Notifies the requester that the attempt to look up a site failed and returns the information sent in the request and details about the cause of the failure."
 		
 		LookupStore request "Original look up request.";
-		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
 	}
 	
 	record AccountProfile{
-//Travis. profile for a site, per marketplace, for a merchant?
-		summary "Contains all the shipping discounts."
-		description "Captures all the shipping discounts."
+		summary "Contains all the shipping discount profiles."
+		description "Captures all the shipping discount profiles."
 		
-		array<ShippingDiscountProfile>? shippingDiscountProfiles "Array of the shipping discounts.";
+		array<ShippingDiscountProfile>? shippingDiscountProfiles "Array of the shipping discount profiles.";
 	}
 	
 	enum ShippingDiscountProfileType{
@@ -233,7 +229,6 @@
 	}
 	
 	record LookupAccountProfile {
-//Travis  How is this different from LookupStore line 184 - all the field are the same		
 		summary "Contains merchant information used to look up a site."
 		description "Captures information needed to authenticate a merchant."
 		
@@ -245,23 +240,23 @@
 
 	record LookupAccountProfileSucceeded {
 		summary "Signals that the account profile was found."
-		description "Notification that the account profile was found and returns the shipping discounts."
-//Travis what is returned??		
-		AccountProfile store "Shipping discounts.";
+		description "Notifies the requester that the account profile was found and returns the shipping discount profile."
+	
+		AccountProfile store "Account profile information.";
 		LookupAccountProfile request "Original request.";
 	}
 
 	record LookupAccountProfileFailed {
 		summary "Signals that the account profile was not found."
-		description "Notification that the attempt to look up an account profile failed."
+		description "Notifies the requester that the attempt to look up an account profile failed and returns the information sent in the request and details about the cause of the failure."
 		
 		LookupAccountProfile request "Original request.";
-		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
 	}
     
     record SearchEbayOffersSucceeded{	
 		summary "Signals that the eBay offers were found."
-		description "Notification that eBay offers were found."
+		description "Notifies the requester that eBay offers were found and returns the offers and query request."
 		
 		array<EbayOffer> offers "eBay offer that were found.";
 		SearchOffers request "Original search request.";
@@ -276,7 +271,7 @@
 
 	record SearchEbayTopSellingProductsSucceeded{
 		summary "Signals that the top selling products were found."
-		description "Notification that the top selling products were found."
+		description "Notifies the requester that the top selling products were found and returns the products and query request."
 		
 		array<EbayTopSellingProduct> products "Top selling products found. The products are returned in order from highest sales rank to lowest.";
 		SearchTopSellingProducts request "Original search request.";
