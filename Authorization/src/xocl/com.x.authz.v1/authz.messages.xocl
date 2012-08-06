@@ -3,10 +3,6 @@ package com.x.authz.v1{
 	import com.x.authz.v1.*
 	import com.x.core.v1.*
 	
-	/*
-		 Please	check the documentation for specific requirements.
-Travis what documentation is this referring to?		
-	*/
 	record Credential {
 		summary "Contains the credentials needed for authorization."
 		description "Contains the credentials keys needed for authorization. Each implementation requires a different set of credentials keys with its own name/value pair."
@@ -17,11 +13,12 @@ Travis what documentation is this referring to?
 	record InitAuthorization {
 		summary "Contains the marketplace information needed for the authorization process."
 		description "Contains the marketplace information needed for the authorization process. These fields are used only if the web-authorization flow supports them."
-//Travis???		
-		string? returnURL "";
-		string? cancelURL "";
+		
+		string? returnURL "Redirect for successful authorization.";
+		string? cancelURL "Redirect for authorization cancelled.";
 		string? environmentName "Marketplace environment name, such as sandbox.";
 		string? userMarketplaceId "Merchant's marketplace ID.";
+//I need info on this field.
 		string? runame "Used by the provider to indicate how to redirect ???what";
 	}
 
@@ -29,7 +26,7 @@ Travis what documentation is this referring to?
 		summary "Signals that the merchant authorization was successful."
 		description "Notification that the merchant authorization was successful."
 		
-		string redirectURL "";
+		string redirectURL "Redirect URL.";
 		string authId "Unique identifier for the authorization.";
 	    Credential? cred "Any extra credentials needed to proceed with the authorization.";
 	}
