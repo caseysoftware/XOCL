@@ -23,12 +23,12 @@ package com.x.magentocommercecontract.v1 0.0 earlydraft
 			OrderSearch.OrderManager<NonSensitive>
 			ProcessSalesChannelOrder.OrderProcessor<MarketplaceOrder> 
 			StockItemLookup.InventoryManager
-			StockItemUpdate.InventoryManager
+			StockItemUpdated.InventoryManager
 			ProductSearch.ProductInformationManager
 			ProductLookup.ProductInformationManager
-			ProductUpdate.ProductInformationManager
-			ProductCreation.ProductInformationManager
-			ProductDeletion.ProductInformationManager	  
+			ProductUpdated.ProductInformationManager
+			ProductCreated.ProductInformationManager
+			ProductDeleted.ProductInformationManager	  
 		}
 	}
 }
