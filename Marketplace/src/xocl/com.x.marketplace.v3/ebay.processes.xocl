@@ -2,41 +2,46 @@
  	
  	import com.x.marketplace.v3.*
  		
-	process StoreLookup
-	{
+	process StoreLookup {
 		description "A merchant looks up the metadata of their eBay store."
 		
-		roles
-		{
+		roles {
 			MarketplaceMetadataConsumer "Requests a query for the metadata of their eBay store."
 			MarketplaceMetadataProvider "Returns the results of a query."
 		}
 	
-		workflow
-		{
+		workflow {
 			description "Looks up the metadata of the consumer's eBay store."
-			transaction LookupStore
-			{
+			transaction LookupStore {
 				roles(MarketplaceMetadataConsumer, MarketplaceMetadataProvider)
 			}
 		}
 	}
  	
- 	process AccountProfileLookup
-	{
+ 	process AccountProfileLookup {
 		description "A merchant looks up profiles they have set up in eBay."
 		
-		roles
-		{
+		roles {
 			MarketplaceMetadataConsumer "Requests a search of the profiles they have set up in eBay."
 			MarketplaceMetadataProvider "Returns the results of the search."
 		}
 	
-		workflow
-		{
+		workflow {
 			description "Looks up eBay profiles based on a merchant's request."
-			transaction LookupAccountProfile
-			{
+			transaction LookupAccountProfile {
+				roles(MarketplaceMetadataConsumer, MarketplaceMetadataProvider)
+			}
+		}
+	}
+	
+	process SalesTaxTableUpsert{
+		description "The consumer (such as a cart) creates or updates a tax table in eBay"
+		roles{
+			MarketplaceMetadataConsumer "Sends the tax table to create or update"
+			MarketplaceMetadataProvider "Stores the tax table"
+		}
+		workflow {
+			transaction UpsertSalesTaxTable{
 				roles(MarketplaceMetadataConsumer, MarketplaceMetadataProvider)
 			}
 		}

@@ -61,7 +61,6 @@
 		string? domesticShippingDiscountProfileId "Identifier of the profile already created on eBay for domestic shipping discounts. Note: This overrides the value in the policy group."; 
 		string? internationalShippingDiscountProfileId "Identifier of the profile already created on eBay for international shipping discounts. Note: This overrides the value in the policy group.";
 		boolean? applyDomesticPromotionalShippingRule "Specifies whether to use the domestic Promotional Shipping Rule set up in MyeBay. Note: This overrides the value in the policy group."
-		array<SalesTaxTableEntry>? salesTaxTable "Sales tax rates by state"
 	}
 	
 	record EbayPolicyGroup extends EbayPolicyGroupData{
@@ -284,5 +283,24 @@
 		
 		array<EbayTopSellingProduct> products "Top selling products found. The products are returned in order from highest sales rank to lowest.";
 		SearchTopSellingProducts request "Original search request.";
+	}
+	
+	record UpsertSalesTaxTable{
+		description "Contains sales tax table data"
+		array<SalesTaxTableEntry> salesTaxTable "Sales tax rates by state"	
+		string siteCode
+		string? xAccountId "Merchant's X.commerce ID.";
+		string? siteCode "Identifier of the site to look up.";
+	}
+	
+    record UpsertSalesTaxTableSucceeded{
+    	description "Success response for upserting sales tax data"
+		UpsertSalesTaxTable request "the original request"
+	}
+	
+    record UpsertSalesTaxTableFailed{
+    	description "Failure response for upserting sales tax data"
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message."
+		UpsertSalesTaxTable request "the original request"
 	}
 }

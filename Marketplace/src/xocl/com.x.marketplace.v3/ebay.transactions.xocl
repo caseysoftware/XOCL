@@ -2,52 +2,67 @@
  	
  	import com.x.marketplace.v3.*
  	
-    transaction LookupStore unicast query
-    {
+    transaction LookupStore unicast query {
     	description "Looks up the metadata of the consumer's eBay store."
-        sender
-        {
-        	message LookupStore
-        	{
+        sender {
+        	message LookupStore {
         		 timeouts(response=30s)
         		 retries=3     		
         	}
         }
-        receiver
-        {
-        	success LookupStoreSucceeded{
+        receiver {
+        	success LookupStoreSucceeded {
         		timeouts(receipt=30s)   		
         		retries=3
         	}
-        	failure LookupStoreFailed{
+        	failure LookupStoreFailed {
         		timeouts(receipt=30s)   		
         		retries=3
         	}          
         } 
     }
     
-    transaction LookupAccountProfile unicast query
-    {
+    transaction LookupAccountProfile unicast query {
     	description "Looks up eBay profiles based on a merchant's request."
-        sender
-        {
-        	message LookupAccountProfile
-        	{
+        sender {
+        	message LookupAccountProfile {
         		 timeouts(response=30s)
         		 retries=3     		
         	}
         }
-        receiver
-        {
-        	success LookupAccountProfileSucceeded{
+        receiver {
+        	success LookupAccountProfileSucceeded {
         		timeouts(receipt=30s)   		
         		retries=3
         	}
-        	failure LookupAccountProfileFailed{
+        	failure LookupAccountProfileFailed {
         		timeouts(receipt=30s)   		
         		retries=3
         	}          
         } 
     }
+    
+    transaction UpsertSalesTaxTable unicast response {
+    	description "Creates or updates a sales tax table"
+        sender {
+        	message UpsertSalesTaxTable {
+        		 timeouts(response=30s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success UpsertSalesTaxTableSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+        	
+        	failure UpsertSalesTaxTableFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}          
+        } 
+    }
+    
+    
     
  }
