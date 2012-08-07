@@ -243,6 +243,7 @@ package com.x.comparisonshopping.v1 {
    		string language = "en_US" "County and language code. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used."
    		boolean onlineOnly =  false "Whether the product is available only online. The default is false." 
 		boolean shipFromStore = false "Whether this item is available to be shipped from this location. The default is false." 
+		boolean eligibleForInStorePickup = false "Whether a shopper can visit the location to pickup the product. The default is false."
 	}
 		
 	record PublishProduct {
