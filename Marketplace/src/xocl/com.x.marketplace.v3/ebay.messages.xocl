@@ -288,9 +288,8 @@
 	record UpsertSalesTaxTable{
 		description "Contains sales tax table data"
 		array<SalesTaxTableEntry> salesTaxTable "Sales tax rates by state"	
-		string siteCode
-		string? xAccountId "Merchant's X.commerce ID.";
-		string? siteCode "Identifier of the site to look up.";
+		string siteCode "Identifier of the site";
+		string xAccountId "Merchant's X.commerce ID.";
 	}
 	
     record UpsertSalesTaxTableSucceeded{
