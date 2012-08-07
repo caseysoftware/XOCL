@@ -42,6 +42,8 @@ package com.x.customer.v1{
 	    map<string>? sourceIds "Maps the source system name to the customer source identifier (ID). This is used for audit purposes, to indicate where the customer came from in the flow.";
 	    boolean? doNotCall "Indicates that the customer does not want to be contacted by telephone.";   
 		boolean? emailOptOut "Indicates that the customer does not want to receive marketing email (opted-out).";
+		string? storeId "The store associated with this customer, if any."
+		string? customerGroup "The customer group that this customer is a part of"
 	}  
 	
     record Customer confidential extends CustomerData {
