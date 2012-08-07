@@ -151,7 +151,6 @@ package com.x.webstore.v1{
 			{
 				WebStoreOfferConsumer "Requests an offer be updated."
 				WebStoreOfferManager "Updates the offer and notifies observers."
-				WebStoreOfferObserver "Receives an offer updated notification."
 			}
 	
 		workflow
@@ -163,7 +162,7 @@ package com.x.webstore.v1{
 				roles(WebStoreOfferConsumer, WebStoreOfferManager)
 			}
 			workflow WebStoreOfferUpdated{
-				roles(WebStoreOfferConsumer, WebStoreOfferManager)
+				roles(WebStoreOfferManager, null)
 			}
 		}		
 	}
