@@ -96,7 +96,6 @@ package com.x.webstore.v1{
 			{
 				WebStoreOfferConsumer "Submits a request to create an offer."
 				WebStoreOfferManager "Creates the offer and notifies observers."
-				WebStoreOfferObserver "Receives an offer created notification."
 			}
 	
 		workflow
@@ -114,7 +113,7 @@ package com.x.webstore.v1{
 				summary "Notifies observers that an offer was created."
 				description "Notifies observers that an offer was created."
 
-				roles (WebStoreOfferManager, WebStoreOfferObserver)
+				roles (WebStoreOfferManager, null)
 			}
 		}		
 	}
@@ -210,7 +209,6 @@ package com.x.webstore.v1{
 			{
 				WebStoreOfferConsumer "Requests an offer be deleted."
 				WebStoreOfferManager "Deletes the offer and notifies observers."
-				WebStoreOfferObserver "Receives offer deleted notification."
 			}
 	
 		workflow
@@ -224,7 +222,7 @@ package com.x.webstore.v1{
 			}
 			workflow WebStoreOfferDeleted
 			{
-				roles (WebStoreOfferManager, WebStoreOfferObserver)
+				roles (WebStoreOfferManager, null)
 			}
 		}		
 	}
