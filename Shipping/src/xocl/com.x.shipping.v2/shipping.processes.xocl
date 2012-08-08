@@ -9,42 +9,86 @@ package com.x.shipping.v2 {
     	state Shipped
     }
     
+    process CalculateShippingRates {	
+        description "Calcualte the rates for a set of shipping services"
+        
+        roles(Consumer, ShippingCarrier)
+        
+	    workflow {
+       	 	transaction CalculateShippingRates {
+        		roles(Consumer, ShippingCarrier)
+        	}
+        }
+    }
+    
+    process FindCarrierOffices {	
+        description "Find office locations for a carrier."
+        
+        roles(OrderProcessor, ShippingCarrier)
+        
+	    workflow {
+       	 	transaction FindCarrierOffices {
+        		roles(OrderProcessor, ShippingCarrier)
+        	}
+        }
+    }
+    
+    process ValidateShippingAddress {	
+        description "Verify that an address is a valid shipping destination."
+        
+        roles(OrderProcessor, ShippingCarrier)
+        
+	    workflow {
+       	 	transaction ValidateShippingAddress {
+        		roles(OrderProcessor, ShippingCarrier)
+        	}
+        }
+    }
+    
+    process GetShippingServices {	
+        description "Get the list of shipping services that are provided by a carrier."
+        
+        roles(OrderProcessor, ShippingCarrier)
+        
+	    workflow {
+       	 	transaction GetShippingServices {
+        		roles(OrderProcessor, ShippingCarrier)
+        	}
+        }
+    }
+
+    process GetCarrierSpecialServices {	
+        description "Get the list of special services that a provided by a carrier."
+        
+        roles(OrderProcessor, ShippingCarrier)
+        
+	    workflow {
+       	 	transaction GetCarrierSpecialServices {
+        		roles(OrderProcessor, ShippingCarrier)
+        	}
+        }
+    }
+    
+    process GetCarrierHandoffTypes {	
+        description "Get the list of package handoff types that a provided by a carrier."
+        
+        roles(OrderProcessor, ShippingCarrier)
+        
+	    workflow {
+       	 	transaction GetCarrierHandoffTypes {
+        		roles(OrderProcessor, ShippingCarrier)
+        	}
+        }
+    }
+        
     // Process the assignment of shipping and tracking information
     process ProcessShipment {
     	
-        description "An shipment is quoted, packaged, shipped, and tracked"
+        description "An shipment is prepared, packaged, shipped, and tracked"
         
-        roles(Consumer, ShippingCarrier, OrderProcessor)
+        roles(ShippingCarrier, OrderProcessor)
     
-	    workflow {
-	    	any {	
-	    		// Get rates for a package
-	       	 	transaction CalculateShippingRates {
-	        		roles(Consumer, ShippingCarrier)
-	        	}
-	        	
-       	    	transaction FindCarrierOffices {
-        			roles(OrderProcessor, ShippingCarrier)
-       			}
-
-       	    	transaction ValidateShippingAddress {
-        			roles(OrderProcessor, ShippingCarrier)
-       			}
-
-       	    	transaction GetShippingServices {
-        			roles(OrderProcessor, ShippingCarrier)
-       			}	
-
-       	    	transaction GetCarrierSpecialServices {
-        			roles(OrderProcessor, ShippingCarrier)
-       			}	
-
-       	    	transaction GetCarrierHandoffTypes {
-        			roles(OrderProcessor, ShippingCarrier)
-       			}	
-
-	        }
-        	
+	    workflow {        	
    			// Creeate the label and its associated tracking information
        	    transaction CreateShippingLabel {
         		roles(OrderProcessor, ShippingCarrier)
