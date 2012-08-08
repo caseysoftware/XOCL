@@ -1,4 +1,4 @@
-package com.x.customer.v1 1.1 candidaterecommendation {
+package com.x.customer.v1 1.2 candidaterecommendation {
 	packagetitle "Customer"
 	description "The Customer package specifies the processes for management and access of customer information."
 	import com.x.customer.v1.*
