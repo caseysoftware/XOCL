@@ -18,8 +18,7 @@ package com.x.authz.v1{
 		string? cancelURL "Redirect for authorization cancelled.";
 		string? environmentName "Marketplace environment name, such as sandbox.";
 		string? userMarketplaceId "Merchant's marketplace ID.";
-//I need info on this field.
-		string? runame "Used by the provider to indicate how to redirect ???what";
+		string? runame "Runame for you application.";
 	}
 
 	record InitAuthorizationSucceeded {
