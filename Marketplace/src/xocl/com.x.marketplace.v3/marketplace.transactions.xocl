@@ -70,7 +70,7 @@ package com.x.marketplace.v3{
     	description "Searches for all the categories of the site that was looked up."
         sender {
         	message SearchCategories {
-        		 timeouts(response=1m)   //1m per Jay Rutten's request
+        		 timeouts(response=1m)   //1m because ebay implementation often takes that long
         		 retries=3     		
         	}
         }
