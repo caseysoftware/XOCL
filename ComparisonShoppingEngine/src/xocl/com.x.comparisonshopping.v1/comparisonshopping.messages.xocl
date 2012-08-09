@@ -269,6 +269,7 @@ package com.x.comparisonshopping.v1 {
 		
 		string feedId "Identifier of the feed that is associated with this product."
 		string errorCode "Error code of the publishing failure."
+		string? sku "The sku of the product that failed."
 	}
 	
 	record ProductFeedProcessed {
@@ -302,6 +303,7 @@ package com.x.comparisonshopping.v1 {
 		
 		string feedId "Identifier of the feed that is associated with this store."
 		string errorCode "Error code of the publishing failure."
+		string? sku "The sku of the product that failed."
 	}
 	
 	record ProductInventoryFeedProcessed {
