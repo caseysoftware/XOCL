@@ -231,6 +231,7 @@ package com.x.ordermanagement.v2 {
 		datetime dateReturned "Date the returned item was received." 	
 		OrderLinePrice price "Price for the returned item without additional fees."
 		string? shipmentId "Unique identifier of the shipment that was used to send the item to the customer. Note: The value must be unique only within a given order."
+		boolean ShippingFeesTaxed = false "True if the order line had taxes applied to its shipping fees."
 	}
 
 	record SimpleOrderLineData {
@@ -256,6 +257,7 @@ package com.x.ordermanagement.v2 {
 		string? shipmentId "Unique identifier of the shipment that was used to send the item to the customer. Note: The value must be unique only within a given order. "
 		string? offerId "Identifier of the offer. This ID is assigned by the channel that published the offer. Note: offerId and offerURL provide information that can be used to construct a link to the product on the sales channel where it was purchased."
 		string? offerUrl "URL of the offer. Note: offerId and offerURL provide information that can be used to construct a link to the product on the sales channel where it was purchased."
+		boolean ShippingFeesTaxed = false "True if the order line had taxes applied to its shipping fees."
 	}
 	
 	record OrderLineData extends SimpleOrderLineData {
@@ -290,6 +292,7 @@ package com.x.ordermanagement.v2 {
 		array<Shipment>? shipments "Array of the shipments used for an order."
 		string? referralSource "Marketing source that referred this order."
 		string? buyerComments "Additional comments or instructions that the buyer wants to convey to the merchant."
+		boolean ShippingFeesTaxed = false "True one or more of the order lines had it taxes applied to its shipping fees."
 	}
 	
 	record SimpleOrder extends OrderDetails {
