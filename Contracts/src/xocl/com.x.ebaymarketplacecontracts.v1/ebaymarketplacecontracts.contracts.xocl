@@ -1,4 +1,4 @@
-package com.x.ebaymarketplacecontracts.v1 0.0 earlydraft
+package com.x.ebaymarketplacecontracts.v1 0.0 candidaterecommendation
 {
 	import com.x.marketplace.v3.*
 	import com.x.ordermanagement.v2.*
@@ -13,36 +13,36 @@ package com.x.ebaymarketplacecontracts.v1 0.0 earlydraft
     	roles
     	{   		
 	   		//Marketplace  roles 
-	   		MarketplaceSetup.MarketplaceMetadataProvider
-	   		PolicyGroupCreation.MarketplacePolicyManager<Ebay>
-	   		PolicyGroupUpdate.MarketplacePolicyManager<Ebay> 
-	   		PolicyGroupDeletion.MarketplacePolicyManager
+	   		MarketplaceSetup.MarketplaceMetadataProvider 
+	   		PolicyGroupCreation.MarketplacePolicyManager<Ebay> 
+	   		PolicyGroupUpdate.MarketplacePolicyManager<Ebay>  
+	   		PolicyGroupDeletion.MarketplacePolicyManager 
 	   		PolicyGroupLookup.MarketplacePolicyManager<Ebay> 
-	   		OfferPublicationWithProductData.Marketplace<Ebay> 
-	   		OfferPublication.Marketplace<Ebay> 
-	   		PublishedOfferRevision.Marketplace<Ebay>
-	   		PublishedOfferRevisionWithProductData.Marketplace<Ebay>
-	   		PublishedOfferRevocation.Marketplace
-	   		OfferSearch.Marketplace<Ebay>
+	   		OfferPublicationWithProductData.Marketplace<Ebay>  
+	   		OfferPublication.Marketplace<Ebay>  
+	   		PublishedOfferRevision.Marketplace<Ebay> 
+	   		PublishedOfferRevisionWithProductData.Marketplace<Ebay> 
+	   		PublishedOfferRevocation.Marketplace 
+	   		OfferSearch.Marketplace<Ebay> 
 
-	   		TopSellingProductSearch.Marketplace<Ebay>
+	   		TopSellingProductSearch.Marketplace<Ebay> 
 	   		
 	   		//Ebay roles
-	        StoreLookup.MarketplaceMetadataProvider
-			AccountProfileLookup.MarketplaceMetadataProvider
+	        StoreLookup.MarketplaceMetadataProvider 
+			AccountProfileLookup.MarketplaceMetadataProvider 
 	        
 	   		//Order roles
-	   		ProcessSalesChannelOrder.SalesChannel<MarketplaceOrder> 
-	   		OrderSearch.OrderConsumer<MarketplaceOrderSearch>
-	   		SubmitShippedOrder.SalesChannel<MarketplaceOrder>
+	   		ProcessSalesChannelOrder.SalesChannel<MarketplaceOrder>  
+	   		OrderSearch.OrderConsumer<MarketplaceOrderSearch> 
+	   		SubmitShippedOrder.SalesChannel<MarketplaceOrder> 
 	   		
 	   		//Auth roles
-	   		AuthorizationGrant.AuthorizationProvider
-	   		AuthorizedAccountSearch.AuthorizationProvider
-	   		AuthorizationRevoke.AuthorizationProvider
+	   		AuthorizationGrant.AuthorizationProvider 
+	   		AuthorizedAccountSearch.AuthorizationProvider 
+	   		AuthorizationRevoke.AuthorizationProvider 
 	   		
 	   		//PIM roles
-	   		ProductLookup.ProductInformationConsumer
+	   		ProductLookup.ProductInformationConsumer 
 	   		
 	    }
 	 }
@@ -55,14 +55,13 @@ package com.x.ebaymarketplacecontracts.v1 0.0 earlydraft
     	{
 	   		OfferPublication.OfferManager<Ebay>  
 	   		PublishedOfferRevision.OfferManager<Ebay>
-	   		CustomerUpsert.CustomerConsumer
 	    }
 	    
 	}	
 	
 	contract EbayMarketplaceOfferProducerWithProductDataPublication extends EbayMarketplaceOfferProducerBaseRoleSet
     {
-    	description "A system that creates offers on ebay marketplace and processes the orders from the marketplace and sends product data with offer publication"
+    	description "A system that creates offers on the eBay marketplace, processes the orders from the marketplace, and sends the product data with offer publication."
     	
     	roles
     	{
@@ -73,7 +72,7 @@ package com.x.ebaymarketplacecontracts.v1 0.0 earlydraft
 	}	
     contract EbayMarketplaceOfferProducerBaseRoleSet
     {
-    	description "A base role set for eBay marketplace consumers."
+    	description "This contract is not intended to be implemented. It is a set of base roles for eBay marketplace consumers."
     
     	roles
     	{
@@ -103,6 +102,6 @@ package com.x.ebaymarketplacecontracts.v1 0.0 earlydraft
 	    
 	 }
 	
-	 
-	
 }
+	
+	 
