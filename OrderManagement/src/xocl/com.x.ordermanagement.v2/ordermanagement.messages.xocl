@@ -264,7 +264,7 @@ package com.x.ordermanagement.v2 {
 		summary "Adds fields to the SimpleOrderLineData record."
 		description "Adds order information fields to the SimpleOrderLineData record, such as autoship, substitution, etc."
 		string? lineMessage "Notes to the customer."
-		boolean? bundle = false "Indicates the order is a bundled item, which means the item consists of several items. For example, a gamebox, controllers, and a game."
+		boolean? _AVDL_bundle = false "Indicates the order is a bundled item, which means the item consists of several items. For example, a gamebox, controllers, and a game."
 		boolean? expandBundle = false "Indicates you can expand the bundle and see the individual items."
 		boolean? soloShip = false "Indicates the order can be divided into multiple shipments." 
 		boolean? autoShip = false "Indicates item is to be shipped automatically."
