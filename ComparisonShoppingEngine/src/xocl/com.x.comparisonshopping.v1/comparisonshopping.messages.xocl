@@ -222,7 +222,7 @@ package com.x.comparisonshopping.v1 {
    		string? manufacturer "Name of the manufacturer/supplier of the product."
    		string? mpn "Manufacturer part number of the product."
    		string? gtin "Global Trade Item Number for the product that can represent UPC, EAN, JAN, or ISBN (the type is inferred from the format)."
-   		string brand "Brand name of the product."
+   		string? brand "Brand name of the product."
    		string? category "Category that will be used to determine where the product will appear in the comparison shopping engine taxonomy."
    		string? xProductTypeId  "Product type identifier as defined by the taxonomy manager." 
    		array<string>? productTypes "Product types associated with the product as defined by the taxonomy manager."
