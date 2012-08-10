@@ -215,7 +215,7 @@ package com.x.comparisonshopping.v1 {
 
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
 		string? itemGroup "Identifier that groups together all the variation values for this product (if it has variations)."
-		CurrencyAmount price "Price to purchase the product."; 
+		CurrencyAmount? price "Price to purchase the product."; 
 		int quantity "How many of this product are in stock.";
    		string title "Title of the product."
    		string productDescription "Description of the product.";
@@ -228,7 +228,7 @@ package com.x.comparisonshopping.v1 {
    		array<string>? productTypes "Product types associated with the product as defined by the taxonomy manager."
    		array<ProductImage>? images  "Collection of  URLs for the product images (with assigned roles)."
    		string link "Link to the product landing page on the merchant's storefront."
-   		CurrencyAmount originalPrice "Original price of the item before any discounting."
+   		CurrencyAmount? originalPrice "Original price of the item before any discounting."
    		AvailabilityType availability = UNKNOWN "Availability status of the product. The default is UNKNOWN."
 		datetime? availableDate "Timestamp specifying when the item will be available."
    		TaxRate? taxRate "Tax rate based on the country and region of the product's location (where the product is shipped from)."
