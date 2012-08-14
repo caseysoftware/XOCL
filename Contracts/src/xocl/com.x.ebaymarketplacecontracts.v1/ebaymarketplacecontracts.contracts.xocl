@@ -1,4 +1,4 @@
-package com.x.ebaymarketplacecontracts.v1 0.0 candidaterecommendation
+package com.x.ebaymarketplacecontracts.v1 0.1 candidaterecommendation
 {
 	import com.x.marketplace.v3.*
 	import com.x.ordermanagement.v2.*
@@ -6,27 +6,40 @@ package com.x.ebaymarketplacecontracts.v1 0.0 candidaterecommendation
 	import com.x.pim.v1.*
 	import com.x.customer.v1.*
 	
-    contract EBayMarketplace 
+    contract EBayMarketplace extends EbayMarketplaceBaseRoleSet
     {
-    	description "An adapter to the eBay marketplace."
+    	description "An adapter to the eBay marketplace using PIM for product data"
     	
     	roles
     	{   		
-	   		//Marketplace  roles 
+	   		PublishedOfferRevision.Marketplace<Ebay> 
+	   		ProductLookup.ProductInformationConsumer 
+	   		OfferPublication.Marketplace<Ebay>
+	   	    TopSellingProductSearch.Marketplace<Ebay>   
+	    }
+	}
+	 
+	contract EbayMarketplaceWithProductDataPublication extends EbayMarketplaceBaseRoleSet {
+		description "An adapter to the eBay marketplace wherein product data is directly sent with offers"
+		roles{
+			PublishedOfferRevisionWithProductData.Marketplace<Ebay> 
+			OfferPublicationWithProductData.Marketplace<Ebay>  
+		}	
+	} 
+	 
+	contract EbayMarketplaceBaseRoleSet {
+			description "a base collection of roles for use by adapter contracts"
+	 		roles{
+	 			
 	   		MarketplaceSetup.MarketplaceMetadataProvider 
+	   		MarketplaceSetup.Marketplace 
 	   		PolicyGroupCreation.MarketplacePolicyManager<Ebay> 
 	   		PolicyGroupUpdate.MarketplacePolicyManager<Ebay>  
 	   		PolicyGroupDeletion.MarketplacePolicyManager 
 	   		PolicyGroupLookup.MarketplacePolicyManager<Ebay> 
-	   		OfferPublicationWithProductData.Marketplace<Ebay>  
-	   		OfferPublication.Marketplace<Ebay>  
-	   		PublishedOfferRevision.Marketplace<Ebay> 
-	   		PublishedOfferRevisionWithProductData.Marketplace<Ebay> 
 	   		PublishedOfferRevocation.Marketplace 
 	   		OfferSearch.Marketplace<Ebay> 
-
-	   		TopSellingProductSearch.Marketplace<Ebay> 
-	   		
+	 
 	   		//Ebay roles
 	        StoreLookup.MarketplaceMetadataProvider 
 			AccountProfileLookup.MarketplaceMetadataProvider 
@@ -40,11 +53,7 @@ package com.x.ebaymarketplacecontracts.v1 0.0 candidaterecommendation
 	   		AuthorizationGrant.AuthorizationProvider 
 	   		AuthorizedAccountSearch.AuthorizationProvider 
 	   		AuthorizationRevoke.AuthorizationProvider 
-	   		
-	   		//PIM roles
-	   		ProductLookup.ProductInformationConsumer 
-	   		
-	    }
+	   		}
 	 }
 	 	
 	contract EbayMarketplaceOfferProducer extends EbayMarketplaceOfferProducerBaseRoleSet
@@ -78,10 +87,11 @@ package com.x.ebaymarketplacecontracts.v1 0.0 candidaterecommendation
     	{
 	   		//Marketplace  roles 
 			MarketplaceSetup.MarketplaceMetadataConsumer
+			MarketplaceSetup.AuthorizedMarketplaceUser 
 	   		PolicyGroupCreation.MarketplaceMerchantConsole<Ebay>
 	   		PolicyGroupUpdate.MarketplaceMerchantConsole<Ebay> 
 	   		PolicyGroupDeletion.MarketplaceMerchantConsole
-	   		PolicyGroupLookup.MarketplacePolicyManager<Ebay> 
+	   		PolicyGroupLookup.MarketplaceMerchantConsole<Ebay> 
 	   		PublishedOfferRevocation.OfferManager
 	   		OfferSearch.OfferManager<Ebay>
 
@@ -93,6 +103,7 @@ package com.x.ebaymarketplacecontracts.v1 0.0 candidaterecommendation
 	   		//Order roles
 	   		ProcessSalesChannelOrder.OrderProcessor<MarketplaceOrder> 
 	   		OrderSearch.OrderManager<MarketplaceOrderSearch> 
+	   	    SubmitShippedOrder.OrderProcessor<MarketplaceOrder> 
 	   		
 	   		//Auth roles
 	   		AuthorizationGrant.AuthorizedUser

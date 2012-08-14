@@ -6,7 +6,7 @@ package com.x.ebaywithproductdata.v1 0.0 earlydraft
 		description "A bundle including an ebay adapter and a consumer, in which the consumer publishes product data with offers"
 		bindings{
 			EbayMarketplaceOfferProducerWithProductDataPublication latebound "An offer producer"
-			EBayMarketplace "an adapter to ebay marketplace"
+			EbayMarketplaceWithProductDataPublication "an adapter to ebay marketplace"
 		}		
 	}
 }
