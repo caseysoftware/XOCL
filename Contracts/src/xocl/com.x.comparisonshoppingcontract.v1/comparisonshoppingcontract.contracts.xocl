@@ -1,9 +1,5 @@
-/*
- * This file contains the contract declarations for the CSE domain
- */
-
-package com.x.comparisonshoppingcontracts.v1 0.0 earlydraft
-{	
+package com.x.comparisonshoppingcontracts.v1 0.0 workingdraft
+{		
 	import com.x.comparisonshopping.v1.* 
 	
     contract ComparisonShoppingEngine {
@@ -13,6 +9,7 @@ package com.x.comparisonshoppingcontracts.v1 0.0 earlydraft
 	        PublishProductFeed.ProductFeedManager
 	        PublishInventoryFeed.InventoryFeedManager
 	        PublishStoreFeed.StoreFeedManager
+	        GetAllComparisonShoppingProviders.ComparisonShoppingProvider
 	    }
     }
     
@@ -23,6 +20,7 @@ package com.x.comparisonshoppingcontracts.v1 0.0 earlydraft
 	        PublishProductFeed.ProductFeedPublisher
 	        PublishInventoryFeed.InventoryFeedPublisher
 	        PublishStoreFeed.StoreFeedPublisher
+	        GetAllComparisonShoppingProviders.ComparisonShoppingProviderConsumer
 	    }
     }
 }
