@@ -4,6 +4,7 @@ package com.x.pimcontracts.v1 0.0 earlydraft
 	
 	import com.x.pim.v1.*
 	
+	
     contract ProductInformationManagement
     {
     		description "A product information management system's manager roles. Manages products and product SKUs. Serves requests for data and notifies observers and consumers of data changes."
@@ -30,5 +31,6 @@ package com.x.pimcontracts.v1 0.0 earlydraft
 	 			ProductDeleted.ProductInformationObserver
 	 		}
 	}
+	 
 	 
 }	
