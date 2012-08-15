@@ -7,28 +7,29 @@ package com.x.magentocommercecontract.v1 0.0 earlydraft
 	import com.x.inventory.v1.*
 	import com.x.pim.v1.*
 	
-	contract MagentoCommerce 
-	{
-		// A description defines the purpose of the contract
-		description "Magento Commerce"
-
-		// A set of roles collectivley define the implementer's responsibilities
-		roles
-		{
-			CustomerSearch.CustomerManager
-			CustomerSearch.CustomerManager<Email>
-			ProcessSalesChannelOrder.CustomerManager
-			WebStoreMetadataProvision.WebStoreMetadataProvider
-			WebStoreOfferSearch.WebStoreOfferManager
-			OrderSearch.OrderManager<NonSensitive>
-			ProcessSalesChannelOrder.OrderProcessor<MarketplaceOrder> 
-			StockItemLookup.InventoryManager
-			StockItemUpdated.InventoryManager
-			ProductSearch.ProductInformationManager
-			ProductLookup.ProductInformationManager
-			ProductUpdated.ProductInformationManager
-			ProductCreated.ProductInformationManager
-			ProductDeleted.ProductInformationManager	  
-		}
-	}
+    contract MagentoCommerce 
+    {
+    	// A description defines the purpose of the contract
+    	description "Magento Commerce"
+    	
+    	// A set of roles collectivley define the implementer's responsibilities
+    	roles
+    	{
+	        CustomerSearch.CustomerManager
+	        CustomerSearch.CustomerManager<Email>
+	 		ProcessSalesChannelOrder.CustomerManager
+	 		WebStoreMetadataProvision.WebStoreMetadataProvider
+	 		WebStoreOfferSearch.WebStoreOfferManager
+	 		OrderSearch.OrderManager<NonSensitive>
+	 		ProcessSalesChannelOrder.OrderProcessor<MarketplaceOrder> 
+	 		StockItemLookup.InventoryManager
+	 		StockItemUpdated.InventoryManager
+	 		ProductSearch.ProductInformationManager
+	 		ProductLookup.ProductInformationManager
+	 		ProductUpdated.ProductInformationManager
+	 		ProductCreated.ProductInformationManager
+	 		ProductDeleted.ProductInformationManager	  
+	    }
+	    
+	 }
 }
