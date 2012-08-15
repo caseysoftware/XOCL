@@ -9,7 +9,7 @@ package com.x.producttaxonomycontracts.v1 0.0 earlydraft
 		description "A system used to store the product taxonomy."
     		roles {
 					ProductTaxonomyRetrieval.ProductTaxonomyManager
-					ProductTaxonomyUpdate.ProductTaxonomyManager 
+					ProductTaxonomyUpdate.ProductTaxonomyManager
 	 		}			
 	}	
 	
@@ -17,8 +17,8 @@ package com.x.producttaxonomycontracts.v1 0.0 earlydraft
 		
 		description "An entity that uses or needs to access the information in the product taxonomy system."
     		roles {
-					ProductTaxonomyRetrieval.ProductTaxonomyConsumer
-					ProductTaxonomyUpdate.ProductTaxonomyObserver
+					ProductTaxonomyRetrieval.ProductTaxonomyConsumer 
+					ProductTaxonomyUpdate.ProductTaxonomyObserver 
 	 		}			
 	}
 }
