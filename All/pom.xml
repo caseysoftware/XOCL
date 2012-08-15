@@ -100,11 +100,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.x.ocl</groupId>
-			<artifactId>cart-xocl</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.x.ocl</groupId>
 			<artifactId>comparison-shopping-engine-xocl</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -181,11 +176,6 @@
 		<dependency>
 			<groupId>com.x.ocl</groupId>
 			<artifactId>system-xocl</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.x.ocl</groupId>
-			<artifactId>webstore-xocl</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
