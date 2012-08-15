@@ -53,5 +53,4 @@ package com.x.ecosystemmanagementcontracts.v1 0.0 earlydraft
     		OffboardBundle.AppStore "Requests removal of the tenant from a bundle, or is informed of an invalidated bundle"
     	}
     }
-
 }
