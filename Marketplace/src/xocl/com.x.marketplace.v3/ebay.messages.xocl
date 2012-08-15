@@ -332,30 +332,35 @@
 	}
 		
 	record OfferRecommendationInformation{
-        CurrencyAmount? EstimatedListingFee " This Estimated Listing Fee for this offer."
+        CurrencyAmount? estimatedListingFee " This Estimated Listing Fee for this offer."
         MaxFlatShippingRecommendation? maxFlatShippingRecommendation  "If the flat shipping cost exceeds the maximum, contains the maximum allowed"
-		ItemSpecificsRecommendation?  itemSpecificsRecommendation "Recommended item specifics"
+		AttributeRecommendation?  attributeRecommendation "Recommended attributes (item specifics)"
 		GTINRecommendation?  gtinRecommendation "Recommended GTIN information"
-		array<Recommendation> recommendations "Recommendations that have no return data besides what is in Recommendation"
+		array<Recommendation>? recommendations "Recommendations that have no return data besides what is in Recommendation"
+		array<Error>? expectedErrors "Array of the errors that would occurr if the offer were submitted as-is. Each error consists of an error code and error message."
 	}
 	
-	record ItemSpecificsRecommendation{
-		Recommendation recommendationData "The recommendation information"
-		array<string> recommendedItemSpecifics  "Recommended item specifics for this offer"
+	record AttributeRecommendation{
+		string recommendationMessage "a message formatted as text, useful for logging but not recommended for direct display"
+		RecommendationPriority priority "the priority or severity of this message"
+		map<array<string>> recommendedAttributes  "Recommended attributes for this offer, a map of attribute name to list of common attribute values"
 	}
 	
 	record CategoryRecommendation{
-		Recommendation recommendationData "The recommendation information"
-		long recommendedCategory "The recommended category for this offer"
+		string recommendationMessage "a message formatted as text, useful for logging but not recommended for direct display"
+		RecommendationPriority priority "the priority or severity of this message"
+		array<Category> recommendedCategories "The recommended category or categories for this offer"
 	}
 	
 	record GTINRecommendation{
-		Recommendation recommendationData "The recommendation information"
-		string recommendedGTIN  "A suggested GTIN, such as UPC or ISBN"
+		string recommendationMessage "a message formatted as text, useful for logging but not recommended for direct display"
+		RecommendationPriority priority "the priority or severity of this message"
+		array<string> recommendedGTINs  "A suggested GTIN, such as UPC or ISBN"
 	}
 
 	record MaxFlatShippingRecommendation{
-		Recommendation recommendationData  "The recommendation information"
+		string recommendationMessage "a message formatted as text, useful for logging but not recommended for direct display"
+		RecommendationPriority priority "the priority or severity of this message"
 		CurrencyAmount maxFlatShippingAllowed  "The maximum flat shipping allowed for this offer"
 	}
 	
