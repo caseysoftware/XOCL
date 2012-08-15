@@ -63,6 +63,24 @@
         } 
     }
     
-    
+    transaction GetRecommendationsForOffer<WithProductData> unicast query {
+    	description "Gets recommendations for an offer"
+        sender {
+        	message GetRecommendationsForOffer {
+        		 timeouts(response=30s)
+        		 retries=3     		
+        	}
+        	message<WithProductData> GetRecommendationsForOfferWithProductData {
+        		 timeouts(response=30s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success GetRecommendationsForOfferSucceeded
+        	success<WithProductData> GetRecommendationsForOfferWithProductDataSucceeded
+        	failure GetRecommendationsForOfferFailed 
+        	failure<WithProductData> GetRecommendationsForOfferWithProductDataFailed 
+        } 
+    }
     
  }

@@ -46,5 +46,20 @@
 			}
 		}
 	}
- 	
+	
+	process GetRecommendationsForOffer<WithProductData>{
+		description "The consumer sends offers to a marketplace for recommendations, gets back recommendations"
+		
+		roles {
+			OfferManager "The system that creates offers"
+			Marketplace  "The system to which offers are published"
+		}
+		workflow{
+			transaction GetRecommendationsForOffer<WithProductData>{
+				roles (OfferManager, Marketplace)
+			}
+		
+		}
+	}
+
  }
