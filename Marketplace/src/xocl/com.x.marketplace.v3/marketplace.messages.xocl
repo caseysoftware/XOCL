@@ -16,14 +16,6 @@ package com.x.marketplace.v3{
 		array<CustomCategory> childCategories "Array of the child categories for the custom category.";
 	}
 	
-	record MarketplaceStore {
-//Travis this is an eBay store  and should be in the ebay.messages.xocl file 
-    	summary "Contains the information to associate the site and the custom category."
-    	description "Captures the eBay store name and custom categories for the store."
-
-		string name "Name of the eBay store."; 
-	    array<CustomCategory>? categories "Array of the custom categories for the store."; 
-	}
 
     record SiteMetadata extends Site {	
     	summary "Adds fields to the Site record."

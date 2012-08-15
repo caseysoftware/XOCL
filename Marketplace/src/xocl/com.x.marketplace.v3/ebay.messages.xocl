@@ -302,4 +302,93 @@
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message."
 		UpsertSalesTaxTable request "the original request"
 	}
+	
+	record GetRecommendationsForOffer{
+		EbayOfferDetails offer "the offer details"
+	}
+	
+	record GetRecommendationsForOfferSucceeded{
+		OfferRecommendationInformation recommendationInformation;
+		GetRecommendationsForOffer request;
+	}
+	
+	record GetRecommendationsForOfferFailed{
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message."
+		GetRecommendationsForOffer request;
+	}
+
+    record GetRecommendationsForOfferWithProductData{
+		EbayOfferDetailsWithProductData offer;
+		
+	}
+	record GetRecommendationsForOfferWithProductDataSucceeded{
+		OfferRecommendationInformation recommendationInformation;
+		GetRecommendationsForOfferWithProductData request
+	}
+	
+	record GetRecommendationsForOfferWithProductDataFailed{
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message."
+		GetRecommendationsForOfferWithProductData request;
+	}
+		
+	record OfferRecommendationInformation{
+        CurrencyAmount? EstimatedListingFee " This Estimated Listing Fee for this offer."
+        MaxFlatShippingRecommendation? maxFlatShippingRecommendation  "If the flat shipping cost exceeds the maximum, contains the maximum allowed"
+		ItemSpecificsRecommendation?  itemSpecificsRecommendation "Recommended item specifics"
+		GTINRecommendation?  gtinRecommendation "Recommended GTIN information"
+		array<Recommendation> recommendations "Recommendations that have no return data besides what is in Recommendation"
+	}
+	
+	record ItemSpecificsRecommendation{
+		Recommendation recommendationData "The recommendation information"
+		array<string> recommendedItemSpecifics  "Recommended item specifics for this offer"
+	}
+	
+	record CategoryRecommendation{
+		Recommendation recommendationData "The recommendation information"
+		long recommendedCategory "The recommended category for this offer"
+	}
+	
+	record GTINRecommendation{
+		Recommendation recommendationData "The recommendation information"
+		string recommendedGTIN  "A suggested GTIN, such as UPC or ISBN"
+	}
+
+	record MaxFlatShippingRecommendation{
+		Recommendation recommendationData  "The recommendation information"
+		CurrencyAmount maxFlatShippingAllowed  "The maximum flat shipping allowed for this offer"
+	}
+	
+	enum RecommendationCode{
+		description 		"The client system should use these codes to determine what to display to the user"
+		SHORT_DESCRIPTION 	"The offer description is too short"
+		SHORT_TITLE  		"The offer title is too short"
+		TOO_FEW_IMAGES 		"More images are recommended"
+		VARIATIONS_ALLOWED 	"The category allows variations, but the current offer does not use them"
+	}
+	
+	record Recommendation{
+		string<RecommendationCode> recommendationCode "One of RecommendationCode, The client system should use these codes to determine what to display to the user";
+		string recommendationMessage "a message formatted as text, useful for logging but not recommended for direct display"
+		RecommendationPriority priority "the priority or severity of this message"
+	}
+	
+	enum RecommendationPriority{
+		FAILURE "A failure will result if the problem is not corrected"
+		HIGH    "This is a high priority recommendation"
+		MEDIUM  "This is medium priority recommendation"
+		LOW    "This is low priority recommendation"
+	}
+    
+    record MarketplaceStore {
+    	summary "Contains the information to associate the site and the custom category."
+    	description "Captures the eBay store name and custom categories for the store."
+
+		string name "Name of the eBay store."; 
+	    array<CustomCategory>? categories "Array of the custom categories for the store."; 
+	}
+	
+
+	
+	
 }
