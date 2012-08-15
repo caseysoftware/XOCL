@@ -90,7 +90,6 @@
 	<modules>
 		<module>Core</module>
 		<module>Authorization</module>
-		<module>Cart</module>
 		<module>ComparisonShoppingEngine</module>
 		<module>Customer</module>
 		<module>EcosystemMgmt</module>
@@ -99,7 +98,6 @@
 		<module>InventoryManagement</module>
 		<module>Invoicing</module>
 		<module>LoyaltyMarketing</module>
-		<module>Marketing</module>
 		<module>Marketplace</module>
 		<module>OrderManagement</module>
 		<module>OrderFulfillment</module>
