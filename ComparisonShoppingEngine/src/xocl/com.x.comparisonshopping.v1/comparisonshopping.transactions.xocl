@@ -98,7 +98,7 @@ package com.x.comparisonshopping.v1
 	} 
 		    
     // Publish a single product as part of a product feed
-    transaction PublishProduct(DataFeed dataFeed) response {
+    transaction PublishProduct(DataFeed dataFeed) notify {
     	description "Send a single product to a comparison shopping engine."
     	
     	preconditions(dataFeed[DataFeed.Started])
@@ -107,23 +107,11 @@ package com.x.comparisonshopping.v1
         sender {
         	message PublishProduct {        		
 				// Timeouts for the receiver to acknowledge message receipt and/or message validation
-        		timeouts(receipt=3s, validation=5s, response=10s)
+        		timeouts(receipt=3s, validation=5s)
         		
         		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
-        }
-        
-        receiver {
-        	
-        	// The product was accepted and processed by the CSE
-	       	success PublishProductSuccess {
-            	timeouts(receipt=3s, validation=5s)
-            	retries=3
-            }
-            
-            // The product was not accepted by the CSE
-            failure PublishProductFailure
         }
     }
 
@@ -142,7 +130,7 @@ package com.x.comparisonshopping.v1
     }
     
     // Publish a single inventory item as part of an inventory feed
-    transaction PublishProductInventory(DataFeed dataFeed) response {
+    transaction PublishProductInventory(DataFeed dataFeed) notify {
     	description "Send a single inventory item to a comparison shopping engine."
     	
     	preconditions(dataFeed[DataFeed.Started])
@@ -151,22 +139,11 @@ package com.x.comparisonshopping.v1
         sender {
         	message PublishProductInventory {        		
 				// Timeouts for the receiver to acknowledge message receipt and/or message validation
-        		timeouts(receipt=3s, validation=5s, response=10s)
+        		timeouts(receipt=3s, validation=5s)
         		
         		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
-        }
-        
-        receiver {
-        	// The inventory item was accepted and processed by the CSE
-	       	success PublishProductInventorySuccess {
-            	timeouts(receipt=3s, validation=5s)
-            	retries=3
-            }
-            
-            // The inventory item was not accepted by the CSE
-            failure PublishProductInventoryFailure
         }
     }
     
@@ -185,7 +162,7 @@ package com.x.comparisonshopping.v1
     }
     
     // Publish a single store as part of a product feed
-    transaction PublishStore(DataFeed dataFeed) response {
+    transaction PublishStore(DataFeed dataFeed) notify {
     	description "Send a single store to a comparison shopping engine."
     	
     	preconditions(dataFeed[DataFeed.Started])
@@ -194,23 +171,11 @@ package com.x.comparisonshopping.v1
         sender {
         	message PublishStore {        		
 				// Timeouts for the receiver to acknowledge message receipt and/or message validation
-        		timeouts(receipt=3s, validation=5s, response=10s)
+        		timeouts(receipt=3s, validation=5s)
         		
         		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
-        }
-        
-        receiver {
-        	
-        	// The store was accepted and processed by the CSE
-	       	success PublishStoreSuccess {
-            	timeouts(receipt=3s, validation=5s)
-            	retries=3
-            }
-            
-            // The store was not accepted by the CSE
-            failure PublishStoreFailure
         }
     }
     

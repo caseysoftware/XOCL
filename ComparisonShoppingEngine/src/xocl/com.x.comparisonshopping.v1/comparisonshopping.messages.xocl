@@ -254,24 +254,6 @@ package com.x.comparisonshopping.v1 {
 		Product product "Product being published."
 	}
 	
-	record PublishProductSuccess {
-		summary "Signals that a product was successfully published."
-		description "Indicates that a product was published."
-
-		string feedId "Identifier of the feed that is associated with this product."
-		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
-		string? cseProductId "Identifier of the product as assigned by the CSE."
-	}
-	
-	record PublishProductFailure {
-		summary "Signals that publishing a product failed."
-		description "Indicates that there was an error when attempting to publish the product. Returns the error code of the failure, which is useful for troubleshooting."
-		
-		string feedId "Identifier of the feed that is associated with this product."
-		string errorCode "Error code of the publishing failure."
-		string? sku "The sku of the product that failed."
-	}
-	
 	record ProductFeedProcessed {
 		summary "Signals that the product feed file was processed."
     	description "Notifies the publisher that the supplied product feed was processed."
@@ -288,24 +270,6 @@ package com.x.comparisonshopping.v1 {
 		InventoryByLocation inventory "Product inventory being published."
 	}
 	
-	record PublishProductInventorySuccess {
-		summary "Signals that product inventory was successfully published."
-		description "Indicates that product inventory was published."
-
-		string feedId "Identifier of the feed that is associated with this store."
-		string?  productSku "SKU of the product that is having its inventory published."
-		string? storeId "Identifier of the store associated with the inventory item being published."
-	}
-	
-	record PublishProductInventoryFailure {
-		summary "Signals that publishing the product inventory failed."
-		description "Indicates that there was an error when attempting to publish product inventory. Returns the error code of the failure, which is useful for troubleshooting."
-		
-		string feedId "Identifier of the feed that is associated with this store."
-		string errorCode "Error code of the publishing failure."
-		string? sku "The sku of the product that failed."
-	}
-	
 	record ProductInventoryFeedProcessed {
 		summary "Signals that the supplied inventory feed was processed."
     	description "Notifies the publisher that the supplied inventory feed was processed."
@@ -320,24 +284,6 @@ package com.x.comparisonshopping.v1 {
 		
 		string feedId "Identifier of the feed that is associated with this store."
 		Store store "Store being published."
-	}
-	
-	record PublishStoreSuccess {
-		summary "Signals that a store was successfully published."
-		description "Indicates that a store was published."
-
-		string feedId "Identifier of the feed that is associated with this store."
-		string storeId "Identifier of the store that was published."
-		string? cseStoreId "Identifier of the store as assigned by the comparison shopping engine."
-	}
-	
-	record PublishStoreFailure {
-		summary "Signals that publishing a store failed."
-		description "Indicates that there was an error when attempting to publish the store. Returns the error code of the failure, which is useful for troubleshooting."
-		
-		string feedId "Identifier of the feed that is associated with this store."
-		string storeId "Identifier of the store that failed to publish."
-		string errorCode "Error code of the publishing failure."
 	}
 	
 	record StoreFeedProcessed {
