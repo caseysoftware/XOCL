@@ -6,10 +6,14 @@ package com.x.comparisonshoppingcontracts.v1 0.0 workingdraft
     	description "A provider that supports the publishing (adding) of products to a comparison shopping engines and linking the products to the merchant's store."
     	
     	roles {
-	        PublishProductFeed.ProductFeedManager
-	        PublishInventoryFeed.InventoryFeedManager
-	        PublishStoreFeed.StoreFeedManager
-	        GetAllComparisonShoppingProviders.ComparisonShoppingProvider
+    		StartDataFeed.FeedManager
+    		CompleteDataFeed.FeedManager
+	        PublishProducts.ProductFeedManager
+	        PublishStoreOffers.StoreOfferFeedManager
+	        PublishStores.StoreFeedManager
+	        ProductFeedProcessed.ProductFeedManager
+	        StoreOfferFeedProcessed.StoreOfferFeedManager
+	        StoreFeedProcessed.StoreFeedManager
 	    }
     }
     
@@ -17,10 +21,14 @@ package com.x.comparisonshoppingcontracts.v1 0.0 workingdraft
     	description "A provider that supports the publishing (adding) of products to a comparison shopping engines and linking the products to the merchant's store."
     	
     	roles {
-	        PublishProductFeed.ProductFeedPublisher
-	        PublishInventoryFeed.InventoryFeedPublisher
-	        PublishStoreFeed.StoreFeedPublisher
-	        GetAllComparisonShoppingProviders.ComparisonShoppingProviderConsumer
+    		StartDataFeed.FeedPublisher
+    		CompleteDataFeed.FeedPublisher
+	        PublishProducts.ProductFeedPublisher
+	        PublishStoreOffers.StoreOfferFeedPublisher
+	        PublishStores.StoreFeedPublisher
+	        ProductFeedProcessed.ProductFeedPublisher
+	        StoreOfferFeedProcessed.StoreOfferFeedPublisher
+	        StoreFeedProcessed.StoreFeedPublisher
 	    }
     }
 }

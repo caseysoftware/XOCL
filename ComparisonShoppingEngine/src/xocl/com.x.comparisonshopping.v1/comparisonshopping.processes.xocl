@@ -26,146 +26,158 @@ package com.x.comparisonshopping.v1
 	     }
 
     }
+    
+    process StartDataFeed {
+        summary "Signasl the beginning of a new data feed."
+        description "Signals the beginning of a new data feed."
+        
+        roles {
+			FeedPublisher "Request the start of a new feed."
+			FeedManager "Processes requests to start a new feed."
+		}
+        
+	    workflow {
+	        summary "Signal the beginning of a new data feed."
+	        description "Signal the beginning of a new data feed."
+	    	
+	    	transaction StartDataFeed {
+	        	roles (FeedPublisher, FeedManager)
+	        }
+	     }
+    }
+    
+	process CompleteDataFeed {
+        summary "Signals the completion of a new data feed."
+        description "Signals the completion of a new data feed."
+        
+        roles {
+			FeedPublisher "Request the completion of a new feed."
+			FeedManager "Processes requests to complete a new feed."
+		}
+        
+	    workflow {
+	        summary "Signal the completion of a new data feed."
+	        description "Signal the completion of a new data feed."
+	    	
+	    	transaction CompleteDataFeed {
+	        	roles (FeedPublisher, FeedManager)
+	        }
+	     }
+    }
 	
-    // Publish a set of products on a comparison shopping engine site
-    process PublishProductFeed(DataFeed dataFeed) {
-        summary "Publishes (adds) products to a comparison shopping engine."
-        description "Sends a product feed to a comparison shopping engine and links the products to the merchant's store."
+    process PublishProducts {
+        summary "Publishes products to a comparison shopping engine."
+        description "Sends products to a comparison shopping engine and links the product to the merchant's store."
         
         roles {
-			ProductFeedPublisher "Sends a feed containing a list of products to a comparison shopping manager."
-			ProductFeedManager "Consumes the published products and manages them on the comparison shopping sites."
+			ProductFeedPublisher "Sends products that are part of a feed to a product feed manager."
+			ProductFeedManager "Consumes the published products (as part of a feed) and manages them on the comparison shopping sites."
 		}
-        
-        preconditions(dataFeed[DataFeed.New])
-        
+                
 	    // The baseline workflow for processing product feeds
-	    workflow
-	    {
-	    	summary "Baseline workflow for publishing products using a product feed."
-	    	description "This workflow sends a product feed to a comparison shopping engine, which adds the products to the comparison shopping engine and links the products to the merchant's store. It returns either a success or failure message."
+	    workflow {
+	        summary "Publishes products to a comparison shopping engine."
+	        description "Sends products to a comparison shopping engine and links the productd to the merchant's stores."
 	    	
-	    	// Notify the CSE that a new feed is being started
-	    	transaction StartDataFeed {
+	        transaction PublishProducts {
 	        	roles (ProductFeedPublisher, ProductFeedManager)
-	        }
-	    	
-	    	do ((!dataFeed[DataFeed.Completed]) && (!dataFeed[DataFeed.Failed])) {
-		        any {
-			        transaction PublishProduct {
-			        	roles (ProductFeedPublisher, ProductFeedManager)
-			        }
-		        
-		        	transaction CompleteDataFeed {
-			        	roles (ProductFeedPublisher, ProductFeedManager)
-			        }
-		        }
-		    }
-		    
-		    if (dataFeed[DataFeed.Completed]) {
-			    transaction ProductFeedProcessed {
-					roles (ProductFeedManager, ProductFeedPublisher)
-			    }
-			}
+	        }   
 	    }
-	    
-        postconditions {
-			success(dataFeed[DataFeed.Completed])
-			failure(dataFeed[DataFeed.Failed])
-        }
+		        
     }
     
-    process PublishInventoryFeed(DataFeed dataFeed) {
-        summary "Publishes an inventory feed to a comparison shopping engine."
-        description "Sends an inventory feed to a comparison shopping engine and links the inventory to the merchant's products."
+    process PublishStoreOffers {
+        summary "Publishes store offers to a comparison shopping engine."
+        description "Sends store offers to a comparison shopping engine and links it to the merchant's products."
         
         roles {
-			InventoryFeedPublisher "Sends a feed containing inventory and its associated stores to a inventory feed manager."
-			InventoryFeedManager "Updates the inventory and stores associated with the matching products."
+			StoreOfferFeedPublisher "Sends a store offer to a store offer feed manager."
+			StoreOfferFeedManager "Consumes the published store offer (as part of a feed) and manages it on the comparison shopping sites."
 		}
-        
-        preconditions(dataFeed[DataFeed.New])
-        
-	    workflow
-	    {
-	    	summary "Baseline workflow for publishing inventory and stores using an inventory feed."
-	    	description "This workflow sends a inventory feed to a comparison shopping engine, which adds the inventory to the comparison shopping engine and links the inventory to the merchant's store. It returns either a success or failure message."
+                
+	    workflow {
+	        summary "Publishes an store offer to a comparison shopping engine."
+	        description "Sends an store offer to a comparison shopping engine and links it to the merchant's products."
 	    	
-	    	// Notify the CSE that a new feed is being started
-	    	transaction StartDataFeed {
-	        	roles (InventoryFeedPublisher, InventoryFeedManager)
-	        }
-	    	
-	    	do ((!dataFeed[DataFeed.Completed]) && (!dataFeed[DataFeed.Failed])) {
-		        any {
-			        transaction PublishProductInventory {
-			        	roles (InventoryFeedPublisher, InventoryFeedManager)
-			        }
-		        
-		        	transaction CompleteDataFeed {
-			        	roles (InventoryFeedPublisher, InventoryFeedManager)
-			        }
-		        }
-		    }
-		    
-		    if (dataFeed[DataFeed.Completed]) {
-			    transaction ProductInventoryFeedProcessed {
-					roles (InventoryFeedManager, InventoryFeedPublisher)
-			    }
-			}
+	        transaction PublishStoreOffers {
+	        	roles (StoreOfferFeedPublisher, StoreOfferFeedManager)
+	        }		        
 	    }
-	    
-        postconditions {
-			success(dataFeed[DataFeed.Completed])
-			failure(dataFeed[DataFeed.Failed])
-        }
     }
     
-    // Publish stores locations that reference previously uploaded products
-    process PublishStoreFeed(DataFeed dataFeed) {
-        summary "Publishes an store feed to a CSE."
-        description "Sends an store feed to a comparison shopping engine and links the store to the merchant's products."
+    process PublishStores {
+        summary "Publishes stores to a comparison shopping engine."
+        description "Sends stores offer to a comparison shopping engine and links it to the merchant's products and offers."
         
         roles {
-			StoreFeedPublisher "Sends a feed containing stores to a store feed manager."
-			StoreFeedManager "Updates the store and associates stores with matching inventory."
+			StoreFeedPublisher "Sends stores to a store feed manager."
+			StoreFeedManager "Consumes the published stores (as part of a feed) and manages them on the comparison shopping sites."
 		}
-        
-        preconditions(dataFeed[DataFeed.New])
-        
-	    // The baseline workflow for processing store feeds
-	    workflow
-	    {
-	    	summary "Baseline workflow for publishing products using a product feed file."
-	    	description "This workflow sends a store feed to a comparison shopping engine, which adds the stores to the comparison shopping engine and links the inventory to the merchant's store. It returns either a success or failure message."
+                
+	    workflow {
+	        summary "Publishes stores to a comparison shopping engine."
+	        description "Sends stores to a comparison shopping engine and links them to the merchant's products and offers."
 	    	
-	    	// This transaction publishes the feed to the CSE 
-	    	transaction StartDataFeed {
+	        transaction PublishStores {
 	        	roles (StoreFeedPublisher, StoreFeedManager)
-	        }
-	    	
-	    	do ((!dataFeed[DataFeed.Completed]) && (!dataFeed[DataFeed.Failed])) {
-		        any {
-			        transaction PublishStore {
-			        	roles (StoreFeedPublisher, StoreFeedManager)
-			        }
-		        
-		        	transaction CompleteDataFeed {
-			        	roles (StoreFeedPublisher, StoreFeedManager)
-			        }
-		        }		        
-		    }
-	    
-		    if (dataFeed[DataFeed.Completed]) {
-			    transaction StoreFeedProcessed {
-					roles (StoreFeedManager, StoreFeedPublisher)
-			    }
-			}
-		    
+	        }   
+	    }       
+    }
+    
+	process ProductFeedProcessed {
+        summary "Notifies the publisher that the supplied product feed was processed."
+        description "Notifies the publisher that the supplied product feed was processed."
+        
+        roles {
+			ProductFeedManager "Manages the products that are being published."
+			ProductFeedPublisher "The product publisher that submitted the feed for processing."
 		}
-        postconditions {
-			success(dataFeed[DataFeed.Completed])
-			failure(dataFeed[DataFeed.Failed])
-        }
+        
+	    workflow {
+	        summary "Notifies the publisher that the supplied product feed was processed."
+	        description "Notifies the publisher that the supplied product feed was processed."
+	    	
+	    	transaction ProductFeedProcessed {
+	        	roles (ProductFeedManager, ProductFeedPublisher)
+	        }
+	     }
+    }
+    
+    process StoreOfferFeedProcessed {
+        summary "Notifies the publisher that the supplied store offer feed was processed."
+        description "Notifies the publisher that the supplied store offer feed was processed."
+        
+        roles {
+			StoreOfferFeedManager "Manages the store offers that are being published."
+			StoreOfferFeedPublisher "The store offer publisher that submitted the feed for processing."
+		}
+        
+	    workflow {
+	        summary "Notifies the publisher that the supplied store offer feed was processed."
+	        description "Notifies the publisher that the supplied store offer feed was processed."
+	    	
+	    	transaction StoreOfferFeedProcessed {
+	        	roles (StoreOfferFeedManager, StoreOfferFeedPublisher)
+	        }
+	     }
+    }
+    
+    process StoreFeedProcessed {
+        summary "Notifies the publisher that the supplied store feed was processed."
+        description "Notifies the publisher that the supplied store feed was processed."
+        
+        roles {
+			StoreFeedManager "Manages the stores that are being published."
+			StoreFeedPublisher "The stores publisher that submitted the feed for processing."
+		}
+        
+	    workflow {
+	        summary "Notifies the publisher that the supplied stores feed was processed."
+	        description "Notifies the publisher that the supplied stores feed was processed."
+	    	
+	    	transaction StoreFeedProcessed {
+	        	roles (StoreFeedManager, StoreFeedPublisher)
+	        }
+	     }
     }
 }

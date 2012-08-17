@@ -192,7 +192,7 @@ package com.x.comparisonshopping.v1 {
 		array<string>? services "Services provided by the store."
 	}
 	
-	record InventoryByLocation {
+	record StoreOffer {
 		summary "Contains data that describes inventory levels and pricing at a given location."
 		description "Provides the all the attributes needed to represent inventory levels, pricing, etc. at a store location."
 		
@@ -238,7 +238,7 @@ package com.x.comparisonshopping.v1 {
    		array<Variation>? variations "Collection of variations associated with the product."
    		CurrencyAmount? cpc "Amount the merchant is willing to pay per click (cost per click)."
    		string? channelId "Identifier of the comparison shopping engine channel."
-   		array<InventoryByLocation>? inventoryByLocation "Collection of inventory levels by physical location."
+   		array<StoreOffer>? storeOffers "Collection of store offers levels by physical location."
    		ConditionType condition = NEW "Condition of the product. The default is NEW."
    		string language = "en_US" "County and language code. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used."
    		boolean onlineOnly =  false "Whether the product is available only online. The default is false." 
@@ -246,12 +246,12 @@ package com.x.comparisonshopping.v1 {
 		boolean eligibleForInStorePickup = false "Whether a shopper can visit the location to pickup the product. The default is false."
 	}
 		
-	record PublishProduct {
+	record PublishProducts {
 		summary "Contains information for the product is being published."
 		description "Publishes products, inventory, and locations (stores) to a comparison shopping engine."
 		
-		string feedId "ID of the feed that is associated with this product."
-		Product product "Product being published."
+		string feedId "ID of the feed that is associated with these products."
+		array<Product> products "Products being published."
 	}
 	
 	record ProductFeedProcessed {
@@ -262,28 +262,28 @@ package com.x.comparisonshopping.v1 {
     	array<string> statusValues "Collection of values that represent the processing status of this feed."
     }
 	
-	record PublishProductInventory {
+	record PublishStoreOffers {
 		summary "Contains information for the product inventory is being published."
 		description "Publishes product inventory to a comparison shopping engine."
 		
-		string feedId "Identifier of the feed that is associated with this product inventory."
-		InventoryByLocation inventory "Product inventory being published."
+		string feedId "Identifier of the feed that is associated with these store offers."
+		array<StoreOffer> storeOffers "Store offers being published."
 	}
 	
-	record ProductInventoryFeedProcessed {
-		summary "Signals that the supplied inventory feed was processed."
-    	description "Notifies the publisher that the supplied inventory feed was processed."
+	record StoreOfferFeedProcessed {
+		summary "Signals that the supplied store offer feed was processed."
+    	description "Notifies the publisher that the supplied store offer feed was processed."
     	
     	string feedId "Identifier of the feed that was processed."
     	array<string> statusValues "Collection of values that represent the processing status of this feed."
     }
 	
-	record PublishStore {
-		summary "Contains information for the store is being published."
-		description "Publishes a store to a comparison shopping engine."
+	record PublishStores {
+		summary "Contains information for the stores is being published."
+		description "Publishes a stores to a comparison shopping engine."
 		
-		string feedId "Identifier of the feed that is associated with this store."
-		Store store "Store being published."
+		string feedId "Identifier of the feed that is associated with these stores."
+		array<Store>? stores "Stores being published."
 	}
 	
 	record StoreFeedProcessed {
