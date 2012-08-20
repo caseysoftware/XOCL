@@ -336,6 +336,7 @@
         MaxFlatShippingRecommendation? maxFlatShippingRecommendation  "If the flat shipping cost exceeds the maximum, contains the maximum allowed"
 		AttributeRecommendation?  attributeRecommendation "Recommended attributes (item specifics)"
 		GTINRecommendation?  gtinRecommendation "Recommended GTIN information"
+		CategoryRecommendation? categoryRecommendation "Recommended Category information"
 		array<Recommendation>? recommendations "Recommendations that have no return data besides what is in Recommendation"
 		array<Error>? expectedErrors "Array of the errors that would occurr if the offer were submitted as-is. Each error consists of an error code and error message."
 	}
