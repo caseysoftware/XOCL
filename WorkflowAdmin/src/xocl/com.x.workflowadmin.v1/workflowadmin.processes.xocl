@@ -13,4 +13,16 @@ package com.x.workflowadmin.v1 {
 			}
 		}
 	}
+	
+	process GetPostWorkflowMetaData {
+		description "This process is used to get the post workflow meta data"
+	
+		roles(WorkflowController, WorkflowExecutor)
+
+		workflow {
+			transaction GetWorkflowToAppInstanceMap {
+				roles(WorkflowController, WorkflowExecutor)
+			}
+		}
+	}
 }

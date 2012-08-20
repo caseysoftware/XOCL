@@ -1,5 +1,6 @@
 package com.x.workflowadmin.v1 {
 	import com.x.workflowadmin.v1.*
+	import com.x.core.v1.*
 
 	record WorkflowExecutionControls {
 		
@@ -35,6 +36,22 @@ package com.x.workflowadmin.v1 {
 		union{null, string} sleepNode = null;
 		long? sleepTimeInMillis;
 		boolean? clearAllControls;
+	}
+	
+	record GetWorkflowToAppInstanceMap {
+		summary "Requests the map from workflow instance to app instance."
+		description "Map contains information as to which workflow was processed by which application instance"
+		array<string> workflowInstanceKeys;
+	}
+	
+	record GetWorkflowToAppInstanceMapSucceeded {
+		summary "Returns the map from workflow instance to app instance."
+		description "Map contains information as to which workflow was processed by which application instance. Key and value are workflow instance key and application instance key respectively"
+		map<string> workflowToAppInstanceMap;
+	}
+	
+	record GetWorkflowToAppInstanceMapFailed {
+		array<Error> errors
 	}
 }
 	

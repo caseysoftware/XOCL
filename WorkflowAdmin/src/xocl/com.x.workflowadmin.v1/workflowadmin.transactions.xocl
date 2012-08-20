@@ -6,4 +6,21 @@ package com.x.workflowadmin.v1 {
 			message WorkflowExecutionControls
 		}
 	}
+	
+	transaction GetWorkflowToAppInstanceMap unicast query {
+		sender {
+			message GetWorkflowToAppInstanceMap {
+        		timeouts(receipt=30s, response=1m)
+        	}
+		}
+		
+		receiver {
+			success GetWorkflowToAppInstanceMapSucceeded {
+				timeouts(receipt=30s) 
+			}
+			failure GetWorkflowToAppInstanceMapFailed {
+				timeouts(receipt=30s) 
+			}
+		}
+	}
 }
