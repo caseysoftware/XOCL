@@ -47,11 +47,20 @@ package com.x.comparisonshopping.v1 {
 		summary "Specifies the data feed classification."
 		description "Defines the values used to classify a data feed."
 
-		FULL "Indicates the feed contains all the products.",
-		INCREMENTAL "Indicates the feed contains only products to be added."
+		FULL "Indicates the feed contains a full list of all the items to be published.",
+		INCREMENTAL "Indicates the feed contains an incremental set of items to be published."
 		UPDATE "Indicates the feed contains only items that are to be updated."
 	}
 			
+	enum DataFeedContentType {
+		summary "Classifies the content of the data feed."
+		description "Classifies the content of the data feed."
+
+		PRODUCT "Indicates the feed contains products.",
+		STORE_OFFER "Indicates the feed contains store offers."
+		STORE "Indicates the feed contains stores."
+	}
+	
 	record ProductAttribute {
 		summary "Contains the product label/value pairs."
 		description "Captures the various label/value pairs that are collected and associated as attributes with a product."
@@ -120,6 +129,7 @@ package com.x.comparisonshopping.v1 {
 		string id "Unique identifier for this data feed."
 		string? name "Name assigned to this data feed."
 		DataFeedType feedType = FULL "Classification of this feed being started. The default is FULL."
+		DataFeedContentType feedContentType "Determines the type of content (product, store offer, and stores) are in this feed."
 		datetime startDate "Date and time when the feed was started."
 		string? xAccountId "Account ID that will be used for this data feed."		
 	}
