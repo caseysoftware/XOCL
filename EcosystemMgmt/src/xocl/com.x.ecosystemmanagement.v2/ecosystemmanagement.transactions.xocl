@@ -1,0 +1,22 @@
+// Definition of ecosystemmanagement transactions
+package com.x.ecosystemmanagement.v2 {
+	import com.x.ecosystemmanagement.v2.*
+	
+	// this is suppose to be a very simple transaction.  no fancy stuff.
+	transaction PingCapability unicast response {
+		description "A capability sends a Ping message to a different capability in hopes to receive a corresponding Pong message."
+        sender
+        {
+        	message Ping
+        	{
+        		timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success Pong
+        	// failure (any of the standard choreographed failure messages)
+        } 
+    }
+
+}

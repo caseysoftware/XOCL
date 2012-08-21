@@ -1,0 +1,32 @@
+package com.x.ecosystemmanagementcontracts.v2 0.0 earlydraft
+{ 	
+	description "Ecosystem Management contracts"
+    import com.x.ecosystemmanagement.v2.*
+    
+    contract XManager {
+    	description "The special entity that manages the Fabric."
+    	// note: The XManager is kind of like a capability.  Hence some of its roles, below.
+    	roles
+    	{
+    		PingPong.Ponger "Responds with a Pong message after it receives a Ping message."
+    	}
+    }
+       
+    contract Capability {
+    	description "What every capability must implement."
+    	roles
+    	{
+    		PingPong.Ponger "Responds with a Pong message after it receives a Ping message."
+    	}
+    }
+    
+    contract Pinger {
+    	description "A capability that can send a Ping message."
+    	roles
+    	{
+    		// note: MUST also have the "Capability" contract since it itself is a capability
+    		PingPong.Pinger "Sends a Ping message to a capability."
+    	}
+    }
+ 
+}

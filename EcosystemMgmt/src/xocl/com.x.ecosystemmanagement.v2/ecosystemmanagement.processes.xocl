@@ -1,0 +1,21 @@
+package com.x.ecosystemmanagement.v2 { 	
+    import com.x.ecosystemmanagement.v2.*
+    
+    process PingPong {
+		description "Verify that a capability is awake and addressable on the Fabric"
+		
+		roles
+		{
+			Pinger "Sender of a Ping message, who awaits for the Pong"
+			Ponger "Responder using a Pong message"
+		}
+	
+		workflow {
+			summary "Pings a capability."
+			transaction PingCapability {
+				roles(Pinger, Ponger)
+			}
+		}
+	}
+
+}
