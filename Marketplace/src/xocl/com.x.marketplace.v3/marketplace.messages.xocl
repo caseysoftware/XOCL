@@ -199,11 +199,11 @@ package com.x.marketplace.v3{
 		string serviceName "Name of the shipping service.";
 		CurrencyAmount cost "Cost to ship a package.";  
 		CurrencyAmount? discountAmount "Amount of any shipping discount.";
-		CurrencyAmount? additionalCost "Amount of any additional shipping costs.";
+		CurrencyAmount? additionalCost "Amount of any additional shipping costs. Note: For eBay, this is the cost of shipping each additional item beyond the first item and applies to only Flat rate shipping for multi-item purchases.";
 		CurrencyAmount? packagingHandlingCost "Amount of any packing or handling costs.";
 		CurrencyAmount? surcharge "Amount of any surcharge, such as UPS or FedEx shipping to Alaska, Hawaii or Puerto Rico.";
 		array<string>? shipToLocations "List of locations this service can ship to. This is needed only for international shipping.";
-		array<string>? excludeShipToLocations "List of locations this service cannot ship to. This is needed only for international shipping.";
+		array<string>? excludeShipToLocations "List of locations this service cannot ship to. This applies only to international shipping.";
 	}
 
 	record ShippingServiceOptionGroup {
@@ -220,7 +220,7 @@ package com.x.marketplace.v3{
     	summary "Contains a list of shipping service option groups."
     	description "Captures a list of shipping service option groups. You use this when creating a profile or offer to indicate the type of shipping services available for the offer."
 
-		array<ShippingServiceOptionGroup> optionGroups "List of domestic or international shipping services.";
+		array<ShippingServiceOptionGroup> optionGroups "List of domestic and international shipping services.";
 	}
 
 	record PaymentPolicy {
@@ -297,7 +297,7 @@ package com.x.marketplace.v3{
 	    ReturnPolicy? returnPolicy "Return policy data specific to this offer. Note: This overrides the data in the return policy profile.";
 	    CalculatedShippingPolicy? calculatedShippingPolicy "Calculated shipping policy data specific to this offer. Note: This overrides the data in the calculated shipping policy profile."
 	    array<Sku> skus "SKUs of the items being offered.";
-	    array<string>? customCategories "Custom categories for the items being offered.";
+	    array<string>? customCategories "Custom categories for the items being offered. Note: For eBay these correspond to the eBay store categories.";
 	}
 	
 	record GetAllAvailableChannels {
