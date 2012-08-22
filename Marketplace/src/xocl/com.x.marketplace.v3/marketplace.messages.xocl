@@ -301,8 +301,8 @@ package com.x.marketplace.v3{
 	}
 	
 	record GetAllAvailableChannels {
-    	summary "Request for all available marketplaces that are associated with the requester."
-    	description "Request for all available marketplaces that are associated with the requester."
+    	summary "Request for all available marketplaces that are associated with the adapter."
+    	description "Request for all available marketplaces that are associated with the adapter."
 	}
 	
     record GetAllAvailableChannelsSucceeded {
@@ -310,7 +310,7 @@ package com.x.marketplace.v3{
     	description "Notifies the requester that searching for marketplaces was successful. Returns the search results and the query request."
 
 		string channelName "Name of the marketplace.";
-		string channelProviderName "Name of the capability the implements this.";
+		string channelProviderName "Name of the capability that implements this.";
 	}
 
 	record GetAllSites { 

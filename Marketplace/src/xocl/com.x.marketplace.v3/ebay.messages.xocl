@@ -26,9 +26,12 @@
 	}
 	
 	record SalesTaxTableEntry{
-		double salesTaxPercentage "The sales tax percentage"
-		string stateOrMunicipality "State or municipality code, such as MN, CA"
-		boolean shippingIncludedInTax "Whether shipping is included in the sales tax calculation"
+		summary "Contains the sales tax table information."
+		description "Fields for the sales tax information."
+		
+		double salesTaxPercentage "Sales tax percentage."
+		string stateOrMunicipality "State or municipality code, such as MN, CA."
+		boolean shippingIncludedInTax "Indicates whether shipping is included in the sales tax calculation."
 	}
 	
 	
@@ -88,7 +91,7 @@
 	
 	record PublishEbayOfferSucceeded { //Does not map 1:1 with request message - need to model this
 		summary "Signals that the eBay offer was published."
-		description "Notifies the requester that the eBay offer was published."
+		description "Success response that the eBay offer was published."
 		
 		EbayOffer offer "Offer information that was sent in the publish request.";
 		string? policyGroupId "Identifier of the policy group sent in the publish request.";
@@ -96,7 +99,7 @@
 
 	record PublishEbayOfferFailed {
 		summary "Signals that publishing an eBay offer failed."
-		description "Notifies the requester that the attempt to publish an eBay offer failed and returns the information sent in the request and details about the cause of the failure."
+		description "Failure response for publishing an eBay offer. It returns the information sent in the request and details about the cause of the failure."
 
 		EbayOfferDetails offer "eBay listing settings sent in the publish request.";
 		string? policyGroupId "Policy group ID sent in the publish request."; 
@@ -121,7 +124,7 @@
 	
 	record ReviseEbayPublishedOfferSucceeded {
 		summary "Signals that an offer was updated."
-		description "Notifies the requester that an offer was updated."
+		description "Success response that an offer was updated."
 		
 		EbayOffer updatedOffer "Offer update information sent in the update request."; 
 		string? policyGroupId "Policy group ID sent in the update request.";
@@ -129,7 +132,7 @@
 	
 	record ReviseEbayPublishedOfferFailed {
 		summary "Signals that an offer failed to be updated."
-		description "Notifies the requester that the attempt to update an offer failed and returns the information sent in the request and details about the cause of the failure."
+		description "Failure response for updating an offer. It returns the information sent in the request and details about the cause of the failure."
 		
 		EbayOfferDetails update "Offer update information sent in the update request";
 		string? policyGroupId "Policy group ID sent in the update request.";
@@ -138,7 +141,7 @@
 
 	record LookupEbayPolicyGroupSucceeded {
 		summary "Signals that looking up the policy group by ID was successful."
-		description "Notifies the requester that the eBay policy group was looked up by ID and returns the policy group information."
+		description "Success response that the eBay policy group was looked up by ID. It returns the policy group information."
 		
 		EbayPolicyGroup p "Policy group information.";
 	}
@@ -152,14 +155,14 @@
 
 	record CreateEbayPolicyGroupSucceeded {   
 		summary "Signals that an eBay policy group was created."
-		description "Notifies the requester that an eBay policy group was created and returns the policy group information."
+		description "Success response that an eBay policy group was created. It returns the policy group information."
 
 		EbayPolicyGroup p "Policy group information.";
 	}
 	
 	record CreateEbayPolicyGroupFailed {
 		summary "Signals that the eBay policy group was not created."
-		description "Notifies the requester that the attempt to create an eBay policy group failed and returns the information sent in the request and details about the cause of the failure."
+		description "Failure response for creating an eBay policy group. It returns the information sent in the request and details about the cause of the failure."
 		
 		EbayPolicyGroupData p "Information for the policy group sent in the original request.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
@@ -174,14 +177,14 @@
 
 	record UpdateEbayPolicyGroupSucceeded {
 		summary "Signals the policy group was updated."
-		description "Notifies the requester that the policy group was updated and returns the information sent in the request."
+		description "Success response that the policy group was updated. It returns the information sent in the request."
 		
 		EbayPolicyGroup p "Policy group information sent.";
 	}
 
 	record UpdateEbayPolicyGroupFailed {
 		summary "Signals that the policy group was not updated."
-		description "Notifies the requester that the attempt to update a policy group failed and returns the information sent in the request and details about the cause of the failure."
+		description "Failure response for updating a policy group. It returns the information sent in the request and details about the cause of the failure."
 		
 		EbayPolicyGroup p "Policy group information.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
@@ -199,15 +202,15 @@
 
 	record LookupStoreSucceeded {
 		summary "Signals that the site was found."
-		description "Notifies the requester that the site was looked up by ID and returns the eBay store and query request."
+		description "Success response that the site was looked up by ID. It returns the eBay store and query request."
 	
-		MarketplaceStore store "eBay store.";
+		MarketplaceStore store "eBay store name.";
 		LookupStore request "Original look up request.";
 	}
 
 	record LookupStoreFailed {
 		summary "Signals that looking up a site failed."
-		description "Notifies the requester that the attempt to look up a site failed and returns the information sent in the request and details about the cause of the failure."
+		description "Failure response for looking up a site. It returns the information sent in the request and details about the cause of the failure."
 		
 		LookupStore request "Original look up request.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
@@ -248,7 +251,7 @@
 
 	record LookupAccountProfileSucceeded {
 		summary "Signals that the account profile was found."
-		description "Notifies the requester that the account profile was found and returns the shipping discount profile."
+		description "Success response for looking up the account profile. It returns the shipping discount profile."
 	
 		AccountProfile store "Account profile information.";
 		LookupAccountProfile request "Original request.";
@@ -256,7 +259,7 @@
 
 	record LookupAccountProfileFailed {
 		summary "Signals that the account profile was not found."
-		description "Notifies the requester that the attempt to look up an account profile failed and returns the information sent in the request and details about the cause of the failure."
+		description "Failure response for looking up an account profile. It returns the information sent in the request and details about the cause of the failure."
 		
 		LookupAccountProfile request "Original request.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
@@ -264,7 +267,7 @@
     
     record SearchEbayOffersSucceeded{	
 		summary "Signals that the eBay offers were found."
-		description "Notifies the requester that eBay offers were found and returns the offers and query request."
+		description "Success response for searching for eBay offers. It returns the offers and query request."
 		
 		array<EbayOffer> offers "eBay offer that were found.";
 		SearchOffers request "Original search request.";
@@ -279,111 +282,159 @@
 
 	record SearchEbayTopSellingProductsSucceeded{
 		summary "Signals that the top selling products were found."
-		description "Notifies the requester that the top selling products were found and returns the products and query request."
+		description "Success response for searching for the top selling products. It returns the products and query request."
 		
 		array<EbayTopSellingProduct> products "Top selling products found. The products are returned in order from highest sales rank to lowest.";
 		SearchTopSellingProducts request "Original search request.";
 	}
 	
 	record UpsertSalesTaxTable{
-		description "Contains sales tax table data"
-		array<SalesTaxTableEntry> salesTaxTable "Sales tax rates by state"	
-		string siteCode "Identifier of the site";
+		summary "Captures the sales tax table data."
+		description "Contains sales tax table data."
+		
+		array<SalesTaxTableEntry> salesTaxTable "Sales tax rates by state."	
+		string siteCode "Identifier of the site.";
 		string xAccountId "Merchant's X.commerce ID.";
 	}
 	
     record UpsertSalesTaxTableSucceeded{
-    	description "Success response for upserting sales tax data"
-		UpsertSalesTaxTable request "the original request"
+    	summary "Signals that the eBay sales tax table was create or updated."
+    	description "Success response for upserting sales tax data."
+    	
+		UpsertSalesTaxTable request "Original request."
 	}
 	
     record UpsertSalesTaxTableFailed{
-    	description "Failure response for upserting sales tax data"
+    	summary "Signals that the request to create or update the sales tax data on eBay failed."
+    	description "Failure response for upserting sales tax data."
+    	
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message."
-		UpsertSalesTaxTable request "the original request"
+		UpsertSalesTaxTable request "Original request."
 	}
 	
 	record GetRecommendationsForOffer{
-		EbayOfferDetails offer "the offer details"
+		summary "Captures the offer details. The product details are supplied by a Product Information Management system."
+		description "Contains the offer details. product details are supplied by a Product Information Management system."
+		
+		EbayOfferDetails offer "Offer details."
 	}
 	
 	record GetRecommendationsForOfferSucceeded{
-		OfferRecommendationInformation recommendationInformation;
-		GetRecommendationsForOffer request;
+		summary "Signals that the request for offer recommendations was successful."
+		description "Success response that offer recommendations were returned."
+		
+		OfferRecommendationInformation recommendationInformation "Offer recommendation information.";
+		GetRecommendationsForOffer request "Original request, using a Product Information Management system.";
+		
 	}
 	
 	record GetRecommendationsForOfferFailed{
+		summary "Signals that the request to get offer recommendations has failed."
+		description "Failure response for getting offer recommendations. It returns the information sent in the request and details about the cause of the failure."
+		
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message."
-		GetRecommendationsForOffer request;
+		GetRecommendationsForOffer request "Original request.";
 	}
 
     record GetRecommendationsForOfferWithProductData{
-		EbayOfferDetailsWithProductData offer;
+		summary "Captures the offer details and product data. "
+		description "Contains the offer details and the product data."
+		
+		EbayOfferDetailsWithProductData offer "Offer details and product data.";
 		
 	}
 	record GetRecommendationsForOfferWithProductDataSucceeded{
-		OfferRecommendationInformation recommendationInformation;
-		GetRecommendationsForOfferWithProductData request
+		summary "Signals that the request for offer recommendations was successful."
+		description "Success response that offer recommendations were returned."
+		
+		OfferRecommendationInformation recommendationInformation "Offer recommendation information.";
+		GetRecommendationsForOfferWithProductData request "Original request, which contains the product data information."
 	}
 	
 	record GetRecommendationsForOfferWithProductDataFailed{
+		summary "Signals that the request to get offer recommendations has failed."
+		description "Failure response for getting product recommendations. It returns the information sent in the request and details about the cause of the failure."
+		
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message."
-		GetRecommendationsForOfferWithProductData request;
+		GetRecommendationsForOfferWithProductData request "Original request.";
 	}
 		
 	record OfferRecommendationInformation{
-        CurrencyAmount? estimatedListingFee " This Estimated Listing Fee for this offer."
-        MaxFlatShippingRecommendation? maxFlatShippingRecommendation  "If the flat shipping cost exceeds the maximum, contains the maximum allowed"
-		AttributeRecommendation?  attributeRecommendation "Recommended attributes (item specifics)"
-		GTINRecommendation?  gtinRecommendation "Recommended GTIN information"
-		CategoryRecommendation? categoryRecommendation "Recommended Category information"
-		array<Recommendation>? recommendations "Recommendations that have no return data besides what is in Recommendation"
-		array<Error>? expectedErrors "Array of the errors that would occurr if the offer were submitted as-is. Each error consists of an error code and error message."
+
+		summary "Captures the offer recommendation data."
+		description "Contains the information for the offer recommendation request."
+		
+        CurrencyAmount? estimatedListingFee "Estimated amount of the listing fee for this offer."
+        MaxFlatShippingRecommendation? maxFlatShippingRecommendation  "If the flat shipping cost exceeds the maximum, this record contains the maximum allowed."
+		AttributeRecommendation?  attributeRecommendation "Recommended attributes (item specifics)."
+		GTINRecommendation?  gtinRecommendation "Recommended GTIN information."
+		CategoryRecommendation? categoryRecommendation "Recommended category."
+		array<Recommendation>? recommendations "Recommendations that have no return data except what is in 'Recommendation'."
+		array<Error>? expectedErrors "Array of the errors that would occur if the offer were submitted as-is. Each error consists of an error code and error message."
+
 	}
 	
 	record AttributeRecommendation{
-		string recommendationMessage "a message formatted as text, useful for logging but not recommended for direct display"
-		RecommendationPriority priority "the priority or severity of this message"
-		map<array<string>> recommendedAttributes  "Recommended attributes for this offer, a map of attribute name to list of common attribute values"
+		summary "Captures the recommended attribute for an offer."
+		description "Contains the recommended attribute for an offer."
+		
+		string recommendationMessage "Message formatted as text, useful for logging but not recommended for direct display."
+		RecommendationPriority priority "Priority or severity of this message."
+		map<array<string>> recommendedAttributes "Recommended attributes for this offer, a map of attribute name to list of common attribute values"
 	}
 	
 	record CategoryRecommendation{
-		string recommendationMessage "a message formatted as text, useful for logging but not recommended for direct display"
-		RecommendationPriority priority "the priority or severity of this message"
-		array<Category> recommendedCategories "The recommended category or categories for this offer"
+		summary "Captures the recommended categories for an offer."
+		description "Contains the recommended categories for an offer."
+		
+		string recommendationMessage "Message formatted as text, useful for logging but not recommended for direct display."
+		RecommendationPriority priority "Priority or severity of this message."
+		array<Category> recommendedCategories "Recommended category or categories for this offer."
 	}
 	
 	record GTINRecommendation{
-		string recommendationMessage "a message formatted as text, useful for logging but not recommended for direct display"
-		RecommendationPriority priority "the priority or severity of this message"
-		array<string> recommendedGTINs  "A suggested GTIN, such as UPC or ISBN"
+		summary "Captures the recommended GTIN for an offer."
+		description "Contains the recommended GTIN for an offer."
+		
+		string recommendationMessage "Message formatted as text, useful for logging but not recommended for direct display."
+		RecommendationPriority priority "Priority or severity of this message."
+		array<string> recommendedGTINs  "Suggested GTIN, such as UPC or ISBN."
 	}
 
 	record MaxFlatShippingRecommendation{
-		string recommendationMessage "a message formatted as text, useful for logging but not recommended for direct display"
-		RecommendationPriority priority "the priority or severity of this message"
-		CurrencyAmount maxFlatShippingAllowed  "The maximum flat shipping allowed for this offer"
+		summary "Captures the recommended flat shipping rate for an offer."
+		description "Contains the recommended flat shipping rate for an offer."
+		
+		string recommendationMessage "Message formatted as text, useful for logging but not recommended for direct display."
+		RecommendationPriority priority "Priority or severity of this message."
+		CurrencyAmount maxFlatShippingAllowed  "Maximum flat shipping allowed for this offer."
 	}
 	
 	enum RecommendationCode{
-		description 		"The client system should use these codes to determine what to display to the user"
-		SHORT_DESCRIPTION 	"The offer description is too short"
-		SHORT_TITLE  		"The offer title is too short"
-		TOO_FEW_IMAGES 		"More images are recommended"
-		VARIATIONS_ALLOWED 	"The category allows variations, but the current offer does not use them"
+		description 		"Defines the recommendation values used by a client system for what is displayed to the user."
+		
+		SHORT_DESCRIPTION 	"Offer description is too short."
+		SHORT_TITLE  		"Offer title is too short."
+		TOO_FEW_IMAGES 		"More images are recommended."
+		VARIATIONS_ALLOWED 	"Category allows variations, but the current offer does not use them."
 	}
 	
 	record Recommendation{
+		summary "Captures the recommendation."
+		description "Contains fields for recommendation information."
+		
 		string<RecommendationCode> recommendationCode "One of RecommendationCode, The client system should use these codes to determine what to display to the user";
-		string recommendationMessage "a message formatted as text, useful for logging but not recommended for direct display"
-		RecommendationPriority priority "the priority or severity of this message"
+		string recommendationMessage "Message formatted as text, useful for logging but not recommended for direct display"
+		RecommendationPriority priority "Priority or severity of this message."
 	}
 	
 	enum RecommendationPriority{
+		description "Defines the values used to specify the priority of a recommendation."
+		
 		FAILURE "A failure will result if the problem is not corrected"
-		HIGH    "This is a high priority recommendation"
-		MEDIUM  "This is medium priority recommendation"
-		LOW    "This is low priority recommendation"
+		HIGH    "High priority recommendation."
+		MEDIUM  "Medium priority recommendation."
+		LOW    "Low priority recommendation."
 	}
     
     record MarketplaceStore {

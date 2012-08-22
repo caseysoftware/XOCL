@@ -43,7 +43,7 @@
     }
     
     transaction UpsertSalesTaxTable unicast response {
-    	description "Creates or updates a sales tax table"
+    	description "Creates or updates a sales tax table in eBay."
         sender {
         	message UpsertSalesTaxTable {
         		 timeouts(response=30s)
@@ -64,7 +64,7 @@
     }
     
     transaction GetRecommendationsForOffer<WithProductData> unicast query {
-    	description "Gets recommendations for an offer"
+    	description "Gets recommendations for an offer."
         sender {
         	message GetRecommendationsForOffer {
         		 timeouts(response=30s)

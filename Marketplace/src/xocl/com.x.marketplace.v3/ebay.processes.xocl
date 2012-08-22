@@ -19,7 +19,7 @@
 	}
  	
  	process AccountProfileLookup {
-		description "A merchant looks up profiles they have set up in eBay."
+		description "A merchant looks up profiles that they have set up in eBay."
 		
 		roles {
 			MarketplaceMetadataConsumer "Requests a search of the profiles they have set up in eBay."
@@ -35,12 +35,13 @@
 	}
 	
 	process SalesTaxTableUpsert{
-		description "The consumer (such as a cart) creates or updates a tax table in eBay"
+		description "The consumer (such as a cart) creates or updates a tax table in eBay."
 		roles{
-			MarketplaceMetadataConsumer "Sends the tax table to create or update"
-			MarketplaceMetadataProvider "Stores the tax table"
+			MarketplaceMetadataConsumer "Sends the tax table to create or update."
+			MarketplaceMetadataProvider "Stores the tax table."
 		}
 		workflow {
+			description "Creates or updates an eBay tax table."
 			transaction UpsertSalesTaxTable{
 				roles(MarketplaceMetadataConsumer, MarketplaceMetadataProvider)
 			}
@@ -48,13 +49,14 @@
 	}
 	
 	process GetRecommendationsForOffer<WithProductData>{
-		description "The consumer sends offers to a marketplace for recommendations, gets back recommendations"
+		description "The consumer sends offers to a marketplace for recommendations and receives recommendations."
 		
 		roles {
-			OfferManager "The system that creates offers"
-			Marketplace  "The system to which offers are published"
+			OfferManager "The system that creates the offers."
+			Marketplace  "The system to which offers are published."
 		}
 		workflow{
+			description ""
 			transaction GetRecommendationsForOffer<WithProductData>{
 				roles (OfferManager, Marketplace)
 			}
