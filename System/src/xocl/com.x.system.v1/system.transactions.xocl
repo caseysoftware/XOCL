@@ -29,6 +29,7 @@ package com.x.system.v1 {
         {
         	message Configure {
         		topic "/capability/configure"
+			timeouts(validation=30s)  
         	}
         }
     }
@@ -80,6 +81,7 @@ package com.x.system.v1 {
         {
         	message NewTenantAuthorization {
         		topic "/xfabric/tenant/updated"
+			timeouts(validation=30s) 
         	}
         }
     }
@@ -89,6 +91,7 @@ package com.x.system.v1 {
         {
         	message TenantRelationshipCreated {
         		topic "/system/tenant/relationship/created"
+			timeouts(validation=30s)  
         	}
         }
     }
@@ -98,6 +101,7 @@ package com.x.system.v1 {
         {
         	message TenantRelationshipDeleted {
         		topic "/system/tenant/relationship/deleted"
+			timeouts(validation=30s) 
         	}
         }
     }
