@@ -317,6 +317,7 @@
 		description "Contains the offer details. product details are supplied by a Product Information Management system."
 		
 		EbayOfferDetails offer "Offer details."
+		string? policyGroupId "Id of a relevant policy group"
 	}
 	
 	record GetRecommendationsForOfferSucceeded{
@@ -341,6 +342,7 @@
 		description "Contains the offer details and the product data."
 		
 		EbayOfferDetailsWithProductData offer "Offer details and product data.";
+		string? policyGroupId "Id of a relevant policy group"
 		
 	}
 	record GetRecommendationsForOfferWithProductDataSucceeded{
