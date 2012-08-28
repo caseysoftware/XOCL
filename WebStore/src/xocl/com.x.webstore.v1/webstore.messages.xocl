@@ -226,6 +226,7 @@ package com.x.webstore.v1{
 	    string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique identifier supplied by the merchant.";
 		CurrencyAmount currentPrice "New selling price for the offer.";
 		string webStoreId "Identifier for the web store.";
+		string? offerId "Identifier of the offer. This ID is assigned by the channel that published the offer.";
 	}
 	
     record WebStoreOfferQuantityUpdated{
@@ -235,5 +236,6 @@ package com.x.webstore.v1{
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique identifier supplied by the merchant.";
 		long quantity "New value for how many of this product are in stock.";
 		string webStoreId "Identifier for the web store.";
+		string? offerId "Identifier of the offer. This ID is assigned by the channel that published the offer.";
 	}
 }
