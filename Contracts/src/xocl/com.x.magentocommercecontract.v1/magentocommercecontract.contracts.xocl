@@ -1,4 +1,4 @@
-package com.x.magentocommercecontract.v1 0.0 earlydraft
+package com.x.magentocommercecontract.v1 0.1 earlydraft
 {
 	description "Magento Commerce contract"
 	import com.x.webstore.v1.*

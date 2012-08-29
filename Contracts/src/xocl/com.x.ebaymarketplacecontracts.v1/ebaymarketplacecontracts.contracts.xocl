@@ -1,4 +1,4 @@
-package com.x.ebaymarketplacecontracts.v1 0.1 candidaterecommendation
+package com.x.ebaymarketplacecontracts.v1 0.2 candidaterecommendation
 {
 	import com.x.marketplace.v3.*
 	import com.x.ordermanagement.v2.*

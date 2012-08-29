@@ -1,4 +1,4 @@
-package com.x.thirdpartyorderfulfillment.v1 0.0 earlydraft {
+package com.x.thirdpartyorderfulfillment.v1 0.1 earlydraft {
 	packagetitle "Third Party Order Fulfillment contract"
 
 	import com.x.orderfulfillment.v1.*

@@ -1,4 +1,4 @@
-package com.x.loyaltycontracts.v1 0.0 earlydraft
+package com.x.loyaltycontracts.v1 0.1 earlydraft
 {
 	import com.x.loyalty.v1.*
 	import com.x.customer.v1.*

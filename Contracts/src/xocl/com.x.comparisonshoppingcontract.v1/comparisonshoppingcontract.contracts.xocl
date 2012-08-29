@@ -1,4 +1,4 @@
-package com.x.comparisonshoppingcontracts.v1 0.0 workingdraft
+package com.x.comparisonshoppingcontracts.v1 0.1 workingdraft
 {		
 	import com.x.comparisonshopping.v1.* 
 	
