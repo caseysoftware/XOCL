@@ -156,7 +156,7 @@
 				<inherited>true</inherited>
 				<groupId>com.x.ocl</groupId>
 				<artifactId>xocl-maven-plugin</artifactId>
-				<version>1.4.13</version>
+				<version>1.4.14-SNAPSHOT</version>
 				<executions>
 					<execution>
 						<phase>generate-sources</phase>
@@ -164,6 +164,7 @@
 							<goal>xocltoavdl</goal>
 							<goal>xocltolocaljson</goal>
 							<goal>xocltojson</goal>
+							<goal>xocltobundlejson</goal>
 						</goals>
 						<configuration>
 							<sourceDirectory>${project.basedir}/src/xocl</sourceDirectory>
@@ -249,6 +250,7 @@
 											<goal>xocltoavdl</goal>
 											<goal>xocltolocaljson</goal>
 											<goal>xocltojson</goal>
+											<goal>xocltobundlejson</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
