@@ -1,4 +1,4 @@
-package com.x.core.v1 0.1{
+package com.x.core.v1 0.2{
 	packagetitle "Core"
 	description "The Core package specifies record types that are generic and can be used in other packages."
 
