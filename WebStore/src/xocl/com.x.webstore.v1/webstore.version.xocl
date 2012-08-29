@@ -1,4 +1,4 @@
-package com.x.webstore.v1 0.5 candidaterecommendation {
+package com.x.webstore.v1 0.6 candidaterecommendation {
 	packagetitle "Web Store"
 	description "The Web Store package specifies processes that provide a web-based storefront for a merchant."
 	import com.x.webstore.v1.*
