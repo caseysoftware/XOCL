@@ -82,7 +82,7 @@ package com.x.ordermanagement.v2 {
     process ProcessSalesChannelOrder<MarketplaceOrder>(Order order) {
     	
     	summary "Processes an order that originates from a sales channel."
-        description "An order is submitted from and sales channel and is processed by making adjustments, changing the status, etc. and notifies observers of the action performed. Note: Use OrderReturn ONLY when all the items in an order are returned at the same time. For all other returns, use PartialOrderReturn. For example, a buyer orders two items. Returns one item and later returns the second item. You would use PartialOrderReturn for both of these returns."
+        description "An order is submitted from the sales channel and is processed by making adjustments, changing the status, etc. and notifies observers of the action performed. Note: Use OrderReturn ONLY when all the items in an order are returned at the same time. For all other returns, use PartialOrderReturn. For example, a buyer orders two items. Returns one item and later returns the second item. You would use PartialOrderReturn for both of these returns."
         
         roles {
         	SalesChannel "Submits the order for processing."
