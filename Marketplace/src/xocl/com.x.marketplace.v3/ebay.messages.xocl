@@ -325,7 +325,7 @@
 		description "Success response that offer recommendations were returned."
 		
 		OfferRecommendationInformation recommendationInformation "Offer recommendation information.";
-		GetRecommendationsForOffer request "Original request, using a Product Information Management system.";
+		EbayOfferDetails offer "Original request";
 		
 	}
 	
@@ -334,7 +334,7 @@
 		description "Failure response for getting offer recommendations. It returns the information sent in the request and details about the cause of the failure."
 		
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message."
-		GetRecommendationsForOffer request "Original request.";
+		EbayOfferDetails offer "Original request.";
 	}
 
     record GetRecommendationsForOfferWithProductData{
@@ -344,21 +344,6 @@
 		EbayOfferDetailsWithProductData offer "Offer details and product data.";
 		string? policyGroupId "Id of a relevant policy group"
 		
-	}
-	record GetRecommendationsForOfferWithProductDataSucceeded{
-		summary "Signals that the request for offer recommendations was successful."
-		description "Success response that offer recommendations were returned."
-		
-		OfferRecommendationInformation recommendationInformation "Offer recommendation information.";
-		GetRecommendationsForOfferWithProductData request "Original request, which contains the product data information."
-	}
-	
-	record GetRecommendationsForOfferWithProductDataFailed{
-		summary "Signals that the request to get offer recommendations has failed."
-		description "Failure response for getting product recommendations. It returns the information sent in the request and details about the cause of the failure."
-		
-		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message."
-		GetRecommendationsForOfferWithProductData request "Original request.";
 	}
 		
 	record OfferRecommendationInformation{

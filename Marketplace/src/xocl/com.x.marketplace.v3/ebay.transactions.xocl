@@ -77,9 +77,7 @@
         }
         receiver {
         	success GetRecommendationsForOfferSucceeded
-        	success<WithProductData> GetRecommendationsForOfferWithProductDataSucceeded
         	failure GetRecommendationsForOfferFailed 
-        	failure<WithProductData> GetRecommendationsForOfferWithProductDataFailed 
         } 
     }
     
