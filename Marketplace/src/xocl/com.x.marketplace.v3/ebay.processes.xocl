@@ -53,7 +53,8 @@
 		
 		roles {
 			OfferManager "The system that creates the offers."
-			Marketplace  "The system to which offers are published."
+			Marketplace  "The marketplace implementation that receives the offers. It returns the recommendations, such as recommended categories, warnings about description or title length, etc."
+
 		}
 		workflow{
 			description ""

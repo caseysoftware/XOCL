@@ -57,7 +57,7 @@ package com.x.marketplace.v3{
 	 
 	 record SupportedCountry {
     	summary "Contains the country supported by a site."
-    	description "Captures the country code and description of a county supported by a site."
+    	description "Captures the country code and description of a country supported by a site."
 
 		string countryCode "2-character country code. For example, US (United States) or FR (France).";
 		string _AVDL_description "Description of the country.";

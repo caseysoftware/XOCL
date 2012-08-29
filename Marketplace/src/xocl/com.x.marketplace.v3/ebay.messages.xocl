@@ -18,11 +18,11 @@
 		boolean? useTaxTable "Specifies whether to use a tax table at checkout. This must already be setup in eBay by the merchant.";
 		string? postalCode "Zip code of the product location.";
 		string? location "Location of the product.";
-		string? imageVariationName "Image name of a variation.";	
+		string? imageVariationName "Name of the type of variation, such as color, size, etc. This field is mapped to eBay’s VariationSpecificName tag, which is part of the Pictures element.  You can put sets of pictures in each variation that correspond to that variation’s value for the specified VariationSpecificName.  This means that in the live listing, when Green is specified, all images under the Green VariationSpecificPictureSet will appear.";	
 		string? domesticShippingDiscountProfileId "Identifier of the profile already created on eBay for domestic shipping discounts. Note: This overrides the value in the policy group."; 
 		string? internationalShippingDiscountProfileId "Identifier of the profile already created on eBay for international shipping discounts. Note: This overrides the value in the policy group.";
 		boolean? applyDomesticPromotionalShippingRule "Specifies whether to use the domestic Promotional Shipping Rule set up in MyeBay. Note: This overrides the value in the policy group."
-		array<SalesTaxTableEntry>? salesTaxTable "Sales tax rates by state"
+		array<SalesTaxTableEntry>? salesTaxTable "Sales tax rates by state."
 	}
 	
 	record SalesTaxTableEntry{
@@ -85,7 +85,7 @@
 		summary "Contains the information to publish an offer on eBay."
 		description "Captures the product details, eBay listing settings and policy group ID needed to publish an offer on eBay."
 		
-		EbayOfferDetailsWithProductData offer "Product details and the eBay listing settings for an offer"; 
+		EbayOfferDetailsWithProductData offer "Product details and the eBay listing settings for an offer."; 
 		string? policyGroupId "Identifier of the policy group for an offer.";
 	}
 	
@@ -134,7 +134,7 @@
 		summary "Signals that an offer failed to be updated."
 		description "Failure response for updating an offer. It returns the information sent in the request and details about the cause of the failure."
 		
-		EbayOfferDetails update "Offer update information sent in the update request";
+		EbayOfferDetails update "Offer update information sent in the update request.";
 		string? policyGroupId "Policy group ID sent in the update request.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
 	}
@@ -338,7 +338,7 @@
 	}
 
     record GetRecommendationsForOfferWithProductData{
-		summary "Captures the offer details and product data. "
+		summary "Captures the offer details and product data."
 		description "Contains the offer details and the product data."
 		
 		EbayOfferDetailsWithProductData offer "Offer details and product data.";
@@ -365,16 +365,16 @@
 		summary "Captures the recommended attribute for an offer."
 		description "Contains the recommended attribute for an offer."
 		
-		string recommendationMessage "Message formatted as text, useful for logging but not recommended for direct display."
+		string recommendationMessage "Message formatted as text, which is useful for logging but is not recommended for direct display."
 		RecommendationPriority priority "Priority or severity of this message."
-		map<array<string>> recommendedAttributes "Recommended attributes for this offer, a map of attribute name to list of common attribute values"
+		map<array<string>> recommendedAttributes "Recommended attributes for this offer. This is a set of key-value pairs.  The keys are the attribute names and the values are lists of common attribute values."
 	}
 	
 	record CategoryRecommendation{
 		summary "Captures the recommended categories for an offer."
 		description "Contains the recommended categories for an offer."
 		
-		string recommendationMessage "Message formatted as text, useful for logging but not recommended for direct display."
+		string recommendationMessage "Message formatted as text, which is useful for logging but is not recommended for direct display."
 		RecommendationPriority priority "Priority or severity of this message."
 		array<Category> recommendedCategories "Recommended category or categories for this offer."
 	}
@@ -383,7 +383,7 @@
 		summary "Captures the recommended GTIN for an offer."
 		description "Contains the recommended GTIN for an offer."
 		
-		string recommendationMessage "Message formatted as text, useful for logging but not recommended for direct display."
+		string recommendationMessage "Message formatted as text, which is useful for logging but is not recommended for direct display."
 		RecommendationPriority priority "Priority or severity of this message."
 		array<string> recommendedGTINs  "Suggested GTIN, such as UPC or ISBN."
 	}
@@ -392,7 +392,7 @@
 		summary "Captures the recommended flat shipping rate for an offer."
 		description "Contains the recommended flat shipping rate for an offer."
 		
-		string recommendationMessage "Message formatted as text, useful for logging but not recommended for direct display."
+		string recommendationMessage "Message formatted as text, which is useful for logging but is not recommended for direct display."
 		RecommendationPriority priority "Priority or severity of this message."
 		CurrencyAmount maxFlatShippingAllowed  "Maximum flat shipping allowed for this offer."
 	}
@@ -410,15 +410,15 @@
 		summary "Captures the recommendation."
 		description "Contains fields for recommendation information."
 		
-		string<RecommendationCode> recommendationCode "One of RecommendationCode, The client system should use these codes to determine what to display to the user";
-		string recommendationMessage "Message formatted as text, useful for logging but not recommended for direct display"
+		string<RecommendationCode> recommendationCode "The RecommendationCode for this recommendation.";
+		string recommendationMessage "Message formatted as text, which is useful for logging but is not recommended for direct display."
 		RecommendationPriority priority "Priority or severity of this message."
 	}
 	
 	enum RecommendationPriority{
-		description "Defines the values used to specify the priority of a recommendation."
+		description "Defines the values used to specify the priority or severity of the recommendation."
 		
-		FAILURE "A failure will result if the problem is not corrected"
+		FAILURE "A failure will result if the problem is not corrected."
 		HIGH    "High priority recommendation."
 		MEDIUM  "Medium priority recommendation."
 		LOW    "Low priority recommendation."
