@@ -1,4 +1,4 @@
-package com.x.authz.v1 0.2 candidaterecommendation {
+package com.x.authz.v1 0.3 candidaterecommendation {
 	packagetitle "Authorization"
 	description "The Authorization package specifies the processes for authorizing software to act on the merchant's behalf in a marketplace."
 
