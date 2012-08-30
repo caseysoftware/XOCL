@@ -64,7 +64,7 @@ package com.x.inventory.v2
     	
     	sender{
     		message UpdateStockItemDelta{
-    			timeouts(receipt=10s, response=1m) 
+    			timeouts(response=1m) 
     		}
     	}
     	receiver{
