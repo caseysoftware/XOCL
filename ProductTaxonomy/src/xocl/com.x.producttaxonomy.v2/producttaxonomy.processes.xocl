@@ -1,0 +1,55 @@
+package com.x.producttaxonomy.v2 {	
+	packagetitle "Product Taxonomy"
+	
+	import com.x.producttaxonomy.v2.*
+	
+    process ProductTaxonomyRetrieval {
+		summary "Searches and returns product taxonomy information."
+		description "ProductTaxonomyConsumer searches for product types and the ProductTaxonomyManager returns product types based on the search criteria."	
+			
+		roles
+			{
+				ProductTaxonomyConsumer "Searches for product types in the product taxonomy."
+				ProductTaxonomyManager "Returns product types based on the search criteria."
+			}
+		
+		workflow {
+			description "Gets or updates the product taxonomy and then does any, all, or none of the following: returns all product classes by locale, returns product type details for a specified product class and searches for product type." 
+			
+			any{ // we may get the product taxonomy first, unless we already have it and do not need to refresh   
+				transaction GetProductTaxonomy {
+					roles(ProductTaxonomyConsumer, ProductTaxonomyManager)
+				}
+			}
+			any{ //we may do either, both, or none of these in any order
+				noop
+				transaction SearchProductType {
+					roles(ProductTaxonomyConsumer, ProductTaxonomyManager)
+				}
+				transaction GetProductType {
+					roles(ProductTaxonomyConsumer, ProductTaxonomyManager)
+				}
+			}
+		}
+	}
+	
+	process ProductTaxonomyUpdate{
+		summary "Send the product taxonomy update notification."
+		description "Notifies the ProductTaxonomyObserver that an updated has been done."	
+
+		roles
+			{
+				ProductTaxonomyManager "Notifies the ProductTaxonomyObserver that the product taxonomy has been updated."
+				ProductTaxonomyObserver "Receives the product taxonomy update notification."
+			}
+		
+		workflow {
+			description "Notifies observers that the product taxonomy was updated."
+						
+			transaction ProductTaxonomyUpdated {
+				roles(ProductTaxonomyManager, ProductTaxonomyObserver)
+			}
+		}
+		
+	}
+}
