@@ -1,0 +1,206 @@
+package com.x.pim.v2 
+{
+	packagetitle "Product Information Management"
+	import com.x.pim.v2.*
+	
+    entity Product
+    {
+    	description "A cataloged item that may be offered for sale.  A product can have multiple variations."
+    }
+    entity StockKeepingUnit
+    {
+    	description "A Stock Keeping Unit is a unique identifier for each product variation."
+    }
+
+    
+ 	transaction SearchProduct query
+    {
+    	description "Retrieves the details for one or more products based on the search criteria. It returns either a succeeded message containing the results or a failed message containing the search criteria."
+        sender
+        {
+        	message SearchProduct
+        	{
+        		 timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success SearchProductSucceeded            
+
+            failure SearchProductFailed
+        } 
+    }
+    
+    transaction LookupProduct query
+    {
+    	description "Retrieves the details for one product based on SKU value. It returns either a succeeded message containing the results or a failed message containing the search criteria."
+        sender
+        {
+        	message LookupProduct
+        	{
+        		timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success LookupProductSucceeded
+            
+            failure LookupProductFailed
+        } 
+    }
+    
+    transaction ProductCreated inform
+    {
+    	description "Sends a message that informs an observer that a product was created. The message contains an array of the products that were created."
+        sender
+        {
+        	message ProductCreated
+        }
+    }
+    
+    transaction ProductUpdated inform
+    {
+    	description "Sends a message that informs an observer that a product was updated. The message contains an array of the products that were updated."
+        sender
+        {
+        	message ProductUpdated
+        }
+    }
+    
+    transaction ProductDeleted inform
+    {
+    	description "Sends a message that informs an observer that a product was deleted. The message contains an array of the products that were deleted."
+        sender
+        {
+        	message ProductDeleted
+        }
+    }
+    
+    
+    transaction UpdateProduct response
+    {
+    	description "Updates one or more products based on a request from a consumer. It returns either a succeeded message or a failed message containing the product update information."
+        sender
+        {
+        	message UpdateProduct
+        	{
+        		timeouts(response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver
+        {
+        	success UpdateProductSucceeded
+            failure UpdateProductFailed
+        }
+    }
+    
+    transaction CreateProduct response
+    {
+    	description "Creates one or more products based on a request from a consumer. It returns either a succeeded message or a failed message containing the product information."
+        sender
+        {
+        	message CreateProduct
+        	{
+        		timeouts(response=3m)     	
+        		retries=3
+        	}
+        }
+        receiver
+        {
+        	success CreateProductSucceeded
+        	            
+            failure CreateProductFailed
+        }
+    }
+
+    transaction DeleteProduct response
+    {
+    	description "Deletes one or more products based on a request from a consumer. It returns either a succeeded message or a failed message containing an array of the IDs of the products to delete."
+        sender
+        {
+        	message DeleteProduct
+        	{
+        		timeouts(response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver
+        {
+        	success DeleteProductSucceeded
+            
+            failure DeleteProductFailed
+        }
+    }
+    
+        
+    transaction UpdateSKU (StockKeepingUnit sku)response
+    {
+     	description "Updates the SKUs for one or more products based on a request from a consumer. It returns either a succeeded message or a failed message containing the SKUs that were to be updated. Note: To use this transaction, the SKUs must exist."
+    	preconditions
+    	{
+    		exists(sku) 
+    	}
+        sender
+        {
+        	message UpdateSKU
+        	{
+        		timeouts(response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver
+        {
+        	success UpdateSKUSucceeded
+            
+            failure UpdateSKUFailed
+        }
+    }
+    
+    transaction CreateSKU (StockKeepingUnit sku) response
+    {
+    	description "Creates the SKUs for one or more products based on a request from a consumer. It returns either a succeeded message or a failed message containing the SKUs that were to be created. Note: To use this transaction, the SKUs must NOT already exist."
+        preconditions
+        {
+        	!exists(sku) 
+        }
+        sender
+        {
+        	message CreateSKU
+        	{
+        		timeouts(response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver
+        {
+        	success CreateSKUSucceeded
+                    
+            failure CreateSKUFailed
+		}
+    }
+
+    transaction DeleteSKU (StockKeepingUnit sku) response
+    {
+    	description "Deletes the SKUs for one or more products based on a request from a consumer. It returns either a succeeded message or a failed message containing the SKUs that were to be deleted. Note: To use this transaction, the SKUs must exist."
+        preconditions
+        {
+        	exists(sku) 
+        }
+        sender
+        {
+        	message DeleteSKU
+        	{
+        		timeouts(response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver
+        {
+        	success DeleteSKUSucceeded
+            
+            failure DeleteSKUFailed
+        }
+    }   
+    
+}

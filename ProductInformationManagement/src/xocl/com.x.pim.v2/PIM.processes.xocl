@@ -1,0 +1,211 @@
+package com.x.pim.v2 { 
+	packagetitle "Product Information Management"
+		
+    import com.x.pim.v2.*
+    
+    process ProductSearch{
+    	summary "Searches for all products."
+		description "A consumer queries the product catalog and gets back all the products."
+
+		roles
+		{
+			ProductInformationConsumer "Submits queries to retrieve product details for products that match the specified criteria."
+			ProductInformationManager "Returns details for an array of products that match a submitted query."
+		}
+	
+		workflow {
+    		summary "Searches for all the products in a product information management system."
+			description "A consumer queries the product catalog and gets back all the products."
+			transaction SearchProduct {
+				roles(ProductInformationConsumer, ProductInformationManager)
+			}
+		}
+	}
+	
+	process ProductLookup {
+    	summary "Searches a product catalog for a single product."
+		description "A consumer queries the product catalog and gets a single product back."
+		
+		roles
+		{
+			ProductInformationConsumer "Submits queries to retrieve product details for specified products."
+			ProductInformationManager "Returns details for an array of requested products."
+		}
+	}
+	
+    workflow ProductLookup implements ProductLookup {
+    	summary "Searches a product catalog for a single product in a product information management system."
+    	description "A consumer queries the product catalog and gets a single product back."
+			transaction LookupProduct {
+				roles(ProductInformationConsumer, ProductInformationManager)
+			}
+		}
+	
+	process ProductUpdate (Product product, StockKeepingUnit sku){
+    	summary "Updates the product information of the products."
+		description "A consumer submits a product update request and the manager updates the product information management system and sends a message to notify observers of the updated products."
+		
+		roles
+		{
+			ProductInformationConsumer"Submits requests to update product details, including adding or deleted SKUs, for specified products."
+			ProductInformationManager "Updates product and product SKU data and informs observers of changes."
+			ProductInformationObserver "Receives notification of the product details that were updated."
+		}
+		
+		preconditions(exists(product))	
+	
+		workflow {
+    		summary "Updates the product information for products in a product information management system."
+			description "A consumer submit a product update request. The manager updates the product by one of the following activities: adding a new SKU, updating or deleting an existing SKU, or updating the base product information."
+			one {
+			
+				transaction UpdateSKU(sku) {
+				   	roles(ProductInformationConsumer,ProductInformationManager)
+				}
+
+				transaction CreateSKU(sku) {
+				   	roles(ProductInformationConsumer,ProductInformationManager)
+				}
+				
+				transaction DeleteSKU(sku) {
+				   	roles(ProductInformationConsumer,ProductInformationManager)
+				}
+		
+				transaction UpdateProduct {
+				   	roles(ProductInformationConsumer,ProductInformationManager)
+				}
+			}
+			
+			workflow ProductUpdated {
+		    	summary "Informs an observer that a product was updated in a product information management system."
+		    	description "A manager sends a message that informs an observer that a product was updated by one of the following activities: adding a new SKU, updating or deleting an existing SKU, or updating the base product information."
+			   	roles(ProductInformationManager, ProductInformationObserver)
+			}
+		}
+
+		postconditions {
+			success(exists(product))
+		}
+	}
+	
+	process ProductUpdated(Product product){
+    	summary "Updates product and product SKU data in a product information management system."
+    	description "A manager updates the product and product SKU data and sends a message that informs observers of changes."
+		roles
+		{
+			ProductInformationManager "Updates product and product SKU data and informs observers of changes."
+			ProductInformationObserver "Receives notification of the product details that were updated."
+		}
+	}
+	
+	workflow ProductUpdated implements ProductUpdated{
+    	summary "Updates product and product SKU data."
+    	description "A manager updates the product and product SKU data and informs observers of changes."
+		transaction ProductUpdated {
+			   	roles(ProductInformationManager, ProductInformationObserver)
+		}
+	}
+
+	process ProductCreation (Product product) {
+    	summary "Creates one or more products in a product information management system."
+		description "A consumer requests the creation of products. The manager creates the products and sends a message that informs observers of the products that were created."
+		
+		roles
+		{
+			ProductInformationConsumer "Submits product details for the creation of one or more new products."
+			ProductInformationManager "Creates new products and informs observers of added products. "
+			ProductInformationObserver "Receives notification of the new products that were created. "
+		}
+		
+		preconditions(!exists(product))
+	
+		workflow  {
+    		summary "Creates one or more products in a product information management system."
+			description "A consumer requests the creation of one or more products. The manager creates the products and sends a message that informs observers of the products that were created."
+ 
+ 			transaction CreateProduct {
+				roles(ProductInformationConsumer,ProductInformationManager)
+			}
+			workflow ProductCreated {
+    			summary "Informs observers that products were created."
+		    	description "The product information manager informs any observers that products were created."
+			   	roles(ProductInformationManager, ProductInformationObserver)
+			}
+		}
+
+	    postconditions {
+			success(exists(product))
+			failure(!exists(product))
+		}
+	}	
+	process ProductCreated {
+    	summary "Creates a product in a product information management system."
+		description "A manager creates a product and sends a message that informs observers of the products that were created."
+		
+		roles {
+			ProductInformationManager "Creates new products and informs observers of added products. "
+			ProductInformationObserver "Receives notification of new products that were created. "
+		}
+	}
+	
+	workflow ProductCreated implements ProductCreated{
+    	summary "Creates products in a product information management system."
+    	description "A manager creates the products and informs observers of the product that were created."
+		transaction ProductCreated {
+			roles(ProductInformationManager, ProductInformationObserver)
+		}
+	}
+
+    process ProductDeletion (Product product) {
+    	summary "Deletes products."
+		description "A consumer requests the deletion of products. The manager deletes the products and sends a message that informs observers of the products that were deleted."
+		
+		roles
+		{
+			ProductInformationConsumer "Requests that specified products be deleted from the system. "
+			ProductInformationManager "Deletes products and informs observers of deletions."
+			ProductInformationObserver "Receives notification of the products that were deleted. "
+		}
+		
+		preconditions(exists(product))
+	
+		workflow {
+			summary "Deletes products from a XPIM."
+			description "A consumer requests the deletion of products and the manager deletes the products."
+ 
+			transaction DeleteProduct {
+				roles(ProductInformationConsumer,ProductInformationManager)
+			}
+			
+			workflow ProductDeleted {
+		    	summary "Informs observers of the products that were deleted."
+    			description "The manager sends a message that informs observers of the products that were deleted."
+			   	roles(ProductInformationManager, ProductInformationObserver)
+			}
+		}
+		
+	    postconditions {
+			success(!exists(product))
+			failure(exists(product))
+		}
+	}
+	process ProductDeleted{
+    	summary "Informs observers of the products that were deleted."
+		description "The manager sends a message that informs observers of the products that were deleted."
+		
+		roles {
+			ProductInformationManager "The product information observer is informed whennforms observers of deleted products. "
+			ProductInformationObserver "Receives notification of the products that were deleted. "
+		}
+	}
+	
+	workflow ProductDeleted implements ProductDeleted{
+    	summary "Informs observers of the products that were deleted."
+		description "The manager sends a message that informs observers of the products that were deleted."
+		transaction ProductDeleted {
+			roles(ProductInformationManager, ProductInformationObserver)
+		}
+	}
+	
+	
+}
