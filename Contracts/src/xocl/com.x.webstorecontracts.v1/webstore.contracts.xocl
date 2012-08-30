@@ -1,0 +1,37 @@
+package com.x.webstorecontracts.v1 0.1 earlydraft
+{	
+	packagetitle "Web store metadata contracts"
+	
+	import com.x.webstore.v2.*
+	
+	
+    contract WebStoreMetadataProvider
+    {
+    		description "A provider of webstore metadata, such as store and offer information"
+    		roles{
+		 		WebStoreMetadataProvision.WebStoreMetadataProvider
+	 			
+	 		}
+	}
+	contract WebStoreOfferProvider
+	{ 		
+		 	description "A provider of webstore metadata, such as store and offer information"
+    		roles{
+    			WebStoreOfferSearch.WebStoreOfferManager
+    			WebStoreOfferUpdated.WebStoreOfferManager
+		 		WebStoreOfferCreated.WebStoreOfferManager
+		 		WebStoreOfferDeleted.WebStoreOfferManager
+			}
+	}
+	
+	contract WebstoreOfferConsumer
+	{
+		 	description "A provider of webstore offers"
+    		roles{
+				WebStoreOfferSearch.WebStoreOfferConsumer
+		 		WebStoreOfferUpdated.WebStoreOfferObserver
+		 		WebStoreOfferCreated.WebStoreOfferObserver
+		 		WebStoreOfferDeleted.WebStoreOfferObserver
+		 	}
+	}
+}
