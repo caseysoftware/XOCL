@@ -1,6 +1,5 @@
 package com.x.comparisonshopping.v1 1.17 workingdraft {
 	packagetitle "Comparison Shopping Engine"
-	description "The Comparison Shopping Engine package specifies the processes used for publishing products to comparison shopping sites."
 	
 	import com.x.comparisonshopping.v1.*
 }
