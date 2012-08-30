@@ -215,7 +215,7 @@ package com.x.orderfulfillment.v1 {
 	
 	
 	record CustomerInfo confidential {
-		union{guid, EntityId} id;   //id is created by the system that creates the record.	
+		uri id;   //id is created by the system that creates the record.	
 		Name name
 		Email? email
 		Phone? phone
