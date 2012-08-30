@@ -11,22 +11,14 @@ package com.x.invoicing.v1
         {
         	message CreateInvoice
         	{
-        		timeouts(receipt=30s, response=3m)     		
+        		timeouts( response=3m)     		
         		retries=3
         	}
         }
         receiver
         {
-			success CreateInvoiceSucceeded
-			{       
-				timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
-            
+			success CreateInvoiceSucceeded      
             failure CreateInvoiceFailed
-            {
-            	timeouts(receipt=30s)
-            }
         }
         postconditions
         {
@@ -52,22 +44,17 @@ package com.x.invoicing.v1
     	{
     		message SendInvoice
     		{
-    			timeouts(receipt=30s, response=3m)     		
+    			timeouts(response=3m)     		
         		retries=3
     		}
     	}
     	receiver
     	{
     		success SendInvoiceSucceeded
-			{       
-				timeouts(receipt=30s, validation=3m)  // check others - validation needed if business data returned.
-            	retries=3
-            }
+
             
             failure SendInvoiceFailed
-            {
-            	timeouts(receipt=30s)
-            }
+
     	}
     	postconditions
     	{
@@ -91,22 +78,17 @@ package com.x.invoicing.v1
     	{
     		message CompleteInvoice
     		{
-    			timeouts(receipt=30s, response=3m)     		
+    			timeouts(response=3m)     		
         		retries=3
     		}
     	}
     	receiver
     	{
     		success CompleteInvoiceSucceeded
-			{       
-				timeouts(receipt=30s, validation=3m)  // check others - validation needed if business data returned.
-            	retries=3
-            }
+
             
             failure CompleteInvoiceFailed
-            {
-            	timeouts(receipt=30s)
-            }
+
     	}
     	postconditions
     	{
@@ -164,22 +146,17 @@ package com.x.invoicing.v1
     	{
     		message CancelInvoice
     		{
-    			timeouts(receipt=30s, response=3m)     		
+    			timeouts(response=3m)     		
         		retries=3
     		}
     	}
     	receiver
     	{
     		success CancelInvoiceSucceeded
-			{       
-				timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
+
             
             failure CancelInvoiceFailed
-            {
-            	timeouts(receipt=30s)
-            }
+
     	}
     	postconditions
     	{
@@ -203,22 +180,16 @@ package com.x.invoicing.v1
     	{
     		message UpdateInvoiceStatus
     		{
-    			timeouts(receipt=30s, response=3m)     		
+    			timeouts(response=3m)     		
         		retries=3
     		}
     	}
     	receiver
     	{
     		success UpdateInvoiceStatusSucceeded
-			{       
-				timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
             
             failure UpdateInvoiceStatusFailed
-            {
-            	timeouts(receipt=30s)
-            }
+
     	}
     }
     
@@ -238,22 +209,16 @@ package com.x.invoicing.v1
     	{
     		message UpdateInvoiceDetails
     		{
-    			timeouts(receipt=30s, response=3m)     		
+    			timeouts( response=3m)     		
         		retries=3
     		}
     	}
     	receiver
     	{
     		success UpdateInvoiceDetailsSucceeded
-			{       
-				timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
             
             failure UpdateInvoiceDetailsFailed
-            {
-            	timeouts(receipt=30s)
-            }
+
     	}
     }
     
@@ -273,22 +238,17 @@ package com.x.invoicing.v1
     	{
     		message UpdateInvoiceMerchantData
     		{
-    			timeouts(receipt=30s, response=3m)     		
+    			timeouts(response=3m)     		
         		retries=3
     		}
     	}
     	receiver
     	{
     		success UpdateInvoiceMerchantDataSucceeded
-			{       
-				timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
+
             
             failure UpdateInvoiceMerchantDataFailed
-            {
-            	timeouts(receipt=30s)
-            }
+
     	}
     }
     
@@ -300,22 +260,16 @@ package com.x.invoicing.v1
     	{
     		message UpdateInvoiceCustomerData
     		{
-    			timeouts(receipt=30s, response=3m)     		
+    			timeouts(response=3m)     		
         		retries=3
     		}
     	}
     	receiver
     	{
     		success UpdateInvoiceCustomerDataSucceeded
-			{       
-				timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
             
             failure UpdateInvoiceCustomerDataFailed
-            {
-            	timeouts(receipt=30s)
-            }
+
     	}
     }
 
@@ -327,22 +281,17 @@ package com.x.invoicing.v1
     	{
     		message UpdateInvoiceShippingData
     		{
-    			timeouts(receipt=30s, response=3m)     		
+    			timeouts(response=3m)     		
         		retries=3
     		}
     	}
     	receiver
     	{
     		success UpdateInvoiceShippingDataSucceeded
-			{       
-				timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
+
             
             failure UpdateInvoiceShippingDataFailed
-            {
-            	timeouts(receipt=30s)
-            }
+
     	}
     }
 
@@ -354,22 +303,17 @@ package com.x.invoicing.v1
     	{
     		message UpdateInvoiceBillingData
     		{
-    			timeouts(receipt=30s, response=3m)     		
+    			timeouts(response=3m)     		
         		retries=3
     		}
     	}
     	receiver
     	{
     		success UpdateInvoiceBillingDataSucceeded
-			{       
-				timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
+
             
             failure UpdateInvoiceBillingDataFailed
-            {
-            	timeouts(receipt=30s)
-            }
+ 
     	}
     }
  
@@ -381,22 +325,17 @@ package com.x.invoicing.v1
     	{
     		message UpdateInvoiceItemData
     		{
-    			timeouts(receipt=30s, response=3m)     		
+    			timeouts(response=3m)     		
         		retries=3
     		}
     	}
     	receiver
     	{
     		success UpdateInvoiceItemDataSucceeded
-			{       
-				timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
+
             
             failure UpdateInvoiceItemDataFailed
-            {
-            	timeouts(receipt=30s)
-            }
+
     	}
     }
 }
