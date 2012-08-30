@@ -1,0 +1,223 @@
+package com.x.webstore.v2{
+	packagetitle "Web Store"
+	
+	import com.x.webstore.v2.*
+	
+	entity WebStoreOffer
+	{
+		description "Product that a merchant is offering to sell."
+	}
+    
+    transaction GetAllWebStoreProvider broadcast query 
+    {
+    	description "Searches for all web store providers and either returns a success message or nothing at all. No failure message is returned."
+        sender
+        {
+        	message GetAllWebStoreProvider 
+        	{
+        		 timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success GetAllWebStoreProviderSucceeded        
+        } 
+    }
+        
+    transaction GetAllWebStore unicast query 
+    {
+    	description "Searches for a web store by ID and returns either a succeeded or failed message."
+        sender
+        {
+        	message GetAllWebStore 
+        	{
+        		 timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success GetAllWebStoreSucceeded        
+                    	
+            failure GetAllWebStoreFailed  
+        } 
+    }
+    
+    transaction GetAllCategory unicast  query 
+    {
+    	description "Searches for all categories in a specific web store, which is specified by the web store ID, and returns either a succeeded or failed message."
+        sender
+        {
+        	message GetAllCategory
+        	{
+        		 timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success GetAllCategorySucceeded        
+                    	
+            failure GetAllCategoryFailed  
+        } 
+    }
+
+    transaction SearchWebStoreOffer unicast query 
+    {
+    	description "Searches for all web store offers by either web store ID or modification date and returns either a succeeded or failed message."
+        sender
+        {
+        	message SearchWebStoreOffer
+        	{
+        		 timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success SearchWebStoreOfferSucceeded        
+                    	
+            failure SearchWebStoreOfferFailed  
+        } 
+    }
+   
+    transaction LookupWebStoreOffer unicast query 
+    {
+    	description "Looks up a web store offer by ID and optionally by web store ID and returns either a succeeded or failed message."
+        sender
+        {
+        	message LookupWebStoreOffer
+        	{
+        		 timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success LookupWebStoreOfferSucceeded        
+                    	
+            failure LookupWebStoreOfferFailed  
+        } 
+    }    
+    
+    transaction CreateWebStoreOffer unicast response
+    {
+    	description "Attempts to create a web store offer and returns either a succeeded or failed message." 
+        sender
+        {
+        	message CreateWebStoreOffer
+        	{
+        		timeouts( response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver
+        {
+        	success CreateWebStoreOfferSucceeded
+        	{
+            }
+            
+            failure CreateWebStoreOfferFailed
+            {
+            }
+        }
+    }
+    
+    transaction DeleteWebStoreOffer unicast response
+    {
+    	description "Attempts to delete a web store offer and returns either a succeeded or failed message."
+        sender
+        {
+        	message DeleteWebStoreOffer
+        	{
+        		timeouts(response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver
+        {
+        	success DeleteWebStoreOfferSucceeded
+        	{
+
+            }
+            
+            failure DeleteWebStoreOfferFailed
+            {
+
+            }
+        }
+    }
+    
+     transaction UpdateWebStoreOffer unicast response
+    {
+    	description "Attempts to update a web store offer and returns either a succeeded or failed message."
+    	
+        sender
+        {
+        	message UpdateWebStoreOffer
+        	{
+        		timeouts( response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver
+        {
+        	success UpdateWebStoreOfferSucceeded
+        	{
+            }
+            
+            failure UpdateWebStoreOfferFailed
+            {
+            }
+        }
+    }
+    
+   	transaction WebStoreOfferCreated inform {
+   		description "Notifies observers that a web store offer was created."
+   		
+   		sender {
+   			message WebStoreOfferCreated {
+        	}
+   		}
+   	}
+   	
+   	transaction WebStoreOfferPriceUpdated inform
+   	{
+   		description "Notifies observers that the price of a web store offer was updated."
+   		
+   		sender
+   		{
+   			message WebStoreOfferPriceUpdated
+   			{
+        	}
+   		}
+   	}
+   	
+   	transaction WebStoreOfferQuantityUpdated inform
+   	{
+   		description "Notifies observers that the quantity of a web store offer was updated."
+   		
+   		sender
+   		{
+   			message WebStoreOfferQuantityUpdated{
+        	}
+   		}
+   	}
+   	
+   	transaction WebStoreOfferDeleted inform
+   	{
+   		description "Notifies observers that a web store offer was deleted."
+   		
+   		sender {
+   			message WebStoreOfferDeleted {
+        	}
+   		}
+   	}  
+   	   	
+   	transaction WebStoreOfferUpdated inform
+   	{
+   		description "Notifies observers that a web store offer was updated."
+   		
+   		sender
+   		{
+   			message WebStoreOfferUpdated{
+        	}
+   		}
+   	}
+}

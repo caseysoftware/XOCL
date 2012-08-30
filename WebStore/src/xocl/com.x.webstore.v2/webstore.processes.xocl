@@ -1,0 +1,249 @@
+package com.x.webstore.v2{
+	packagetitle "Web Store"
+	
+	import com.x.webstore.v2.*
+	
+	process WebStoreMetadataProvision 
+	{
+		summary "Retrieves web store providers, the web stores of a provider, or the product categories defined by a web store."
+		description "Searches for all the web store providers, or all the web store of a specific provider, or all the product categories defined by a specific web store. Returns a list of web stores, a list of web store providers, or a list of categories."
+	
+		roles 
+			{
+				WebStoreMetadataConsumer "Acts for a tenant and searches for all available providers and their web stores or all product categories in a web store."
+				WebStoreMetadataProvider "Returns the metadata of the providers, the web stores, or the categories found."
+			}
+	
+		workflow
+		{
+			summary "Retrieves web store providers, the web stores of a provider, or the product categories defined by a web store."
+			description "Searches for all the web store providers, or all the web store of a specific provider, or all the product categories defined by a specific web store. Returns a list of web stores, a list of web store providers, or a list of categories."
+			
+			any{
+				transaction GetAllWebStoreProvider 
+				{
+					roles(WebStoreMetadataConsumer, WebStoreMetadataProvider)
+				} 
+			}
+			any{
+				transaction GetAllWebStore
+				{
+					roles(WebStoreMetadataConsumer, WebStoreMetadataProvider)
+				}	
+			}
+			any{
+				transaction GetAllCategory
+				{
+					roles(WebStoreMetadataConsumer, WebStoreMetadataProvider)
+				}
+			}
+			
+		}
+	}
+	
+    process WebStoreOfferSearch 
+	{
+		summary "Searches for web store offers."
+		description "A marketing provider or other interested party queries for offers and the WebStoreOfferManager returns either the offers found or a failed message."
+	
+		roles  
+			{
+				WebStoreOfferConsumer "Searches for offers from the available web stores."
+				WebStoreOfferManager "Returns the offers found or a failed message."
+			}
+
+		workflow
+		{
+			summary "Searches for web store offers."
+			description "The WebStoreOfferConsumer requests a search for web store offers. The WebStoreOfferManger searches for offers and returns either a succeeded message, which contains the offers or a failed message."
+			
+			transaction SearchWebStoreOffer
+			{
+				roles(WebStoreOfferConsumer, WebStoreOfferManager)
+			}
+		}
+	}
+	
+    process WebStoreOfferLookup 
+	{
+		summary "Looks up a specific offer."
+		description "A marketing provider or other interested party queries for an offer by ID either from all available  web stores or optionally from a specific web store. The WebStoreOfferManager returns the offer or a failed message."
+	
+		roles  
+			{
+				WebStoreOfferConsumer "Searches for an offer by ID from all web stores or a specific store."
+				WebStoreOfferManager "Returns either the offer or a failed message."
+			}
+
+		workflow
+		{
+			summary "Looks up a specific offer from the web stores or a specific store."
+			description "Returns the offer or a failed message."
+			
+			transaction LookupWebStoreOffer
+			{
+				roles(WebStoreOfferConsumer, WebStoreOfferManager)
+			}
+		}
+	}
+	
+	process WebStoreOfferCreation
+	{
+		summary "Creates an offer."
+		description "A web store submits a request to create an offer. The WebStoreOfferManager creates the offer for a web store and notifies observers."
+	
+		roles
+			{
+				WebStoreOfferConsumer "Submits a request to create an offer."
+				WebStoreOfferManager "Creates the offer and notifies observers."
+			}
+	
+		workflow
+		{
+			summary "Creates an offer."
+			description "Creates an offer for a web store."
+
+			transaction CreateWebStoreOffer
+			{
+				roles(WebStoreOfferConsumer, WebStoreOfferManager)
+			}
+
+			workflow WebStoreOfferCreated
+			{
+				summary "Notifies observers that an offer was created."
+				description "Notifies observers that an offer was created."
+
+				roles (WebStoreOfferManager, null)
+			}
+		}		
+	}
+	
+	process WebStoreOfferCreated
+	{
+		summary "Notification that an offer that was created."
+		description "The WebStoreOfferManager returns the offers that were created and notifies observers."
+	
+		roles
+			{
+				WebStoreOfferManager "Returns the offers created."
+				WebStoreOfferObserver "Receives an offer created notification."
+			}
+	}
+	
+	workflow WebStoreOfferCreated implements WebStoreOfferCreated
+	{
+		summary "Notification that an offer that was created."
+		description "Returns the offers that were created and notifies observers."
+		
+			
+		transaction WebStoreOfferCreated {
+				roles (WebStoreOfferManager, WebStoreOfferObserver)
+		}		
+	}
+	
+	process WebStoreOfferUpdate
+	{
+		summary "Updates an offer."
+		description "The web store submits data to update the quantity or price of an offer. The WebStoreOfferManager does the update and notifies observers."
+	
+		roles
+			{
+				WebStoreOfferConsumer "Requests an offer be updated."
+				WebStoreOfferManager "Updates the offer and notifies observers."
+			}
+	
+		workflow
+		{
+			summary "Updates offer information."
+			description "Updates the offer information, such as price or quantity."
+			
+			transaction UpdateWebStoreOffer {
+				roles(WebStoreOfferConsumer, WebStoreOfferManager)
+			}
+			workflow WebStoreOfferUpdated{
+				roles(WebStoreOfferManager, null)
+			}
+		}		
+	}
+	
+	process WebStoreOfferUpdated
+	{
+		summary "Notification that an offer that was updated."
+		description "The WebStoreOfferManager returns the offers that were updated and notifies observers."
+	
+		roles{
+				WebStoreOfferManager "Returns the offers that were updated and notifies observers."
+				WebStoreOfferObserver "Receives offer updated notification."
+		}
+	}
+	
+	workflow WebStoreOfferUpdated implements WebStoreOfferUpdated
+	{
+		summary "Notification that an offer that was updated."
+		description "The WebStoreOfferManager returns the offers that were updated and notifies observers."
+			
+				any{
+					noop
+					transaction WebStoreOfferQuantityUpdated
+					{
+						roles (WebStoreOfferManager, WebStoreOfferObserver)
+					}
+					transaction WebStoreOfferPriceUpdated
+			    	{
+			    		roles (WebStoreOfferManager, WebStoreOfferObserver)
+			    	}	
+			    }
+			
+				transaction WebStoreOfferUpdated
+			    {
+			    	roles(WebStoreOfferManager, WebStoreOfferObserver)
+			    }
+	}
+		
+	process WebStoreOfferDeletion
+	{
+		summary "Deletes an offer."
+		description "A web store requests an offer be deleted. The WebStoreOfferManager deletes the offer and notifies observers."
+	
+		roles
+			{
+				WebStoreOfferConsumer "Requests an offer be deleted."
+				WebStoreOfferManager "Deletes the offer and notifies observers."
+			}
+	
+		workflow
+		{
+			summary "Deletes an offer."
+			description "Deletes an offer and notifies observers."
+
+			transaction DeleteWebStoreOffer
+			{
+				roles(WebStoreOfferConsumer, WebStoreOfferManager)
+			}
+			workflow WebStoreOfferDeleted
+			{
+				roles (WebStoreOfferManager, null)
+			}
+		}		
+	}
+	
+	process WebStoreOfferDeleted
+	{
+		summary "Notification that an offer was deleted."
+		description "The WebStoreOfferManager notifies observers that an offer was deleted."
+	
+		roles{
+				WebStoreOfferManager "Returns the offers that were deleted."
+				WebStoreOfferObserver "Receives offer deleted notification."
+		}
+	}
+	
+	workflow WebStoreOfferDeleted implements WebStoreOfferDeleted{
+		summary "Notification that an offer was deleted."
+		description "The WebStoreOfferManager notifies observers that an offer was deleted."
+			
+		transaction WebStoreOfferDeleted {
+				roles (WebStoreOfferManager, WebStoreOfferObserver)
+		}		
+	}
+}
