@@ -1,7 +1,7 @@
 package com.x.customercontract.v1 0.1 earlydraft
 {
 	description "Customer contracts"
-	import com.x.customer.v1.*
+	import com.x.customer.v2.*
 	
 	contract CustomerConsumer
     {
@@ -9,8 +9,16 @@ package com.x.customercontract.v1 0.1 earlydraft
     		roles{
 	 			CustomerSearch.CustomerConsumer 
 	 			CustomerSearch.CustomerConsumer<Email>
-	 			CustomerUpsert.CustomerObserver
 	 			CustomerCreatedOrUpdated.CustomerObserver
 	 		}
-	 }	
+	 }
+	contract CustomerInformationProvider
+    {
+    		description "A read-only provider of customer data."
+    		roles{
+	 			CustomerSearch.CustomerManager 
+	 			CustomerSearch.CustomerManager<Email>
+	 			CustomerCreatedOrUpdated.CustomerManager
+	 		}
+	 }		
 }

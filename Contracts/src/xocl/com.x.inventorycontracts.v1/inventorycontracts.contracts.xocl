@@ -1,6 +1,6 @@
 package com.x.inventorycontracts.v1 0.1 earlydraft
 {	
-	import com.x.inventory.v1.*
+	import com.x.inventory.v2.*
 	
     contract InventoryManager
     {
@@ -15,6 +15,7 @@ package com.x.inventorycontracts.v1 0.1 earlydraft
     {
     		description "The InventoryManager contract models a standard inventory system."
     		roles{
+    			StockItemLookup.InventoryManager
 	 			StockItemUpdate.InventoryManager
 	 			StockItemUpdated.InventoryManager
 	 		}
@@ -25,7 +26,6 @@ package com.x.inventorycontracts.v1 0.1 earlydraft
     		description "The InventoryConsumer contract models a read-only system for a consumer and observer of inventory data."
     		roles{
 	 			StockItemLookup.InventoryConsumer
-	 			StockItemUpdate.InventoryObserver 
 	 			StockItemUpdated.InventoryObserver 
 	 		}
 	}

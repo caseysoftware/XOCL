@@ -1,11 +1,11 @@
-package com.x.pimcontracts.v1 0.0 earlydraft
+package com.x.pimcontracts.v1 0.1 earlydraft
 {	
 	packagetitle "Product Information Management"
 	
-	import com.x.pim.v1.*
+	import com.x.pim.v2.*
 	
 	
-    contract ProductInformationManagement
+    contract UpdateableProductInformationManagement
     {
     		description "A product information management system's manager roles. Manages products and product SKUs. Serves requests for data and notifies observers and consumers of data changes."
     		roles{
@@ -19,7 +19,19 @@ package com.x.pimcontracts.v1 0.0 earlydraft
 	 			ProductDeleted.ProductInformationManager
 	 		}
 	}
-	     
+	
+	contract ProductInformationManagement
+    {
+    		description "A read-only product information management system's manager roles. Manages products and product SKUs. Serves requests for data and notifies observers and consumers of data changes."
+    		roles{
+		 		ProductSearch.ProductInformationManager
+		 		ProductLookup.ProductInformationManager
+	 			ProductUpdated.ProductInformationManager
+	 			ProductCreated.ProductInformationManager
+	 			ProductDeleted.ProductInformationManager
+	 		}
+	}
+	   
     contract ProductInformationManagementConsumer
     {
     		description "A product information system's read-only consumer/observer role. Products and data cannot be altered by the consumer/observer role for this contract."
