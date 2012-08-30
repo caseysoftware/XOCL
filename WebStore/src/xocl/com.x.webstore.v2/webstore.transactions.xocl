@@ -110,12 +110,9 @@ package com.x.webstore.v2{
         receiver
         {
         	success CreateWebStoreOfferSucceeded
-        	{
-            }
             
             failure CreateWebStoreOfferFailed
-            {
-            }
+
         }
     }
     
@@ -133,14 +130,8 @@ package com.x.webstore.v2{
         receiver
         {
         	success DeleteWebStoreOfferSucceeded
-        	{
-
-            }
             
             failure DeleteWebStoreOfferFailed
-            {
-
-            }
         }
     }
     
@@ -159,12 +150,10 @@ package com.x.webstore.v2{
         receiver
         {
         	success UpdateWebStoreOfferSucceeded
-        	{
-            }
+        
             
             failure UpdateWebStoreOfferFailed
-            {
-            }
+          
         }
     }
     
@@ -172,8 +161,7 @@ package com.x.webstore.v2{
    		description "Notifies observers that a web store offer was created."
    		
    		sender {
-   			message WebStoreOfferCreated {
-        	}
+   			message WebStoreOfferCreated 
    		}
    	}
    	
@@ -184,8 +172,7 @@ package com.x.webstore.v2{
    		sender
    		{
    			message WebStoreOfferPriceUpdated
-   			{
-        	}
+   		
    		}
    	}
    	
@@ -195,8 +182,7 @@ package com.x.webstore.v2{
    		
    		sender
    		{
-   			message WebStoreOfferQuantityUpdated{
-        	}
+   			message WebStoreOfferQuantityUpdated
    		}
    	}
    	
@@ -205,8 +191,7 @@ package com.x.webstore.v2{
    		description "Notifies observers that a web store offer was deleted."
    		
    		sender {
-   			message WebStoreOfferDeleted {
-        	}
+   			message WebStoreOfferDeleted 
    		}
    	}  
    	   	
@@ -216,8 +201,7 @@ package com.x.webstore.v2{
    		
    		sender
    		{
-   			message WebStoreOfferUpdated{
-        	}
+   			message WebStoreOfferUpdated
    		}
    	}
 }
