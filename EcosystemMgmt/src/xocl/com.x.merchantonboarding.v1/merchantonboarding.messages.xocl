@@ -1,0 +1,95 @@
+package com.x.merchantonboarding.v1 {
+	import com.x.merchantonboarding.v1.*
+	import com.x.core.v1.*
+	
+	record Participant {
+		string contractRole;
+		string destinationId;
+	}
+	
+	record BundleInformation {
+		string bundleId;
+		array<Participant> participants;
+	}
+	
+	enum Status {
+		STARTED
+		NEEDED
+		NOTNEEDED
+		COMPLETED
+		ACCEPTED
+		REJECTED
+	}
+	
+	record Tenant
+	{
+		string tenantPseudonym
+		string bearerToken
+		string tenantName
+	}
+
+	record AuthorizationSession {
+		string authSessionId;
+		Status status;
+	}
+	
+	record StartAuthorization {
+		AuthorizationSession authorizationSession;
+
+		string bundleId;
+		string contractRole;
+		map<string>? parameters;
+	}
+	
+	record NeededData {
+		string authorizationURL;
+	}
+	
+	record RejectedData {
+		string rejectionReason;
+		string rejectionDisplay;
+	}
+	
+	record AcceptedData {
+	}
+	
+	record NotNeededData {
+	}
+		
+	record StartAuthorizationSucceeded {
+		AuthorizationSession authorizationSession;
+		
+		union{NeededData, NotNeededData, AcceptedData, RejectedData} statusSpecificData;
+	}
+
+	record StartAuthorizationFailed {
+		string authSessionId;
+		array<Error> errors;
+	}
+
+	record CompleteAuthorization {
+		AuthorizationSession authorizationSession;
+		Tenant tenant;
+	}
+	
+	record CompleteAuthorizationSucceeded {
+		AuthorizationSession authorizationSession;
+
+		map<map<string>>? parameters;
+	}
+	
+	record NewAuthorization {
+		Tenant tenant;
+	}
+
+	record CompleteAuthorizationFailed {
+		string authSessionId;
+		array<Error> errors;
+	}
+
+	record BundleActivated {
+		BundleInformation bundleInformation;
+		map<string>? parameters;
+		string initiatorId;
+	}
+}

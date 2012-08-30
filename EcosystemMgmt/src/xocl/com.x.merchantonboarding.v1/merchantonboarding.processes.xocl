@@ -1,0 +1,54 @@
+package com.x.merchantonboarding.v1 {
+	import com.x.merchantonboarding.v1.*
+	
+	process Authorization(AuthorizationSession authorizationSession) {
+		description "OnboardingAgent requests authorization from a capability, which leads to a possible exchange of URL, redirect, completion, and accept/reject"
+		
+		roles(OnboardingAgent, Capability)
+		
+		postconditions {
+			success(authorizationSession[AuthorizationSession.Accepted])
+			failure(authorizationSession[AuthorizationSession.Rejected])
+		}
+	}
+	
+	workflow Authorization [1d] implements Authorization {
+		description "Process of authorizing a merchant with a capability"
+		
+		transaction StartAuthorization {
+			roles(OnboardingAgent, Capability)
+		}
+
+		if (authorizationSession[AuthorizationSession.Needed] || authorizationSession[AuthorizationSession.NotNeeded]) {
+			transaction CompleteAuthorization {
+				roles(OnboardingAgent, Capability)
+			}
+		}
+	}
+	
+	process NonInteractiveAuthorization {
+		description "Process of authorizing a merchant with a capability that does not require interactive process"
+		
+		roles (OnboardingAgent, Capability)
+	}
+	
+	workflow NonInteractiveAuthorization implements NonInteractiveAuthorization {
+		description "Process of non-interactively authorizing a merchant with a capability"
+		
+		transaction NewAuthorization {
+			roles(OnboardingAgent, Capability)
+		}
+	}
+	
+	process BundleActivation(BundleActivation bundleActivation) {
+		description "OnboardingAgent informs all participants that bundle is active"
+		
+		roles(OnboardingAgent, BundleParticipant)
+	}
+	
+	workflow BundleActivation implements BundleActivation {
+		transaction BundleActivation(bundleActivation) {
+			roles(OnboardingAgent, BundleParticipant)
+		}
+	}
+}

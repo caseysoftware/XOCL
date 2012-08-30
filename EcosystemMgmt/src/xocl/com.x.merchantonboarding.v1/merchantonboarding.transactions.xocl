@@ -1,0 +1,68 @@
+package com.x.merchantonboarding.v1 {
+	import com.x.merchantonboarding.v1.*
+	
+	entity AuthorizationSession {
+		state Started[Needed,NotNeeded,Accepted,Rejected]
+		state Needed[Completed]
+		state NotNeeded[Completed]
+		state Completed[Accepted,Rejected]
+		state Accepted
+		state Rejected
+	}
+	
+	transaction StartAuthorization (AuthorizationSession session) unicast response {
+		sender {
+			message StartAuthorization {
+				timeouts(response=3m)
+			}
+		}
+		
+		receiver {
+			success StartAuthorizationSucceeded {
+			}
+			
+			failure StartAuthorizationFailed {
+			}
+		}
+
+		postconditions{
+			success((session[AuthorizationSession.Needed] || session[AuthorizationSession.NotNeeded]) || (session[AuthorizationSession.Accepted] || session[AuthorizationSession.Rejected]))
+		}
+	}
+	
+	transaction CompleteAuthorization (AuthorizationSession session) unicast response {
+		sender {
+			message CompleteAuthorization {
+				timeouts(response=3m)
+			}
+		}
+		
+		receiver {
+			success CompleteAuthorizationSucceeded {
+			}
+			
+			failure CompleteAuthorizationFailed {
+			}
+		}
+		postconditions{
+			success(session[AuthorizationSession.Accepted] || session[AuthorizationSession.Rejected])
+		}
+	}
+	
+	transaction NewAuthorization inform {
+		sender {
+			message NewAuthorization {
+			}
+		}
+	}
+	
+	entity BundleActivation {
+		
+	}
+	
+	transaction BundleActivation inform {
+		sender {
+			message BundleActivated
+		}
+	}
+}
