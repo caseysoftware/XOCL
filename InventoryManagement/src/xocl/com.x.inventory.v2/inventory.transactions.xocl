@@ -55,12 +55,9 @@ package com.x.inventory.v2
     	}
         receiver{
         	success UpdateStockItemSnapshotSucceeded
-        	{
-            }
             
             failure UpdateStockItemSnapshotFailed
-            {
-            }
+
         }
     }
     
@@ -74,13 +71,8 @@ package com.x.inventory.v2
     	}
     	receiver{
         	success UpdateStockItemDeltaSucceeded
-        	{
-
-            }
             
             failure UpdateStockItemDeltaFailed
-            {
-            }
         }
     }
     
