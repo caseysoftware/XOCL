@@ -30,8 +30,7 @@ package com.x.inventory.v2
 		description "The inventory manager informs the inventory observer that properties of one or more stock items have been updated."
 		sender
 		{
-			message StockItemUpdated{
-			}
+			message StockItemUpdated
 		}
 	}
 	
@@ -40,8 +39,7 @@ package com.x.inventory.v2
 		description "The inventory manager informs the inventory observer that an item has gone out of stock."
 		sender
 		{
-			message OutOfStock{
-			}
+			message OutOfStock
 		}
 	}
 	
