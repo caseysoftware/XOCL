@@ -117,7 +117,7 @@ package com.x.comparisonshopping.v1 {
     	summary "Signals that the search for providers was successful."
     	description "Notification that searching for providers was successful. Returns the search results and the query request."
 
-		string? providerName
+		string providerName
 		string? providerDescription
 	    //Caller must get destination ID from header - X-XC-PUBLISHER-ID
 	}
@@ -269,7 +269,9 @@ package com.x.comparisonshopping.v1 {
     	description "Notifies the publisher that the supplied product feed was processed."
     	
     	string feedId "Identifier of the feed that was processed."
-    	array<string> statusValues "Collection of values that represent the processing status of this feed."
+    	int numSuccessful "The number of records that sucessfully processed."
+    	int numFailed "The number of records that failed during processing."
+    	int statusMessage "A detailed description of the processing status. May include explanations for failture reasons."
     }
 	
 	record PublishStoreOffers {
@@ -285,7 +287,9 @@ package com.x.comparisonshopping.v1 {
     	description "Notifies the publisher that the supplied store offer feed was processed."
     	
     	string feedId "Identifier of the feed that was processed."
-    	array<string> statusValues "Collection of values that represent the processing status of this feed."
+    	int numSuccessful "The number of records that sucessfully processed."
+    	int numFailed "The number of records that failed during processing."
+    	int statusMessage "A detailed description of the processing status. May include explanations for failture reasons."
     }
 	
 	record PublishStores {
@@ -301,7 +305,9 @@ package com.x.comparisonshopping.v1 {
     	description "Notifies the publisher that the supplied store feed was processed."
     	
     	string feedId "Identifier of the feed that was processed."
-    	array<string> statusValues "A collection of values that represent the processing status of this feed."
+    	int numSuccessful "The number of records that sucessfully processed."
+    	int numFailed "The number of records that failed during processing."
+    	int statusMessage "A detailed description of the processing status. May include explanations for failture reasons."
     }
 	
 
