@@ -24,7 +24,7 @@ package com.x.webstorecontracts.v1 0.1 earlydraft
 			}
 	}
 	
-	contract WebstoreOfferConsumer
+	contract WebStoreOfferConsumer
 	{
 		 	description "A provider of webstore offers"
     		roles{
