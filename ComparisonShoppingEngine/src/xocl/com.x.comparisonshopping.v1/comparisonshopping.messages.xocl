@@ -271,7 +271,7 @@ package com.x.comparisonshopping.v1 {
     	string feedId "Identifier of the feed that was processed."
     	int numSuccessful "The number of records that sucessfully processed."
     	int numFailed "The number of records that failed during processing."
-    	int statusMessage "A detailed description of the processing status. May include explanations for failture reasons."
+    	string statusMessage "A detailed description of the processing status. May include explanations for failture reasons."
     }
 	
 	record PublishStoreOffers {
@@ -289,7 +289,7 @@ package com.x.comparisonshopping.v1 {
     	string feedId "Identifier of the feed that was processed."
     	int numSuccessful "The number of records that sucessfully processed."
     	int numFailed "The number of records that failed during processing."
-    	int statusMessage "A detailed description of the processing status. May include explanations for failture reasons."
+    	string statusMessage "A detailed description of the processing status. May include explanations for failture reasons."
     }
 	
 	record PublishStores {
@@ -307,7 +307,7 @@ package com.x.comparisonshopping.v1 {
     	string feedId "Identifier of the feed that was processed."
     	int numSuccessful "The number of records that sucessfully processed."
     	int numFailed "The number of records that failed during processing."
-    	int statusMessage "A detailed description of the processing status. May include explanations for failture reasons."
+    	string statusMessage "A detailed description of the processing status. May include explanations for failture reasons."
     }
 	
 
