@@ -1,0 +1,88 @@
+package com.x.inventory.v2
+{
+	import com.x.inventory.v2.*
+	
+	entity StockItem
+	{
+		description "A product that is available in the inventory."
+	}
+	
+	transaction LookupStockItem query
+    {
+        description "Retrieve details for one or more stock items based on SKU values."
+        sender
+        {
+        	message LookupStockItem
+        	{
+        		timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success LookupStockItemSucceeded
+           
+            failure LookupStockItemFailed
+        }
+    }
+    
+	transaction StockItemUpdated inform
+    {
+		description "The inventory manager informs the inventory observer that properties of one or more stock items have been updated."
+		sender
+		{
+			message StockItemUpdated{
+			}
+		}
+	}
+	
+	transaction OutOfStock inform
+    {
+		description "The inventory manager informs the inventory observer that an item has gone out of stock."
+		sender
+		{
+			message OutOfStock{
+			}
+		}
+	}
+	
+ 
+    transaction UpdateStockItemSnapshot response {
+    	description "Updates items in a snapshot and returns either a succeeded or failed message."
+    	sender{
+    		message UpdateStockItemSnapshot{
+    			timeouts(response=1m) 
+    		}
+    	}
+        receiver{
+        	success UpdateStockItemSnapshotSucceeded
+        	{
+            }
+            
+            failure UpdateStockItemSnapshotFailed
+            {
+            }
+        }
+    }
+    
+    transaction UpdateStockItemDelta response {
+    	description "Updates the delta of items in a snapshot and returns either a succeeded or failed message."
+    	
+    	sender{
+    		message UpdateStockItemDelta{
+    			timeouts(receipt=10s, response=1m) 
+    		}
+    	}
+    	receiver{
+        	success UpdateStockItemDeltaSucceeded
+        	{
+
+            }
+            
+            failure UpdateStockItemDeltaFailed
+            {
+            }
+        }
+    }
+    
+    
+}

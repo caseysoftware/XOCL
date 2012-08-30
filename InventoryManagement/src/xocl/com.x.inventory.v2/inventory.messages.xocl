@@ -1,0 +1,135 @@
+package com.x.inventory.v2
+{
+	import com.x.core.v1.*
+	
+    record StockItem 
+	{
+		summary "Contains stock item information."
+		description "Captures the SKUs, quantity, and location of a stock item."
+		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique identifier supplied by the merchant.";
+		int quantity "Number of stock items at a location. Note: Quantity is a high-consistency field due to serialization issues.";
+		string locationName "Unique name used to reference the location of the stock item.";
+	}
+	
+	record LookupStockItem
+	{
+		summary "Requests the lookup of stock items by SKU."
+		description "Requests the lookup for one or more stock items by their SKU. Note: A match must be found for every submitted SKU in order for the request to succeed."
+		array<string> skus "SKUs of the stock items to be retrieved.";
+	}
+
+	record LookupStockItemSucceeded
+	{
+		summary "Signals that the lookup for stock items was successful."
+		description "Signals that the lookup for stock items was successful and returns the details for one or more stock items matching the submitted SKUs. A match must be found for every submitted SKU in order for the request to succeed."
+		array<StockItem> stockItems "Stock items that were retrieved.";
+	}
+	
+	record LookupStockItemFailed
+	{
+		summary "Signals that the attempt to lookup stock items by SKU failed."
+		description "Signals that the request to lookup stock items by SKU has failed and returns information about the failure, which is useful for troubleshooting."
+		array<InventoryLookupError> errors "Collection of the errors related to the failed search for stock items.";
+	}
+	
+	record InventoryLookupError
+	{
+		summary "Signals there were stock item retrieval errors."
+		description "Returns the errors related to searching for one or more stock items."
+		string? sku "SKUs of the stock items involved in the failed search.";
+		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+	}
+	
+   record InventoryError
+	{
+		summary "Signals that there were errors with updating stock items."
+		description "Returns the errors related to updating a stock item. This can be used as a way of grouping error information in StockItemFailed."
+		StockItem? stockItem "One or more stock items involved in the failed update operation.";
+		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+	}
+
+    record StockItemUpdated
+	{
+		summary "Signals that stock items have been updated."
+		description "Notifies observers that stock items have been updated and returns an array of updated stock items."
+		array<StockItem> stockItems "Stock items whose information was successfully updated.";
+	}
+
+    record OutOfStock
+	{
+		summary "Notifies observers that an inventory item is out of stock."
+		description "Notifies an Inventory Observer that a stock item quantity has gone to zero."
+		StockItem stockItem "Informs an Inventory Observer that a stock item quantity has gone to zero.";
+	}
+	
+	enum InventorySnapshotReason {
+		summary "Specifies the reason for an inventory snapshot."
+		description "Defines the values that can be used to specify the reason for an inventory snapshot."
+		CYCLE_COUNT "Indicates the inventory snapshot was for a cycle count. A cycle count is where a small subset of inventory, in a specific location, is counted on a specified day."
+		DAMAGED_INVENTORY "Indicates the inventory snapshot was for damaged inventory."
+		LIQUIDATION "Indicates the inventory snapshot was for a liquidation."
+	}
+	
+	enum InventoryCondition {
+		summary "Specifies the condition of an item."
+		description "Defines the values that can be used to specify the condition of an item."
+		SELLABLE "Indicates that the item is in sellable condition."
+		UNSELLABLE "Indicates that the condition of the item makes the item unsellable."
+	}
+	
+	record StockItemData {
+		summary "Contains details of the stock items in the snapshot."
+		description "Captures the SKU, quantity, and condition of the stock item in the snapshot."
+		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
+		int unitQuantity "Amount of item in the stocking unit of measure. For example, if the UOM is per case and there are 12 items in a case, this value would be 12."
+		string stockingUOM "Stocking unit of measure, such as units per case."
+		InventoryCondition status "Condition of an item."	
+	}
+	
+	record UpdateStockItemSnapshot {
+		summary "Contains the information for updating the snapshot."
+		description "Captures the date and time, reason, and location of the snapshot."
+		StockItemData inventorySnapshot "Information for the update."
+		datetime snapshotDate "Date and time the snapshot was done.;"
+		InventorySnapshotReason snapshotReason "Reason the snapshot was done."
+		string locationName	"Location of where the snapshot is being taken."
+	}
+	
+	record UpdateStockItemSnapshotSucceeded
+	{
+		summary "Signals that stock items were updated."
+		description "Returns the stock items update request information."
+		UpdateStockItemSnapshot request "Details of the stock items that were updated.";
+	}
+	
+	record UpdateStockItemSnapshotFailed
+	{
+		summary "Signals that updating stock items in a snapshot failed."
+		description "Signals that the updating of stock items in a snapshot failed and returns the information that was sent in the request and information about the failure, which is useful for troubleshooting."
+		UpdateStockItemSnapshot request "Stock items that were not updated.";
+		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+	}
+	
+	record UpdateStockItemDelta {
+		summary "Contains the information for updating the stock items."
+		description "Captures date and time, inventory changes, and the warehouse identifier for the stock item update."
+		StockItemData inventoryChange "Inventory information for the update."
+		datetime snapshotDate "Date and time the snapshot was updated.;"
+		string warehouseId "Identifier of the warehouse."
+	}
+	
+	record UpdateStockItemDeltaSucceeded
+	{
+		summary "Signals that the updating of stock items was successful."
+		description "Returns information of the stock items that were updated."
+		UpdateStockItemDelta request "Update data that was sent in the request."
+	}
+	
+	record UpdateStockItemDeltaFailed
+	{
+		summary "Signals that updating stock items failed."
+		description "Returns the update data that was sent in the request and information about the failure, which is useful for troubleshooting."
+		UpdateStockItemDelta request "Update data that was sent in the request."
+		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+	}
+}
