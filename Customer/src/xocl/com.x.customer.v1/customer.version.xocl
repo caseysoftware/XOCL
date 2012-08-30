@@ -1,5 +1,5 @@
 package com.x.customer.v1 1.3 candidaterecommendation {
 	packagetitle "Customer"
-	description "The Customer package specifies the processes for management and access of customer information."
+	description "The Customer domain specifies the processes for managing and accessing customer information."
 	import com.x.customer.v1.*
 } 
