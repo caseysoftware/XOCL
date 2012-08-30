@@ -20,19 +20,13 @@ package com.x.loyalty.v1{
     transaction CreateReward response {
         sender {
         	message CreateReward {
-        		timeouts(receipt=30s, response=3m)     		
+        		timeouts( response=3m)     		
         		retries=3
         	}
         }
         receiver {
-        	success CreateRewardSucceeded {
-        		timeouts(receipt=30s)
-        		retries=3
-        	}
-            failure CreateRewardFailed {
-        		timeouts(receipt=30s)
-        		retries=3
-        	}
+        	success CreateRewardSucceeded 
+            failure CreateRewardFailed
         }
     }
     
@@ -52,19 +46,13 @@ package com.x.loyalty.v1{
     transaction SpendPoints response {
         sender {
         	message SpendPoints {
-        		timeouts(receipt=30s, response=3m)     		
+        		timeouts( response=3m)     		
         		retries=3
         	}
         }
         receiver {
-        	success SpendPointsSucceeded {
-        		timeouts(receipt=30s)
-        		retries=3
-        	}
-            failure SpendPointsFailed {
-        		timeouts(receipt=30s)
-        		retries=3
-        	}
+        	success SpendPointsSucceeded 
+            failure SpendPointsFailed 
         }
     }
     
