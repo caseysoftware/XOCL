@@ -14,10 +14,10 @@ package com.x.cartwithmarketingprovider.v1 0.0 earlydraft
 			WebStoreOfferProvider latebound
 			//TBD: add order management
 			
-			CustomerConsumer
-			ProductInformationManagementConsumer
-			InventoryConsumer
-			WebStoreOfferConsumer
+			CustomerConsumer*
+			ProductInformationManagementConsumer*
+			InventoryConsumer*
+			WebStoreOfferConsumer*
 		}		
 	}
 }
