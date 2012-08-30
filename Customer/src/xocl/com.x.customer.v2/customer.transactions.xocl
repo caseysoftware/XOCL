@@ -1,0 +1,90 @@
+package com.x.customer.v2{	
+	
+	import com.x.customer.v2.*
+	
+	transaction UpsertCustomer response 
+    {
+    	description "Updates customer information or adds a new customer record based on whether the customer exists."
+        sender
+        {
+        	message UpsertCustomer
+        	{
+        		 timeouts(response=3m)
+        		 retries=3     		
+        	}
+        }
+        receiver
+        {
+        	success UpsertCustomerSucceeded
+         	
+            failure UpsertCustomerFailed 
+        } 
+    }
+    
+    transaction CustomerCreated inform
+    {
+    	description "Notifies CustomerObserver that a new customer record was created."
+        sender
+        {
+        	message CustomerCreated{
+        	}
+        }
+    }
+    
+
+    transaction CustomerUpdated inform
+    {
+    	description "Notifies CustomerObserver that the information about a customer has been updated."
+        sender
+        {
+        	message CustomerUpdated{
+        	}
+   
+        }
+    }
+    
+	transaction SearchCustomer<Email, NameAndId> query
+    {
+    	description "Returns a customer based on an email address or name and system ID. System ID is the identifier assigned to the customer by the system that created the customer record."
+        sender
+        {
+        	message SearchCustomer
+        	{
+        		 timeouts(response=1m)
+        		 retries=3     		
+        	}
+        }
+        receiver
+        {
+        	
+        	success SearchCustomerSucceeded
+        	
+        	success<Email> SearchEmailCustomerSucceeded
+        	
+        	success<NameAndId> SearchNameAndIdCustomerSucceeded
+
+            failure SearchCustomerFailed
+        } 
+    }
+    
+    transaction LookupCustomer query
+    {
+    	description "Retrieves details for one customer based on the supplied customer ID (identifier) and returns either the customer information or a failure error message."
+        sender
+        {
+        	message LookupCustomer
+        	{
+        		timeouts(response=30s)
+        		retries=3         		
+        	}
+        }
+        receiver
+        {
+        	success LookupCustomerSucceeded
+            failure LookupCustomerFailed
+        } 
+    }
+    
+    
+    
+}
