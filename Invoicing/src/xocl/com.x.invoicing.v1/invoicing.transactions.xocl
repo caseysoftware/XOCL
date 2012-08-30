@@ -40,7 +40,6 @@ package com.x.invoicing.v1
     	sender
         {
         	message InvoiceCreated{
-        		   topic "/com.x.invoicing.v1/InvoiceCreation/InvoiceCreated"
         	}
         }
     }
