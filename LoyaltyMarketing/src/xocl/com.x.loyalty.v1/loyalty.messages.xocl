@@ -15,7 +15,7 @@ package com.x.loyalty.v1{
 	}
 	
 	record LoyaltyCustomer {    //how much customer information do we need?  was ocl.Contact
-		union{guid, EntityId} customerId;
+		uri customerId;
 		array<Balance>? balance;
 		array<Reward>? rewards;
 	}
@@ -25,7 +25,7 @@ package com.x.loyalty.v1{
 	}
 
 	record LoyaltyCustomerAvailableBalance{
-		union{guid, EntityId} customerId;
+		uri customerId;
 		string type; //i.e. "X_Airline_FrequentFlyerMiles" or "BankOfX_Reward"
 		long available;
 	}
@@ -81,24 +81,24 @@ package com.x.loyalty.v1{
 	
 	
 	record CreateReward {
-		union{guid, EntityId} customerId;
+		uri customerId;
 	 	RewardData reward;
 	}
 	
 	record CreateRewardSucceeded {
-		union{guid, EntityId} customerId;
+		uri customerId;
 		Reward reward;
 	}
 	
 	record CreateRewardFailed {
-		union{guid, EntityId} customerId;
+		uri customerId;
 		RewardData reward;
 		array<Error> errors;
 	}
 
 	
 	record LookupCustomerRewardData {
-		union{guid, EntityId} customerId;
+		uri customerId;
 	}
 		
 	record LookupCustomerRewardDataSucceeded {
@@ -106,12 +106,12 @@ package com.x.loyalty.v1{
 	}
 	
 	record LookupCustomerRewardDataFailed {
-		union{guid, EntityId} customerId;
+		uri customerId;
 		array<Error> errors;
 	}
 	
 	record PredictOrderReward{
-	    union{guid, EntityId} customerId;
+	    uri customerId;
 		
 		/** The total paid by the customer (total of items, fees, taxes, etc.) */ 
 		CurrencyAmount grandTotal;
@@ -138,12 +138,12 @@ package com.x.loyalty.v1{
 	}
 	
 	record SpendPoints{
-		 union{guid, EntityId} customerId;
+		 uri customerId;
 		 Balance originalBalance;  //this is for optimistic update.  We can detect if the balance is updated.
 		 long pointToSpend;
 	}
 	record SpendPointsSucceeded{
-	     union{guid, EntityId} customerId;
+	     uri customerId;
 		 Balance newBalance;
 	}
 	record SpendPointsFailed{
