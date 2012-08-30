@@ -1,0 +1,23 @@
+package com.x.cartwithmarketingprovider.v1 0.0 earlydraft
+{
+	import com.x.pimcontracts.v1.*
+	import com.x.inventorycontracts.v1.*
+	import com.x.customercontract.v1.*
+	import com.x.webstorecontracts.v1.*
+	
+	bundle CartWithMarketingProvider{
+		description "A bundle including PIM, inventory, Customer, Order and Webstore metadata"
+		bindings{
+			CustomerInformationProvider latebound 
+			ProductInformationManagement latebound
+			InventoryManager latebound
+			WebStoreOfferProvider latebound
+			//TBD: add order management
+			
+			CustomerConsumer
+			ProductInformationManagementConsumer
+			InventoryConsumer
+			WebStoreOfferConsumer
+		}		
+	}
+}
