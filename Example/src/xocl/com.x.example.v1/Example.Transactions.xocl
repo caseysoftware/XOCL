@@ -131,7 +131,7 @@ package com.x.example.v1 {
 				 *     A validation must be sent to the standard topic com.x.core.v1/MessageValidated.
 				 *     See com.x.core.v1.MessageValidated for more information about validations.
         		 */ 
-        		timeouts(receipt=30s, validation=3m)
+        		timeouts( validation=3m)
         		
         		/*
 				 * If a given acknowledgement is not received within the specified timeout, 
@@ -222,7 +222,7 @@ package com.x.example.v1 {
 				 * If a receipt timeout and/or a validation timeout is specified, then the receiver may send a 
 				 *   response instead of a receipt and/or a validation, respectively, within the specified timeout.
 				 */
-        		timeouts(receipt=30s, validation=3m, response=1h)
+        		timeouts(response=1h)
         		
         		/*
 				 * If a response is not received within the specified timeout, 
@@ -259,12 +259,7 @@ package com.x.example.v1 {
 			 * By convention, the default success message uses the naming pattern <default_message_name>Succeeded.
         	 */
         	success PrepareOrderSucceeded {
-        		/*
-	        	 * A response message may have timeouts requiring acknowledgements from the sender.
-	        	 * They are implemented as above, but apply to the response message, not the request message.
-        		 */
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
+
             }
             
         	/* 
@@ -272,8 +267,6 @@ package com.x.example.v1 {
 			 * If no SLAs are required for a message, then the SLA specification block can be omitted.
         	 */
             failure PrepareOrderFailed {
-            	timeouts(receipt=30s)
-            	retries=3
             }
         }
     }
@@ -298,18 +291,16 @@ package com.x.example.v1 {
         
         sender {
         	message ShipOrder {
-        		timeouts(receipt=30s, validation=3m, response=30m)
+        		timeouts( response=30m)
         		retries = 3
         	}
         }
         receiver {
         	success ShipOrderSucceeded {
-        		timeouts(receipt=30s, validation=3m)
-        		retries = 3
+
         	}
         	failure ShipOrderFailed {
-        		timeouts(receipt=30s)
-        		retries = 3
+
         	}
         }
         /*
@@ -339,19 +330,13 @@ package com.x.example.v1 {
     transaction UpdateInventory response {
     	sender {
     		message UpdateInventory {
-        		timeouts(receipt=30s, response=30m)
+        		timeouts( response=30m)
         		retries = 3
     		}
     	}
     	receiver {
-    		success UpdateInventorySuccess {
-        		timeouts(validation=3m)
-        		retries = 3
-    		}
-    		failure UpdateInventoryFailure {
-        		timeouts(validation=3m)
-        		retries = 3
-    		}
+    		success UpdateInventorySuccess 
+    		failure UpdateInventoryFailure 
     	}
     }
 
@@ -381,7 +366,7 @@ package com.x.example.v1 {
         {
         	message SearchOrder
         	{
-        		 timeouts(receipt=30s, response=3m)     		
+        		 timeouts(response=3m)     		
         	}
         }
         receiver
@@ -403,7 +388,7 @@ package com.x.example.v1 {
         {
         	message LookupOrder
         	{
-        		timeouts(validation=30s, response=3m)     		
+        		timeouts(response=3m)     		
         	}
         }
         receiver
