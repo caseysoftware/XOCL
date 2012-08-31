@@ -157,7 +157,7 @@ package com.x.pim.v2
     {
        	summary "Requests a search for specific products."
     	description "Requests a search for specific product types and optionally limit the search by locale. If locale is not provided, en_US is used."
-		datetime? modifiedSince "Modification date for the search criteria."; 
+		datetime? modifiedSince "Filter results by modification date.  Products modified after this date are returned." ; 
 		long? itemsRequested "Maximum number of items to return at one time (used for paging). If this is not set, all items are returned.";
 		long? startItemIndex "Returns the results starting from this zero-based index. If this is not set, items will be returned started from the first item.";
         array<Locale>? locales "Optional array of locales to search.";
