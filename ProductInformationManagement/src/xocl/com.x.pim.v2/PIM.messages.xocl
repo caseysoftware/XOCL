@@ -20,7 +20,7 @@ package com.x.pim.v2
         array<LocalizedString>? shortDescription "Brief description of the product.";
         array<LocalizedString>? _AVDL_description "Full description of the product.";
         string? GTIN "GTIN (Global Trade Item Number) identifier for the product.";
-        string? sku "SKU (Stock Keeping Unit), a unique identifier assigned by the merchant for the product";
+        string sku "SKU (Stock Keeping Unit), a unique identifier assigned by the merchant for the product";
         array<LocalizedString>? brand "Brand of the product, such as iPod.";
         array<LocalizedString>? manufacturer "Manufacturer of the product, such as Apple.";
         string? mpn "Manufacturer part number of the product.";
