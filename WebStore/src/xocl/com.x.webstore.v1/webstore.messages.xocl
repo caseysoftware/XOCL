@@ -238,4 +238,51 @@ package com.x.webstore.v1{
 		string webStoreId "Identifier for the web store.";
 		string? offerId "Identifier of the offer. This ID is assigned by the channel that published the offer.";
 	}
+	
+	record WebStoreAbandonedCartItem {
+		string url 	"Location (URL) to the product in the web store.";
+		CurrencyAmount currentPrice "Selling price of the product."; 
+		long quantity "How many of this product are in the cart";
+		string sku "SKU (Stock Keeping Unit) of the product being offered. This is a unique identifier supplied by the merchant.";
+		string? parentSku "The parent Sku of this product, if present.  This allows a mapping to advanced product types in web stores to allow relationships for configurable products."
+		string name "The name/description of the product"
+		string webStoreId "Identifier for the web store offering the product.";
+	}
+	
+	record WebStoreAbandonedCart {
+		summary "Contains the detailed information of an abandon cart."
+		description "Captures the information about the customer that abandoned the cart, and details the product information in the cart."
+
+		string? customerEmail "The email address for the customer who abandoned the cart.";
+		array<WebStoreAbandonedCartItem> cartItems "The product information and quantities in the customer's cart that was abandoned";
+		datetime lastModified "The last modified date for the cart"		
+	}
+	
+	record SearchWebStoreAbandonedCart{
+		summary "Requests a search for abandoned carts from a specific web store."
+		description "Requests a search for abandoned carts based on the web store ID and optionally the modification date."
+  
+    	string? webStoreId "Identifier for the web store.";
+		datetime? modifiedSince "Date the cart information was last modified (changed). This is used along with the other search criteria to restrict the search to carts modified since this date." 
+		long? itemsRequested "Maximum number of items to return at one time (used for paging). If this is not set, all items are returned.";
+		long? startItemIndex "Returns the results starting from a zero-based index. If this is not set, items will be returned started from the first item.";
+	}
+	
+	record SearchWebStoreAbandonedCartSucceeded{	
+		summary "Signals that searching for web store abandoned carts was successful."
+		description "Notifies an observer that web store abandoned carts were found. Returns the abandon cart information and the total number of abandon carts returned for a specific web store."
+
+		array<WebStoreAbandonedCart> abandonedCarts "Array of abandoned carts found and the details of these abandon carts.";
+		long totalItemsFound "Total number of abandon carts returned.";
+		SearchWebStoreAbandonedCart request "Search criteria used.";
+	}
+	
+	record SearchWebStoreAbandonedCartFailed{
+		summary "Signals that no abandoned carts were found for the specified web store."
+		description "Returns the search criteria that was sent in the request and information about the failure, which is useful for troubleshooting."
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+		SearchWebStoreAbandonedCart request "Search criteria used.";
+	}
+	
+	
 }

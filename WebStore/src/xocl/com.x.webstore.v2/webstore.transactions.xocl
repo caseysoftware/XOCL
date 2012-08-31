@@ -204,4 +204,24 @@ package com.x.webstore.v2{
    			message WebStoreOfferUpdated
    		}
    	}
+   	
+    transaction SearchWebStoreAbandonedCart unicast query 
+    {
+    	description "Searches for all web store abandon carts by either web store ID or modification date and returns either a succeeded or failed message."
+        sender
+        {
+        	message SearchWebStoreAbandonedCart
+        	{
+        		 timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success SearchWebStoreAbandonedCartSucceeded        
+                    	
+            failure SearchWebStoreAbandonedCartFailed  
+        } 
+    
+ 	}
+   	
 }

@@ -246,4 +246,22 @@ package com.x.webstore.v2{
 				roles (WebStoreOfferManager, WebStoreOfferObserver)
 		}		
 	}
+	
+	process WebStoreAbandonedCartSearch {
+		summary "Searches for abandoned carts - a consumer places items in their cart, but never checks out."
+		description "A consumer queries the web store to find abandoned carts"
+		
+		roles{
+				WebStoreCartConsumer "Requests and receives the abandon carts"
+				WebStoreCartManager "Returns the abandon carts that were requested"
+		}
+		workflow{
+			summary "Searches for abandoned carts - a consumer places items in their cart, but never checks out."
+			description "A consumer queries the web store to find abandoned carts"
+		
+			transaction SearchWebStoreAbandonedCart {
+				roles (WebStoreCartConsumer,WebStoreCartManager)
+			}
+		}
+	}
 }
