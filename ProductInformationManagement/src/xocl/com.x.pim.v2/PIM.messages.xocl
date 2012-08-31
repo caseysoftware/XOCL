@@ -19,7 +19,7 @@ package com.x.pim.v2
         array<LocalizedString>? name "Descriptive names for the product.";
         array<LocalizedString>? shortDescription "Brief description of the product.";
         array<LocalizedString>? _AVDL_description "Full description of the product.";
-        string? GTIN "GTIN (Global Trade Item Number) identifier for the product.";
+        string? gtin "GTIN (Global Trade Item Number) identifier for the product.";
         string sku "SKU (Stock Keeping Unit), a unique identifier assigned by the merchant for the product";
         array<LocalizedString>? brand "Brand of the product, such as iPod.";
         array<LocalizedString>? manufacturer "Manufacturer of the product, such as Apple.";
@@ -189,8 +189,8 @@ package com.x.pim.v2
     	description "Captures information needed to create a SKU. It will override the values for MSRP and MAP in Product."
         string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique identifier supplied by the requester.";
         string? productId "Unique identifier of the product. Note: This is required in all cases except product creation.";
-        CurrencyAmount? MSRP "Manufacturer suggested retail price. Note: This overrides the MSRP field in Product.";
-        CurrencyAmount? MAP "Minimal advertisement price.  Note: This overrides the MAP field in Product.";
+        CurrencyAmount? msrp "Manufacturer suggested retail price. Note: This overrides the MSRP field in Product.";
+        CurrencyAmount? minimalAdvertisedPrice "Minimal advertisement price.  Note: This overrides the MAP field in Product.";
         array<ProductAttributeValue>? variationAttributeValues "Array of product variation attributes. Note: This list must match the variationAttributeIds in Product.";
         array<Image>? images "Product images specific to this SKU.";
     }
