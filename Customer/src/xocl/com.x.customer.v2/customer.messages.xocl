@@ -49,7 +49,7 @@ package com.x.customer.v2{
     record Customer confidential extends CustomerData {
 		summary "Adds fields to the CustomerData record."
 		description "Adds the customer identifier field to the CustomerData record."
-		uri id "Globally unique identifier assigned to the customer by the system that created the customer record.";	 //Changed this from union with entityID to make it simpler
+		uri customerId "Globally unique identifier assigned to the customer by the system that created the customer record.";	 //Changed this from union with entityID to make it simpler
 	} 
 	
 	record SearchCustomer{
@@ -71,7 +71,7 @@ package com.x.customer.v2{
 	record LookupCustomer {
 		summary "Requests a lookup for a customer by system ID."
 		description "Requests a lookup for a customer using the identifier assigned to the customer by the system that created the customer record or a guid."
-        uri id "Identifier assigned to the customer by the system that created the customer record." 
+        uri customerId "Identifier assigned to the customer by the system that created the customer record." 
     }
  
     record LookupCustomerSucceeded {
@@ -83,7 +83,7 @@ package com.x.customer.v2{
     record LookupCustomerFailed {
 		summary "Signals that the lookup of a customer by system ID failed."
 		description "Signals that the lookup of a customer has failed and returns the customer ID that was sent in the request and information about the failure, which is useful for troubleshooting."
-        uri id "Identifier used for the lookup."
+        uri customerId "Identifier used for the lookup."
 		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
 
@@ -92,7 +92,7 @@ package com.x.customer.v2{
 		description "Captures the email address, record modification date, and ID of the customer. This ID can be assigned by the system that created the customer record, a guid, or null."	
 		Email email "Customer's email address.";		
 		datetime lastModifiedDate "Date the customer information was last modified (changed).";		
-		uri customerId  "Identifier for a customer. This ID can be assigned  by the system that created the customer record, a guid, or null.";
+		uri customerId  "Identifier assigned to the customer by the system that created the customer record." 
 	}
 	
 	record CustomerNameAndId{
