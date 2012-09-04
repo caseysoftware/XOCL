@@ -51,6 +51,7 @@ package com.x.merchantonboarding.v1 {
 	}
 	
 	record AcceptedData {
+		map<map<string>>? parameters;
 	}
 	
 	record NotNeededData {
@@ -75,7 +76,7 @@ package com.x.merchantonboarding.v1 {
 	record CompleteAuthorizationSucceeded {
 		AuthorizationSession authorizationSession;
 
-		map<map<string>>? parameters;
+		union{AcceptedData, RejectedData} statusSpecificData;
 	}
 	
 	record NewAuthorization {
