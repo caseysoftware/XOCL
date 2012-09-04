@@ -1,0 +1,273 @@
+ 
+package com.x.marketplace.v4{
+	import com.x.marketplace.v4.*
+	
+	entity PolicyGroup
+	{
+		description "Collection of policies used in the offer, such as payment methods accepted, return policy, shipping services supported, etc."
+	}
+    	
+ 	entity Offer {
+ 	description "Defines the values used to specify the state of an offer."
+    	state Created[Active] "The offer has been created."
+    	state Active[Inactive] "The offer is has been published."
+    	state Inactive "The offer has been revoked."
+    }
+	
+
+    
+    transaction GetAllAvailableChannels broadcast query {
+    	description "Queries for all the marketplaces that are associated with the consumer that sends the query."
+        sender {
+        	message GetAllAvailableChannels {
+        		 timeouts(response=30s)
+        	}
+        }
+        receiver {
+        	success GetAllAvailableChannelsSucceeded{  		
+        	} 
+        	//there is no failure message here because the implementation should not respond if it cannot identify itself                	
+        } 
+    }
+    
+ 	transaction GetAllSites unicast query {
+ 		description "Searches for all the sites from one marketplace."
+        sender {
+        	message GetAllSites {
+        		 timeouts(response=30s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success GetAllSitesSucceeded          
+            failure GetAllSitesFailed
+        } 
+    }
+    
+ 	transaction LookupSiteMetadata unicast query {
+ 		description "Looks up the metadata for a site by ID."
+        sender {
+        	message LookupSiteMetadata {
+        		 timeouts(response=30s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success LookupSiteMetadataSucceeded
+            failure LookupSiteMetadataFailed
+        } 
+    }    
+   
+    transaction SearchCategories unicast query {
+    	description "Searches for all the categories of the site that was looked up."
+        sender {
+        	message SearchCategories {
+        		 timeouts(response=1m)   //1m because ebay implementation often takes that long
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success SearchCategoriesSucceeded
+            failure SearchCategoriesFailed
+        } 
+    }
+    
+    transaction CreatePolicyGroup<Ebay> unicast response {
+    	description "Creates policy groups."
+        sender {
+        	message CreatePolicyGroup {
+        		timeouts(response=3m)     		
+        		retries=3
+        	}
+        	message <Ebay> CreateEbayPolicyGroup {
+        		timeouts(response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success CreatePolicyGroupSucceeded 
+            success <Ebay>CreateEbayPolicyGroupSucceeded            
+            failure CreatePolicyGroupFailed 
+            failure <Ebay>CreateEbayPolicyGroupFailed
+        }
+    }
+    
+    transaction UpdatePolicyGroup<Ebay> unicast response {
+    	description "Updates policy group information."
+        sender {
+        	message UpdatePolicyGroup{
+        	    timeouts(response=3m)     		
+        		retries=3
+        	}
+
+            message <Ebay>UpdateEbayPolicyGroup{
+        	    timeouts(response=3m)     		
+        		retries=3
+        	}
+
+        }
+        receiver {
+        	success UpdatePolicyGroupSucceeded
+            success<Ebay> UpdateEbayPolicyGroupSucceeded
+            failure UpdatePolicyGroupFailed
+            failure <Ebay>UpdateEbayPolicyGroupFailed
+        }
+    }
+    
+    transaction DeletePolicyGroup unicast response {
+    	description "Deletes a policy group."
+        sender {
+        	message DeletePolicyGroup {
+        		timeouts(response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success DeletePolicyGroupSucceeded
+            failure DeletePolicyGroupFailed
+        }
+    }
+     
+    transaction LookupPolicyGroup<Ebay> unicast query {
+    	description "Looks up a policy group by ID."
+        sender {
+        	message LookupPolicyGroup {
+        		 timeouts(response=30s)     		
+        	}
+        }
+        receiver {
+        	success LookupPolicyGroupSucceeded
+        	success <Ebay> LookupEbayPolicyGroupSucceeded
+            failure LookupPolicyGroupFailed          
+        } 
+    }
+    
+    transaction PublishOffer<Ebay>  (Offer offer) unicast response {
+    	description "Publishes an offer using the data from a Product Information Management system."
+        preconditions(offer[Offer.Created])
+        sender {
+        	message PublishOffer {
+        		timeouts(response=12h)  		
+        		retries=3
+        	}
+        	message <Ebay> PublishEbayOffer {
+        		timeouts(response=12h)  		
+        		retries=3
+        	}
+        }
+        receiver{
+        	success PublishOfferSucceeded 
+        	success <Ebay> PublishEbayOfferSucceeded 
+        	failure PublishOfferFailed
+        	failure <Ebay> PublishEbayOfferFailed 
+        }
+    }
+    
+    transaction PublishOfferWithProductData<Ebay>(Offer offer) unicast response {
+    	description "Publishes an offer without using the data from a Product Information Management system."
+        preconditions(offer[Offer.Created])
+        sender {
+        	message PublishOfferWithProductData {
+        		timeouts(response=12h)  		
+        		retries=3
+        	}
+        	message <Ebay> PublishEbayOfferWithProductData {
+        		timeouts(response=12h)  		
+        		retries=3
+        	}
+        }
+        receiver{
+        	success PublishOfferSucceeded 
+        	success <Ebay> PublishEbayOfferSucceeded 
+        	failure PublishOfferFailed
+        	failure <Ebay> PublishEbayOfferFailed 
+        }
+    }
+    
+
+ 
+    transaction RevisePublishedOffer<Ebay> unicast response {
+    	description "Updates an offer using a Product Information Management system."
+        sender {
+        	message RevisePublishedOffer {
+        		timeouts(response=12h)		
+        		retries=3
+        	}
+        	message<Ebay> ReviseEbayPublishedOffer {
+        		timeouts(response=12h)   		
+        		retries=3
+        	}
+        }
+        receiver{
+        	success RevisePublishedOfferSucceeded
+        	success<Ebay> ReviseEbayPublishedOfferSucceeded
+        	failure RevisePublishedOfferFailed
+        	failure<Ebay> ReviseEbayPublishedOfferFailed
+        }
+	}
+      
+	transaction RevisePublishedOfferWithProductData<Ebay> unicast response {
+      	description "Updates an offer without using a Product Information Management system."
+        sender {
+        	message RevisePublishedOfferWithProductData {
+        		timeouts(response=12h)		
+        		retries=3
+        	}
+        	message<Ebay> ReviseEbayPublishedOfferWithProductData {
+        		timeouts(response=12h)   		
+        		retries=3
+        	}
+        }
+        receiver{
+        	success RevisePublishedOfferSucceeded
+        	success<Ebay> ReviseEbayPublishedOfferSucceeded
+        	failure RevisePublishedOfferFailed
+        	failure<Ebay> ReviseEbayPublishedOfferFailed
+        }
+    }   
+      
+    transaction RevokePublishedOffer unicast response {
+    	description "Revokes an offer."
+        sender {
+        	message RevokePublishedOffer {
+        		timeouts(receipt=30s, response=2h)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success RevokePublishedOfferSucceeded
+            failure RevokePublishedOfferFailed
+        }
+    }
+    
+    transaction SearchOffers<Ebay> unicast query {
+    	description "Searches for offers."
+        sender {
+        	message SearchOffers {
+        		 timeouts(response=30s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success SearchOffersSucceeded
+        	success<Ebay> SearchEbayOffersSucceeded
+            failure SearchOffersFailed
+        } 
+    } 
+    
+    transaction SearchTopSellingProducts<Ebay> unicast query {
+    	description "Searches for the top selling products."
+        sender {
+        	message SearchTopSellingProducts {
+        		 timeouts(response=30s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success SearchTopSellingProductsSucceeded
+        	success <Ebay>SearchEbayTopSellingProductsSucceeded
+            failure SearchTopSellingProductsFailed
+        } 
+    } 
+    
+}

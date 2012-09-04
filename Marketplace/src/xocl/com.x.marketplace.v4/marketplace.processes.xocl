@@ -1,0 +1,274 @@
+  
+package com.x.marketplace.v4{
+	
+	import com.x.marketplace.v4.*
+	import com.x.authz.v2.*
+	import com.x.pim.v2.*
+	
+	process MarketplaceSetup {
+
+		description "A consumer queries for all the available marketplaces, picks a marketplace and a site within that marketplace, and retrieves the metadata and categories for that site."
+		roles
+		{
+			MarketplaceMetadataConsumer "Requests a query for marketplaces."
+			MarketplaceMetadataProvider "Returns the results of a query."
+			AuthorizedMarketplaceUser "Authorizes the consumer making the request. This is used in the authorization grant workflow."
+			Marketplace "Associates the marketplace account with a merchant account."
+		}
+	}
+	
+	workflow MarketplaceSetup implements MarketplaceSetup {	
+			
+		description "Finds the marketplaces, then finds a specific site within the marketplace, and returns the metadata and categories for that specific site. The marketplaceMetadataConsumer should call the GetAllAvailableChannels, decide which marketplace they want to communicate with, and use the X-XC-PUBLISHER-ID to communicate with that marketplace."
+		any {
+			transaction GetAllAvailableChannels {
+				roles(MarketplaceSetup.MarketplaceMetadataConsumer, MarketplaceSetup.MarketplaceMetadataProvider)
+			}
+		}
+		any {
+			transaction GetAllSites { //goes to a specific destination 
+				roles(MarketplaceSetup.MarketplaceMetadataConsumer, MarketplaceSetup.MarketplaceMetadataProvider)
+			}	
+		}
+		any {
+			transaction LookupSiteMetadata {
+				roles(MarketplaceSetup.MarketplaceMetadataConsumer, MarketplaceSetup.MarketplaceMetadataProvider)
+			}	
+		}
+		any {
+			transaction SearchCategories { //A consumer searches site for available categories
+				roles(MarketplaceSetup.MarketplaceMetadataConsumer, MarketplaceSetup.MarketplaceMetadataProvider)
+			}
+		}			
+	}
+	
+	
+    process PolicyGroupCreation<Ebay> (PolicyGroup policyGroup) {
+    	
+		description "A merchant creates a policy group. A policy group is a set of reusable metadata, such as shipping policies, payment method policies, etc. that can be used in the offer of many products."
+		roles
+		{
+			MarketplaceMerchantConsole "Defines the information for the policy group."
+			MarketplacePolicyManager "Stores the policy group."
+		}
+		
+		preconditions(!exists(policyGroup)) 
+	
+		workflow {
+			description "Creates a policy group."
+		    transaction CreatePolicyGroup<Ebay> {
+				   roles(MarketplaceMerchantConsole, MarketplacePolicyManager)
+			}
+		}
+
+	    postconditions {
+			success(exists(policyGroup))
+			failure(!exists(policyGroup))
+		}
+	}	
+	
+    process PolicyGroupUpdate<Ebay> (PolicyGroup policyGroup) {
+    	
+		description "Updates a policy group."
+		roles
+		{
+			MarketplaceMerchantConsole "Updates the policy group information."
+			MarketplacePolicyManager "Stores the policy group."
+		}
+		
+		preconditions(exists(policyGroup))
+	
+		workflow {
+			description "Updates a policy group."
+		     transaction UpdatePolicyGroup<Ebay> {
+				  roles(MarketplaceMerchantConsole, MarketplacePolicyManager)
+			}
+		}
+
+	    postconditions {
+			success(exists(policyGroup))
+			failure(exists(policyGroup))
+		}
+	}
+	
+		
+    process PolicyGroupDeletion (PolicyGroup policyGroup) {
+    	
+		description "A merchant deletes a policy group."
+		roles
+		{
+			MarketplaceMerchantConsole "Deletes a policy group."
+			MarketplacePolicyManager "Stores the policy group."
+		}
+		
+		preconditions(exists(policyGroup))
+	
+		workflow {
+			description "Deletes a policy group."
+		     transaction DeletePolicyGroup {
+				  roles(MarketplaceMerchantConsole, MarketplacePolicyManager)
+			}
+		}
+
+	    postconditions {
+			success(!exists(policyGroup))
+			failure(exists(policyGroup))
+		}
+	}
+	
+    process PolicyGroupLookup<Ebay> {
+
+		description "A merchant looks up a policy group by ID."
+		roles
+		{
+			MarketplaceMerchantConsole "Looks up a policy group by ID."
+			MarketplacePolicyManager "Stores the policy group."
+		}
+	
+		workflow {
+			description "Looks up a policy group by ID."
+			transaction LookupPolicyGroup<Ebay> {
+				roles(MarketplaceMerchantConsole, MarketplacePolicyManager)
+			}
+		}
+	}
+	
+	process OfferPublication<Ebay>(Offer offer) {
+    	
+		description "A merchant publishes offers to a marketplace."
+		roles
+		{
+			OfferManager "Publishes the offer to a marketplace."
+			Marketplace "Receives the offer."
+			ProductInformationManager "Adds the product details to the offer."
+		}
+	
+		preconditions(offer[Offer.Created])
+			
+	     workflow [12h]  { //timeout: Ontology-492
+	     
+	     	description "Publishes offers to a marketplace. Note: There is only one response to the workflow."
+			transaction PublishOffer<Ebay> {
+				roles(OfferManager, Marketplace)
+
+			}
+		}
+	}
+		
+    process OfferPublicationWithProductData<Ebay>(Offer offer) {
+
+		description "A merchant publishes offers to a marketplace without using a Product Information Management system."
+		roles
+		{
+			OfferManager "Publishes the offer to a marketplace."
+			Marketplace "Receives the offer."
+	}		
+	
+		preconditions(offer[Offer.Created])
+	
+		workflow [12h]  { //timeout: Ontology-492
+			description "Publishes an offer without using a Product Information Management system. Note: There is only one response to the workflow."
+	
+			transaction PublishOfferWithProductData<Ebay> {
+				roles(OfferManager, Marketplace)
+			}
+		
+		}
+	}
+
+    process PublishedOfferRevision<Ebay>(Offer offer) {
+
+		description "A merchant updates published offers in a marketplace using a Product Information Management system."
+		roles
+		{
+			OfferManager "Updates published offers in a marketplace."
+			Marketplace "Receives the offer updates."
+			ProductInformationManager "Adds the updated product details to the offer."
+		}
+	
+		preconditions(offer[Offer.Created])
+			
+		workflow [12h]  { //timeout: Ontology-492
+			description "Updates published offers using a Product Information Management system. Note: There is only one response to the workflow."
+			transaction RevisePublishedOffer<Ebay> {
+				roles(OfferManager, Marketplace)
+			}
+		}
+	}
+
+ 	process PublishedOfferRevisionWithProductData<Ebay>(Offer offer) {
+
+		description "A merchant updates published offers in a marketplace without using a Product Information Management system."
+		roles
+		{
+			OfferManager "Updates published offers in a marketplace."
+			Marketplace "Receives the offer updates."
+		}
+	
+		preconditions(offer[Offer.Created])
+			
+		workflow [12h]  { //timeout: Ontology-492
+			description "Updates published offers without using a Product Information Management system. Note: There is only one response to the workflow."
+			transaction RevisePublishedOfferWithProductData<Ebay> {
+				roles(OfferManager, Marketplace)
+			}
+		}
+	}
+	
+	
+	process PublishedOfferRevocation(Offer offer) {
+		
+		description "A merchant cancels an offer in a marketplace."
+		roles
+		{
+			OfferManager "Cancels published offers in a marketplace."
+			Marketplace "Receives the offer cancellation."
+		}	
+	
+		preconditions(offer[Offer.Active])
+	
+		workflow {
+			description "Cancels published offers."
+			transaction RevokePublishedOffer {
+				roles(OfferManager, Marketplace)
+			}
+		}
+	    postconditions {
+			success(offer[Offer.Inactive])
+		}
+	}
+	
+	process OfferSearch<Ebay> {
+	    
+	    description "The OfferManager searches a marketplace for published offers by specifics, such as SKUs. This is used to reconcile offer data with a web store."
+		roles
+		{
+			OfferManager "Requests a search for offer data."
+			Marketplace "Returns the results."
+		}	
+		
+		workflow {
+			description "Searches for published offers by specifics in order to reconcile information with the web store."
+				transaction SearchOffers<Ebay> {
+						roles(OfferManager, Marketplace)
+				}	
+		}
+	}
+	
+	process TopSellingProductSearch<Ebay> {
+	    
+	    description "The MarketplaceMetadataConsumer queries the marketplace to retrieve the top selling products."
+		roles
+		{
+			MarketplaceMetadataConsumer "Requests a search for the top selling products."
+			Marketplace "Returns the results."
+		}	
+		
+		workflow {
+				description "Queries the marketplace for the top selling products."
+				transaction SearchTopSellingProducts<Ebay> {
+						roles(MarketplaceMetadataConsumer, Marketplace)
+				}	
+		}
+	}	
+}

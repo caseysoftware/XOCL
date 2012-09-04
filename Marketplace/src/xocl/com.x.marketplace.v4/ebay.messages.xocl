@@ -1,0 +1,438 @@
+ package com.x.marketplace.v4{  
+ 	import com.x.core.v1.*
+ 	import com.x.marketplace.v4.*
+ 	import com.x.pim.v2.*
+	
+	
+	record EbayOfferDetails extends OfferDetails{
+		summary "Contains fields that are added to the OfferDetails record."
+		description "Contains the listing detail fields that are added to the OfferDetails record."
+		
+		string listingFormat "Type of eBay listing, for example BuyItNow.";
+		string duration  "Duration of the offer. This overrides the duration in the policy. If this is blank, the duration in the policy is used."
+        string countryCode "2-character country code, such as US (United States) or FR (France).";
+		CurrencyAmount? buyItNowPrice "Price of the item if purchased with BuyItNow. Note: This field is applicable only for auction listings.";
+		CurrencyAmount? reservePrice "Reserved price for the item. Note: This field is applicable only for auction listings.";
+		string? payPalEmailAddress "Merchant's PayPal email address.";
+		int? handlingTime "Time needed to ship the item.";
+		boolean? useTaxTable "Specifies whether to use a tax table at checkout. This must already be setup in eBay by the merchant.";
+		string? postalCode "Zip code of the product location.";
+		string? location "Location of the product.";
+		string? imageVariationName "Name of the type of variation, such as color, size, etc. This field is mapped to eBay’s VariationSpecificName tag, which is part of the Pictures element.  You can put sets of pictures in each variation that correspond to that variation’s value for the specified VariationSpecificName.  This means that in the live listing, when Green is specified, all images under the Green VariationSpecificPictureSet will appear.";	
+		string? domesticShippingDiscountProfileId "Identifier of the profile already created on eBay for domestic shipping discounts. Note: This overrides the value in the policy group."; 
+		string? internationalShippingDiscountProfileId "Identifier of the profile already created on eBay for international shipping discounts. Note: This overrides the value in the policy group.";
+		boolean? applyDomesticPromotionalShippingRule "Specifies whether to use the domestic Promotional Shipping Rule set up in MyeBay. Note: This overrides the value in the policy group."
+		array<SalesTaxTableEntry>? salesTaxTable "Sales tax rates by state."
+	}
+	
+	record SalesTaxTableEntry{
+		summary "Contains the sales tax table information."
+		description "Fields for the sales tax information."
+		
+		double salesTaxPercentage "Sales tax percentage."
+		string stateOrMunicipality "State or municipality code, such as MN, CA."
+		boolean shippingIncludedInTax "Indicates whether shipping is included in the sales tax calculation."
+	}
+	
+	
+	record EbayOfferDetailsWithProductData{
+		summary "Contains the product and eBay listing details."
+		description "Captures the product details and the eBay listing settings for an offer."
+		
+		EbayOfferDetails offerDetails "Listing settings of the offer.";
+		Product product "Product details of the offer.";
+	}
+
+	record EbayOffer {
+		summary "Contains the marketplace and eBay information for an offer."
+		description "Captures the marketplace-assigned data and the eBay listing settings used in an offer."
+		
+		OfferChannelData channelData "Information such as the marketplace-assigned ID, offer ID, status, etc.";
+		EbayOfferDetails offerDetails "eBay listing settings.";	
+	}
+	
+	record EbayPolicyGroupData extends PolicyGroupData {	
+		summary "Contains eBay information fields that are added to the PolicyGroupData record."
+		description "Contains eBay fields for location, PayPal, shipping, etc., which are added to the PolicyGroupData record."
+
+		string? location "Location of the product.";
+		string? postalCode "Zip code of the product location.";
+        string countryCode "2-character country code, such as US (United States) or FR (France).";
+		string? payPalEmailAddress "Merchant's PayPal email address.";
+		int? handlingTime "Time needed to ship the item.";
+		boolean? useTaxTable "Specifies whether to use the tax table. The merchant must have this already setup in eBay.";        
+		string? domesticShippingDiscountProfileId "Identifier of the profile already created on eBay for domestic shipping discounts. Note: This overrides the value in the policy group."; 
+		string? internationalShippingDiscountProfileId "Identifier of the profile already created on eBay for international shipping discounts. Note: This overrides the value in the policy group.";
+		boolean? applyDomesticPromotionalShippingRule "Specifies whether to use the domestic Promotional Shipping Rule set up in MyeBay. Note: This overrides the value in the policy group."
+	}
+	
+	record EbayPolicyGroup extends EbayPolicyGroupData{
+		summary "Contains the eBay policy ID field, which is added to the EbayPolicyGroupData record."
+		description "Contains the eBay policy ID field, which is added to the EbayPolicyGroupData record."
+		
+		string id "Identifier of an eBay policy group.";
+	}	
+
+	record PublishEbayOffer {
+		summary "Contains the information used to publish an offer to eBay."
+		description "Captures the offer details and policy group ID that are used to publish an offer to eBay."
+		
+		EbayOfferDetails offer "eBay listing settings."; 
+		string? policyGroupId "Identifier of the policy group for the offer.";
+	}
+	
+	record PublishEbayOfferWithProductData {
+		summary "Contains the information to publish an offer on eBay."
+		description "Captures the product details, eBay listing settings and policy group ID needed to publish an offer on eBay."
+		
+		EbayOfferDetailsWithProductData offer "Product details and the eBay listing settings for an offer."; 
+		string? policyGroupId "Identifier of the policy group for an offer.";
+	}
+	
+	record PublishEbayOfferSucceeded { //Does not map 1:1 with request message - need to model this
+		summary "Signals that the eBay offer was published."
+		description "Success response that the eBay offer was published."
+		
+		EbayOffer offer "Offer information that was sent in the publish request.";
+		string? policyGroupId "Identifier of the policy group sent in the publish request.";
+	}
+
+	record PublishEbayOfferFailed {
+		summary "Signals that publishing an eBay offer failed."
+		description "Failure response for publishing an eBay offer. It returns the information sent in the request and details about the cause of the failure."
+
+		EbayOfferDetails offer "eBay listing settings sent in the publish request.";
+		string? policyGroupId "Policy group ID sent in the publish request."; 
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+
+	record ReviseEbayPublishedOffer {
+		summary "Contains information used to update an eBay offer."
+		description "Captures the information needed to update an eBay offer using a Product Information Management system to obtain the product details."
+	
+		EbayOfferDetails update "Offer listing information used to update an offer. The product details are provided by the Product Information Management system. Note: The channelOfferId must be included in this information.";
+		string? policyGroupId "Policy group ID of the offer. This field is used only when updating policy group information.";
+	}
+	
+	record ReviseEbayPublishedOfferWithProductData {
+		summary "Contains information used to update an eBay offer."
+		description "Captures the listing and product information and policy group ID needed to update an eBay offer. This record contains product details and listing settings."
+		
+		EbayOfferDetailsWithProductData update "Product details and listing settings used to update an offer. Note: The channelOfferId must be included in this information."; 
+		string? policyGroupId "Policy group ID of the offer.  This field is used only when updating policy group information.";
+	}
+	
+	record ReviseEbayPublishedOfferSucceeded {
+		summary "Signals that an offer was updated."
+		description "Success response that an offer was updated."
+		
+		EbayOffer updatedOffer "Offer update information sent in the update request."; 
+		string? policyGroupId "Policy group ID sent in the update request.";
+	}
+	
+	record ReviseEbayPublishedOfferFailed {
+		summary "Signals that an offer failed to be updated."
+		description "Failure response for updating an offer. It returns the information sent in the request and details about the cause of the failure."
+		
+		EbayOfferDetails update "Offer update information sent in the update request.";
+		string? policyGroupId "Policy group ID sent in the update request.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+
+	record LookupEbayPolicyGroupSucceeded {
+		summary "Signals that looking up the policy group by ID was successful."
+		description "Success response that the eBay policy group was looked up by ID. It returns the policy group information."
+		
+		EbayPolicyGroup p "Policy group information.";
+	}
+	
+	record CreateEbayPolicyGroup {
+		summary "Contains the information needed to create a policy group."
+		description "Contains the information needed to create a policy group."
+		
+		EbayPolicyGroupData p "Information that defines an eBay policy group."; 
+	}
+
+	record CreateEbayPolicyGroupSucceeded {   
+		summary "Signals that an eBay policy group was created."
+		description "Success response that an eBay policy group was created. It returns the policy group information."
+
+		EbayPolicyGroup p "Policy group information.";
+	}
+	
+	record CreateEbayPolicyGroupFailed {
+		summary "Signals that the eBay policy group was not created."
+		description "Failure response for creating an eBay policy group. It returns the information sent in the request and details about the cause of the failure."
+		
+		EbayPolicyGroupData p "Information for the policy group sent in the original request.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+	
+	record UpdateEbayPolicyGroup {
+		summary "Contains the ID of the policy group to update."
+		description "Captures the ID of the policy group to update."
+		
+		EbayPolicyGroup p "Policy group information.";
+	}
+
+	record UpdateEbayPolicyGroupSucceeded {
+		summary "Signals the policy group was updated."
+		description "Success response that the policy group was updated. It returns the information sent in the request."
+		
+		EbayPolicyGroup p "Policy group information sent.";
+	}
+
+	record UpdateEbayPolicyGroupFailed {
+		summary "Signals that the policy group was not updated."
+		description "Failure response for updating a policy group. It returns the information sent in the request and details about the cause of the failure."
+		
+		EbayPolicyGroup p "Policy group information.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+	
+	record LookupStore {
+		summary "Contains the information needed to lookup a site."
+		description "Captures the information needed to lookup a site, such as account and marketplace ID, site code, etc."
+
+		string? xAccountId "Merchant's X.commerce ID.";
+		string? userMarketplaceId "Merchant's marketplace ID.";
+		string? siteCode "Identifier of the site to look up.";
+		string? environmentName "Name of the site environment, such as sandbox.";
+	}
+
+	record LookupStoreSucceeded {
+		summary "Signals that the site was found."
+		description "Success response that the site was looked up by ID. It returns the eBay store and query request."
+	
+		MarketplaceStore store "eBay store name.";
+		LookupStore request "Original look up request.";
+	}
+
+	record LookupStoreFailed {
+		summary "Signals that looking up a site failed."
+		description "Failure response for looking up a site. It returns the information sent in the request and details about the cause of the failure."
+		
+		LookupStore request "Original look up request.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+	
+	record AccountProfile{
+		summary "Contains all the shipping discount profiles."
+		description "Captures all the shipping discount profiles."
+		
+		array<ShippingDiscountProfile>? shippingDiscountProfiles "Array of the shipping discount profiles.";
+	}
+	
+	enum ShippingDiscountProfileType{
+		description "Defines the values used to specify shipping discounts."
+		
+		FLAT "A flat rate discount."
+		CALCULATED "A discount that is calculated."
+	}
+	
+	record ShippingDiscountProfile{
+		summary "Contains the information for a single shipping discount."
+		description "Captures the information for a single shipping discount profile."
+		
+		string shippingDiscountProfileId "Identifier of the shipping discount profile.";
+		string titleProfile "Name of the profile."
+		ShippingDiscountProfileType type "Type of the shipping discount.";
+	}
+	
+	record LookupAccountProfile {
+		summary "Contains merchant information used to look up a site."
+		description "Captures information needed to authenticate a merchant."
+		
+		string? xAccountId "Merchant's X.commerce ID.";
+		string? userMarketplaceId "Merchant's marketplace ID.";
+		string? siteCode "Identifier of the site to look up.";
+		string? environmentName "Name of the site environment, such as sandbox.";
+	}
+
+	record LookupAccountProfileSucceeded {
+		summary "Signals that the account profile was found."
+		description "Success response for looking up the account profile. It returns the shipping discount profile."
+	
+		AccountProfile store "Account profile information.";
+		LookupAccountProfile request "Original request.";
+	}
+
+	record LookupAccountProfileFailed {
+		summary "Signals that the account profile was not found."
+		description "Failure response for looking up an account profile. It returns the information sent in the request and details about the cause of the failure."
+		
+		LookupAccountProfile request "Original request.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+    
+    record SearchEbayOffersSucceeded{	
+		summary "Signals that the eBay offers were found."
+		description "Success response for searching for eBay offers. It returns the offers and query request."
+		
+		array<EbayOffer> offers "eBay offer that were found.";
+		SearchOffers request "Original search request.";
+	}
+	
+	record EbayTopSellingProduct extends TopSellingProduct{
+		summary "Contains the catalog name field that is added to the TopSellingProduct record."
+		description "Contains the catalog name field that is added to the TopSellingProduct record."
+		
+		string? catalogName "Name of the eBay catalog in which this top selling product belongs.";
+	}
+
+	record SearchEbayTopSellingProductsSucceeded{
+		summary "Signals that the top selling products were found."
+		description "Success response for searching for the top selling products. It returns the products and query request."
+		
+		array<EbayTopSellingProduct> products "Top selling products found. The products are returned in order from highest sales rank to lowest.";
+		SearchTopSellingProducts request "Original search request.";
+	}
+	
+	record UpsertSalesTaxTable{
+		summary "Captures the sales tax table data."
+		description "Contains sales tax table data."
+		
+		array<SalesTaxTableEntry> salesTaxTable "Sales tax rates by state."	
+		string siteCode "Identifier of the site.";
+		string xAccountId "Merchant's X.commerce ID.";
+	}
+	
+    record UpsertSalesTaxTableSucceeded{
+    	summary "Signals that the eBay sales tax table was create or updated."
+    	description "Success response for upserting sales tax data."
+    	
+		UpsertSalesTaxTable request "Original request."
+	}
+	
+    record UpsertSalesTaxTableFailed{
+    	summary "Signals that the request to create or update the sales tax data on eBay failed."
+    	description "Failure response for upserting sales tax data."
+    	
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message."
+		UpsertSalesTaxTable request "Original request."
+	}
+	
+	record GetRecommendationsForOffer{
+		summary "Captures the offer details. The product details are supplied by a Product Information Management system."
+		description "Contains the offer details. product details are supplied by a Product Information Management system."
+		
+		EbayOfferDetails offer "Offer details."
+		string? policyGroupId "Id of a relevant policy group"
+	}
+	
+	record GetRecommendationsForOfferSucceeded{
+		summary "Signals that the request for offer recommendations was successful."
+		description "Success response that offer recommendations were returned."
+		
+		OfferRecommendationInformation recommendationInformation "Offer recommendation information.";
+		EbayOfferDetails offer "Original request";
+		
+	}
+	
+	record GetRecommendationsForOfferFailed{
+		summary "Signals that the request to get offer recommendations has failed."
+		description "Failure response for getting offer recommendations. It returns the information sent in the request and details about the cause of the failure."
+		
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message."
+		EbayOfferDetails offer "Original request.";
+	}
+
+    record GetRecommendationsForOfferWithProductData{
+		summary "Captures the offer details and product data."
+		description "Contains the offer details and the product data."
+		
+		EbayOfferDetailsWithProductData offer "Offer details and product data.";
+		string? policyGroupId "Id of a relevant policy group"
+		
+	}
+		
+	record OfferRecommendationInformation{
+
+		summary "Captures the offer recommendation data."
+		description "Contains the information for the offer recommendation request."
+		
+        CurrencyAmount? estimatedListingFee "Estimated amount of the listing fee for this offer."
+        MaxFlatShippingRecommendation? maxFlatShippingRecommendation  "If the flat shipping cost exceeds the maximum, this record contains the maximum allowed."
+		AttributeRecommendation?  attributeRecommendation "Recommended attributes (item specifics)."
+		GTINRecommendation?  gtinRecommendation "Recommended GTIN information."
+		CategoryRecommendation? categoryRecommendation "Recommended category."
+		array<Recommendation>? recommendations "Recommendations that have no return data except what is in 'Recommendation'."
+		array<Error>? expectedErrors "Array of the errors that would occur if the offer were submitted as-is. Each error consists of an error code and error message."
+
+	}
+	
+	record AttributeRecommendation{
+		summary "Captures the recommended attribute for an offer."
+		description "Contains the recommended attribute for an offer."
+		
+		string recommendationMessage "Message formatted as text, which is useful for logging but is not recommended for direct display."
+		RecommendationPriority priority "Priority or severity of this message."
+		map<array<string>> recommendedAttributes "Recommended attributes for this offer. This is a set of key-value pairs.  The keys are the attribute names and the values are lists of common attribute values."
+	}
+	
+	record CategoryRecommendation{
+		summary "Captures the recommended categories for an offer."
+		description "Contains the recommended categories for an offer."
+		
+		string recommendationMessage "Message formatted as text, which is useful for logging but is not recommended for direct display."
+		RecommendationPriority priority "Priority or severity of this message."
+		array<Category> recommendedCategories "Recommended category or categories for this offer."
+	}
+	
+	record GTINRecommendation{
+		summary "Captures the recommended GTIN for an offer."
+		description "Contains the recommended GTIN for an offer."
+		
+		string recommendationMessage "Message formatted as text, which is useful for logging but is not recommended for direct display."
+		RecommendationPriority priority "Priority or severity of this message."
+		array<string> recommendedGTINs  "Suggested GTIN, such as UPC or ISBN."
+	}
+
+	record MaxFlatShippingRecommendation{
+		summary "Captures the recommended flat shipping rate for an offer."
+		description "Contains the recommended flat shipping rate for an offer."
+		
+		string recommendationMessage "Message formatted as text, which is useful for logging but is not recommended for direct display."
+		RecommendationPriority priority "Priority or severity of this message."
+		CurrencyAmount maxFlatShippingAllowed  "Maximum flat shipping allowed for this offer."
+	}
+	
+	enum RecommendationCode{
+		description 		"Defines the recommendation values used by a client system for what is displayed to the user."
+		
+		SHORT_DESCRIPTION 	"Offer description is too short."
+		SHORT_TITLE  		"Offer title is too short."
+		TOO_FEW_IMAGES 		"More images are recommended."
+		VARIATIONS_ALLOWED 	"Category allows variations, but the current offer does not use them."
+	}
+	
+	record Recommendation{
+		summary "Captures the recommendation."
+		description "Contains fields for recommendation information."
+		
+		string<RecommendationCode> recommendationCode "The RecommendationCode for this recommendation.";
+		string recommendationMessage "Message formatted as text, which is useful for logging but is not recommended for direct display."
+		RecommendationPriority priority "Priority or severity of this message."
+	}
+	
+	enum RecommendationPriority{
+		description "Defines the values used to specify the priority or severity of the recommendation."
+		
+		FAILURE "A failure will result if the problem is not corrected."
+		HIGH    "High priority recommendation."
+		MEDIUM  "Medium priority recommendation."
+		LOW    "Low priority recommendation."
+	}
+    
+    record MarketplaceStore {
+    	summary "Contains the information to associate the site and the custom category."
+    	description "Captures the eBay store name and custom categories for the store."
+
+		string name "Name of the eBay store."; 
+	    array<CustomCategory>? categories "Array of the custom categories for the store."; 
+	}
+	
+
+	
+	
+}

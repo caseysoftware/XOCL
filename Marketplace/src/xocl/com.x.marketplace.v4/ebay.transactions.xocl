@@ -1,0 +1,65 @@
+ package com.x.marketplace.v4{  
+ 	
+ 	import com.x.marketplace.v4.*
+ 	
+    transaction LookupStore unicast query {
+    	description "Looks up the metadata of the consumer's eBay store."
+        sender {
+        	message LookupStore {
+        		 timeouts(response=30s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success LookupStoreSucceeded 
+        	failure LookupStoreFailed 
+        } 
+    }
+    
+    transaction LookupAccountProfile unicast query {
+    	description "Looks up eBay profiles based on a merchant's request."
+        sender {
+        	message LookupAccountProfile {
+        		 timeouts(response=30s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success LookupAccountProfileSucceeded
+        	failure LookupAccountProfileFailed 
+        } 
+    }
+    
+    transaction UpsertSalesTaxTable unicast response {
+    	description "Creates or updates a sales tax table in eBay."
+        sender {
+        	message UpsertSalesTaxTable {
+        		 timeouts(response=30s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success UpsertSalesTaxTableSucceeded 
+        	failure UpsertSalesTaxTableFailed 
+        } 
+    }
+    
+    transaction GetRecommendationsForOffer<WithProductData> unicast query {
+    	description "Gets recommendations for an offer."
+        sender {
+        	message GetRecommendationsForOffer {
+        		 timeouts(response=30s)
+        		 retries=3     		
+        	}
+        	message<WithProductData> GetRecommendationsForOfferWithProductData {
+        		 timeouts(response=30s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success GetRecommendationsForOfferSucceeded
+        	failure GetRecommendationsForOfferFailed 
+        } 
+    }
+    
+ }

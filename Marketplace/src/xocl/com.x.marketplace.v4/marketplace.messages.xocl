@@ -1,0 +1,647 @@
+package com.x.marketplace.v4{
+
+	import com.x.core.v1.*
+	import com.x.pim.v2.*
+	import com.x.ordermanagement.v3.*
+	
+
+    record CustomCategory {
+    	summary "Contains the information of a custom category."
+    	description "Captures information about a custom category, such as ID, name, etc."
+
+		long id "Identifier of the custom category.";
+		string name "Name of the custom category.";
+		int order ""; 
+		array<CustomCategory> childCategories "Array of the child categories for the custom category.";
+	}
+	
+
+    record SiteMetadata extends Site {	
+    	summary "Adds fields to the Site record."
+    	description "Adds fields to the Site record, such as handling time, return policy, etc."
+
+		array<SupportedHandlingTime>? handlingTimes "Amount of time it takes to ship an order after the order has been received.";
+		SupportedReturnPolicy? policy "Return policy information.";
+		array<SupportedShippingService>? services "Shipping services offered by the site.";
+		array<string> currencies "3-letter upper case currency code, such as USD (United States dollar) or GBP (pound sterling).";
+		array<PaymentMethod> methods "Payment methods offered at this site.";
+		array<SupportedCountry> countries "List of the 2 character country codes that are supported by this site."; 
+		string marketplace "Name of the marketplace that this site is a part of."; 
+		CalculatedShippingMetadata? calculatedShippingMetadata "Metadata for calculated shipping, such as package type and measurement system.  If the site does not support calculated shipping, this field should not be present."
+		array<string>? supportedOfferDurations "Durations of the offers. For example, 7 days, 14 days, Good Til Cancelled (GTC), etc.";
+	}
+
+	record CalculatedShippingMetadata{
+    	summary "Contains the metadata needed to calculate shipping costs."
+    	description "Captures information needed to calculate shipping costs, such as package types, and measurement system for the site."
+
+		array<PackageType> supportedPackageTypes "Package types supported by this site."
+		array<MeasurementSystem> measurementSystem "Measurement system used by this site."
+	}
+	
+	record PackageType{
+    	summary "Contains information about a package type."
+    	description "Captures the name and description of a package type. This is used for calculating shipping costs."
+
+		string packageName "Name of a package type used by the system."
+		string packageDescription "Description of the package type."
+	}
+	
+	 record Environment {
+    	summary "Captures the environment of a marketplace or site."
+    	description "An environment represents a sub-section of the marketplace or site. For example, 'production', 'sandbox', etc. The environment often defines the destination URLs, credentials, etc. for communicating with a given marketplace."
+
+		string name "Name of the environment, such as sandbox or production."; 
+	 }
+	 
+	 record SupportedCountry {
+    	summary "Contains the country supported by a site."
+    	description "Captures the country code and description of a country supported by a site."
+
+		string countryCode "2-character country code. For example, US (United States) or FR (France).";
+		string _AVDL_description "Description of the country.";
+	}
+	
+   record Site {	
+    	summary "Contains the information identifying a site."
+    	description "Captures information that identifies a site, such as site name."
+
+		string siteCode "Identifier for the site. Depending on the marketplace this can be 2-character country code, such as US (United States) or FR (France).";
+		string siteName "Site name.";
+	}
+	
+	enum RefundMethod {
+    	description "Defines the values used to specify the refund method."
+
+		MONEY_BACK "Money is given back to the customer.",
+		EXCHANGE_ONLY "Returned items can only be exchanged for other items.",
+		STORE_CREDIT "Customer is given credit to be spent at the store."
+	}
+	
+    record SupportedReturnPolicy {
+    	summary "Contains the return policy information."
+    	description "Captures return policies, such as refund method."
+
+		boolean returnsAccepted "Specifies whether the site accepts returns.";
+		array<RefundMethod> method "Refund method of the return policy.";
+		int maxReturnByDays "Maximum number of days the customer has to return an item.";
+	}
+    
+    enum ShippingLocaleType {
+    	description "Defines the values used to specify the shipping locale types supported by a site."
+    	
+		DOMESTIC "Domestic shipping.", 
+		INTERNATIONAL "International shipping." 
+	}
+
+	enum ShippingRateType {
+    	description "Defines the values used to specify the shipping rate type used by a site."
+
+		FLAT "Shipping costs are a flat rate.",
+		CALCULATED "Shipping costs are calculated.",
+		FREIGHT "Shipping costs are freight rate."
+	}
+	
+	record SupportedShippingService {
+    	summary "Contains detailed information about a shipping service supported by a site."
+    	description "Captures the information for a single shipping service that is supported by a site."
+
+		string _AVDL_description "Description of the service.";
+		string? carrier "Shipping carrier, such as USPS.";
+		string serviceName "Shipping service name, such as USPSPriorityFlatRateBox.";
+		int shippingTimeMaxInDays "Maximum number of days it takes to ship an item using this service.";
+		int shippingTimeMinInDays "Minimum number of days it takes to ship an item using this service.";
+		array<ShippingRateType>? rateType "Shipping rate type.";
+		ShippingLocaleType localeType "Shipping locale type.";  
+		boolean dimensionsRequired "Specifies whether the shipping dimensions of the package are required.";
+		boolean weightRequired "Specifies whether the weight of the shipment is required.";
+		boolean surchargeApplicable "Specifies whether this service has a surcharge.";
+	}
+	
+	record SupportedHandlingTime {
+    	summary "Contains the handling time for a shipment."
+    	description "Captures the handling time for a shipment in days."
+
+		int maxHandlingTime "Number of days needed to ship an order.";  
+		string _AVDL_description "Description of the handling time.";
+	}
+	
+    enum OfferState
+	{
+    	description "Defines the values used to specify the state of an offer."
+
+		NEW "Offer has not been published to the marketplace.", 
+		PUBLISHED "Offer has been published to the marketplace.", 
+		SUSPENDED "Offer has been removed from the marketplace."
+	}
+
+	record Offer {
+    	summary "Contains the offer information."
+    	description "Captures information about the offer."
+
+		OfferChannelData channelData "Marketplace information, such as the marketplace-assigned ID, offer ID, and status."; 
+		OfferDetails offerDetails "Information for the offer, such as title, categories, ID, SKU, etc.";	
+	}
+	
+	record OfferChannelData{
+    	summary "Contains marketplace-assigned information."
+    	description "Captures information associated by the marketplace with the offer, such as ID, offer URL, etc."
+
+		OfferState offerState "State of the offer.";
+	    string channelAssignedOfferId "Identifier of the offer, which is provided by the marketplace."; 
+		string? channelOfferUrl "URL of the offer, which is provided by the marketplace.";
+		string? channelStatus "Status of the offer, which is provided by the marketplace.";	
+	}
+	
+	record Category {
+    	summary "Contains the category information."
+    	description "Captures the information that defines a category."
+
+		string id "Identifier of the category.";
+		string name "Name of the category.";
+		string? parentId "Identifier of the parent of the category.";
+		boolean? catalogEnabled "Specifies whether the catalog is enabled.";
+		int? categoryLevel "Category level.";
+		boolean? leafCategory "Category leaf.";
+		string? categoryUrl "URL of the category.";
+	}
+	
+	record ReturnPolicy {
+    	summary "Contains the return policy information."
+    	description "Captures the information that defines a return policy."
+
+		string? _AVDL_description "Description of the return policy.";
+		boolean? returnAccepted "Specifies whether returns are allowed.";
+		boolean? buyerPaysReturnShipping "Specifies whether the buyer pays for the shipping cost to return the item.";
+		int? returnByDays "Number of days the customer has to return an item.";
+		RefundMethod? refundMethod "Refund method of the policy.";
+	}
+	
+	
+	record CalculatedShippingPolicy {
+    	summary "Contains the information needed to calculate shipping costs."  
+    	description "Captures the information needed to calculate the shipping cost of an order."
+
+		string? _AVDL_description "Description of the calculated shipping policy.";
+		string packageType "Package type used to ship the order.";
+		boolean shippingIrregular = false "Specifies whether a package is irregular in shape and therefore cannot go through the stamping machine at the shipping service office so requires special or fragile handling. The default is 'false'."
+		PackageDimensions dimensions "Dimensions of the package being shipped.";
+		PackageWeight weight "Weight of the package being shipped.";
+	}
+	
+    record ShippingServiceOption {
+    	summary "Contains information for a specific shipping service."
+    	description "Captures the information that defines the rules for a specific shipping service."
+
+//Travis will check this
+		int sellerPriority "TBD";  
+		string serviceName "Name of the shipping service.";
+		CurrencyAmount cost "Cost to ship a package.";  
+		CurrencyAmount? discountAmount "Amount of any shipping discount.";
+		CurrencyAmount? additionalCost "Amount of any additional shipping costs. Note: For eBay, this is the cost of shipping each additional item beyond the first item and applies to only Flat rate shipping for multi-item purchases.";
+		CurrencyAmount? packagingHandlingCost "Amount of any packing or handling costs.";
+		CurrencyAmount? surcharge "Amount of any surcharge, such as UPS or FedEx shipping to Alaska, Hawaii or Puerto Rico.";
+		array<string>? shipToLocations "List of locations this service can ship to. This is needed only for international shipping.";
+		array<string>? excludeShipToLocations "List of locations this service cannot ship to. This applies only to international shipping.";
+	}
+
+	record ShippingServiceOptionGroup {
+    	summary "Part of the shipping policy."
+    	description "Part of the shipping policy."
+
+		ShippingRateType rateType "Shipping rate type."; 
+		ShippingLocaleType localeType "Shipping locale type";
+		boolean applyPromotionalShippingRule "Specifies whether to apply a promotional shipping rule, such as a shipping discount if the buyer purchases multiple items or spends a certain amount.";
+		array<ShippingServiceOption> shippingServiceOptions "List of the shipping services for a site.";
+	}
+
+	record ShippingPolicy {
+    	summary "Contains a list of shipping service option groups."
+    	description "Captures a list of shipping service option groups. You use this when creating a profile or offer to indicate the type of shipping services available for the offer."
+
+		array<ShippingServiceOptionGroup> optionGroups "List of domestic and international shipping services.";
+	}
+
+	record PaymentPolicy {
+    	summary "Contains the payment policy information."
+    	description "Captures the payment policy information, such as payment methods."
+
+		array<PaymentMethod>? acceptedPaymentTypes "List of the accepted payment methods.";
+		boolean? immediatePaymentRequired "Specifies whether the customer must pay for the order at the time the order is placed.";
+		string? paymentInstructions "Payment instructions.";
+	}
+
+	record PolicyGroup extends PolicyGroupData{
+    	summary "Contains the ID field, which is added to the PolicyGroupData record."
+    	description "Captures the ID of the offer that is assigned by the capability. This field is added to the PolicyGroupData record."
+
+        string id "Identifier of the offer, which is provided by the capability.";
+	}
+
+	record PolicyGroupData {
+    	summary "Contains the data for a policy group."
+    	description "Captures the data for a policy group, such as payment, shipping, return policies, etc."
+
+		string name "Unique identifier of the tenant."; 
+
+		string? siteCode "Identifier of the site the offer is published to. In most cases, this will be the country code.";
+		PaymentPolicy? paymentPolicy "Data that defines the payment policy.";
+		ShippingPolicy? shippingPolicy "Data that defines the shipping policy.";
+		ReturnPolicy? returnPolicy "Data that defines the return policy.";
+		CalculatedShippingPolicy? calculatedShippingPolicy "Data that defines the calculated shipping policy."
+//check with sherri
+		string xAccountId "Tenant's X.commerce identifier."
+		string? offerDuration "Duration of the offer."
+	}
+
+	record CancelOfferError {
+    	summary "Signals that the attempt to cancel an offer had errors."
+    	description "Notifies the requester that the attempt to cancel an offer had errors and returns the offer ID and information about the errors."
+
+		string offerId "Identifier of the offer.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+
+
+    record Sku  {
+    	summary "Contains the SKU, price, and quantity of the item being offered."
+    	description "Captures the SKU, price, and quantity of the item being offered."
+
+		string sku "SKU of the item being offered.";
+		CurrencyAmount price "Selling price of the item being offered.";
+		int quantity "Number of these items available.";
+	}
+	
+	record OfferDetailsWithProductData  {
+    	summary "Contains information about a product being offered."
+    	description "Captures the product details of a product being offered. This record is for offers that do not use a Product Information Management system."
+
+		   OfferDetails offerDetails "Detailed information about the offer, such as title, categories, ID, SKU, etc.";
+	       Product product "Details of the product for the offer.";
+	}
+	
+	record OfferDetails  {
+    	summary "Contains the offer details. Note: This is not the product details."
+    	description "Captures information needed for the offer such as, the policies, SKUs, etc."
+
+		string id "Identifier of the system that creates the offer.";
+		datetime? startTime "Offer start time.";
+		datetime? endTime "Offer end time.";
+		string? title "Title for the offer.";
+		string? subTitle "Subtitle for the offer.";
+		boolean? giftWrapAvailable "Specifies whether the customer can have the item gift wrapped.";
+		array<string>? marketCategories "Marketplace categories for the item being offered.";
+		PaymentPolicy? paymentPolicy "Payment policy data specific to this offer. Note: This overrides the data in the payment policy profile.";
+		ShippingPolicy? shippingPolicy "Shipping policy data specific to this offer. Note: This overrides the data in the shipping policy profile.";
+	    ReturnPolicy? returnPolicy "Return policy data specific to this offer. Note: This overrides the data in the return policy profile.";
+	    CalculatedShippingPolicy? calculatedShippingPolicy "Calculated shipping policy data specific to this offer. Note: This overrides the data in the calculated shipping policy profile."
+	    array<Sku> skus "SKUs of the items being offered.";
+	    array<string>? customCategories "Custom categories for the items being offered. Note: For eBay these correspond to the eBay store categories.";
+	}
+	
+	record GetAllAvailableChannels {
+    	summary "Request for all available marketplaces that are associated with the adapter."
+    	description "Request for all available marketplaces that are associated with the adapter."
+	}
+	
+    record GetAllAvailableChannelsSucceeded {
+    	summary "Signals that the search for marketplaces was successful."
+    	description "Notifies the requester that searching for marketplaces was successful. Returns the search results and the query request."
+
+		string channelName "Name of the marketplace.";
+		string channelProviderName "Name of the capability that implements this.";
+	}
+
+	record GetAllSites { 
+    	summary "Requests all the sites from one marketplace."
+    	description "Requests all the sites from one marketplace."
+	}
+	
+    record GetAllSitesSucceeded {
+    	summary "Signals that the search for sites was successful."
+    	description "Notifies the requester that searching for sites was successful. Returns the search results and the query request."
+
+		array<SiteWithEnvironments> sitesWithEnvironments "List of sites and their environment that were found.";
+	}
+	
+	record SiteWithEnvironments{
+    	summary "Contains a site and their environments."
+    	description "Captures a site and all their available environments."
+
+		Site site "Site identification.";
+		array<Environment> environments "Name of the site environment, such as sandbox.";
+	}
+	
+    record GetAllSitesFailed {
+    	summary "Signals that the search for sites failed."
+    	description "Notifies the requester that searching for all sites failed and returns information about the cause of the failure."
+
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+	
+	record LookupSiteMetadata {  
+    	summary "Contains the information needed to query for the metadata of a specific site."
+    	description "Captures the site code and environment name used in the query for the site."
+
+		array<string> siteCode "Site identifier."
+		string? environmentName "Name of the site environment."
+	}
+	
+	record LookupSiteMetadataSucceeded {  
+    	summary "Signals that the metadata for a site was found."
+    	description "Notifies the requester that searching for the metadata of a site was successful. Returns the search results and query request."
+
+		array<SiteMetadata> siteMetadata "Metadata retrieved."
+		string? environmentName "Name of the site environment used."
+	}
+	
+	record LookupSiteMetadataFailed {  
+    	summary "Signals that looking up a site failed."
+    	description "Notifies the requester that the attempt to find a site by ID failed and returns information about the cause of the failure."
+
+		array<string> siteCode "Identifiers used in the look up."
+		string? environmentName "Name of the site environment used in the look up."
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+	
+	record SearchCategories {
+    	summary "Contains the information needed to search for categories."
+    	description "Captures the information needed to search for the categories used by a specific site."
+
+		string? siteCode "Identifier for a site.";
+		string? xProductTypeId "Identifier of a product. This ID comes from the X.commerce taxonomy.";  
+		string? environmentName "Name of the site environment.";
+	}
+
+	record SearchCategoriesSucceeded {
+    	summary "Signals that the search for categories was successful."
+    	description "Notifies the requester that searching for categories was successful. Returns the search results and the query request."
+
+		array<Category> categories "List of categories found."; 
+		string? siteCode "Identifier of the site used in the search.";
+		string? environmentName "Name of the site environment.";
+	}
+
+	record SearchCategoriesFailed {
+    	summary "Signals that categories were not found."
+    	description "Notifies the requester that the attempt search for categories failed and returns information about the cause of the failure."
+
+		string? siteCode "Identifier for a site used in the search.";
+		string? environmentName "Name of the site environment used in the search.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+	
+	record LookupPolicyGroup {
+    	summary "Contains the policy group ID to look up."
+    	description "Captures the ID of the policy group to look up."
+
+		string policyGroupId "Identifier of the policy group.";
+	}
+
+	record LookupPolicyGroupSucceeded {
+    	summary "Signals that the policy group was found."
+    	description "Notifies the requester that searching for a policy group was successful. Returns the policy group information and the query request."
+
+		PolicyGroup p "Policy group information.";
+	}
+	
+	record LookupPolicyGroupFailed {
+    	summary "Signals that search for a policy group failed."
+    	description "Notifies the requester that the attempt find a policy group by ID failed and returns information about the cause of the failure."
+
+		string policyGroupId "Identifier of the policy group used in the search.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+	
+	record CreatePolicyGroup {
+    	summary "Contains the information needed to create a policy group."
+    	description "Captures the information needed to create a policy group."
+
+		PolicyGroupData p "Information to use to create the policy group."; 
+	}
+
+	record CreatePolicyGroupSucceeded {   
+    	summary "Signals that a policy group was created."
+    	description "Notifies the requester that creating a policy group was successful."
+
+		PolicyGroup p "Information used to create the policy group."; 
+	}
+	
+	record CreatePolicyGroupFailed {
+    	summary "Signals that a policy group was not created."
+    	description "Notifies the requester that the attempt to create a policy group failed and returns information about the cause of the failure."
+
+		PolicyGroupData p "Policy group information sent in the request.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+	
+	record UpdatePolicyGroup {
+    	summary "Contains information to update a policy group."
+    	description "Captures the update information for a policy group."
+
+		PolicyGroup p "Information to be used to update the policy group."; 
+	}
+
+	record UpdatePolicyGroupSucceeded {
+    	summary "Signals that a policy group was updated."
+    	description "Notifies the requester that updating a policy group was successful."
+
+		PolicyGroup p "Information sent in the request to update a policy group.";
+	}
+
+	record UpdatePolicyGroupFailed {
+    	summary "Signals that a policy group was not updated."
+    	description "Notifies the requester that the attempt to update a policy group failed and returns information about the cause of the failure."
+
+		PolicyGroup p "Information sent in the request to update a policy group.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+	
+	record DeletePolicyGroup {
+    	summary "Contains the ID of the policy group to be deleted."
+    	description "Captures the ID of the policy group to be deleted."
+
+		string policyGroupId "Identifier of the policy group.";
+	}
+
+	record DeletePolicyGroupSucceeded {
+    	summary "Signals that a policy group was deleted."
+    	description "Notifies the requester that deleting a policy group was successful."
+
+		string policyGroupId "Identifier of the policy group.";
+	}
+
+	record DeletePolicyGroupFailed {
+    	summary "Signals that a policy group was not deleted."
+    	description "Notifies the requester that the attempt to delete a policy group failed and returns information about the cause of the failure."
+
+		string policyGroupId "Identifier of the policy group.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+	
+	record PublishOffer {
+    	summary "Contains the information needed to publish an offer using a Product Information Management system."
+    	description "Captures the information needed to publish an offer using a Product Information Management system."
+
+		OfferDetails offer "Information for the offer that is to be published."; 
+		string? policyGroupId "Identifier of the policy group.";
+	}
+
+	record PublishOfferWithProductData {
+    	summary "Contains the information needed to publish an offer."
+    	description "Captures the information needed to publish an offer including the product details."
+
+		OfferDetailsWithProductData offer "Information of the offer including the product details.";
+		string? policyGroupId "Identifier of the policy group.";
+	}
+
+	record PublishOfferSucceeded { //Does not map 1:1 with request message - need to model this
+    	summary "Signals that an offer was published."
+    	description "Notifies the requester that publishing an offer was successful."
+
+		Offer offer "Information used to publish the offer.";
+		string? policyGroupId "Identifier of the policy group.";
+	}
+
+	record PublishOfferFailed {
+    	summary "Signals that an offer was not published."
+    	description "Notifies the requester that the attempt to publish an offer failed and returns information about the cause of the failure."
+
+		OfferDetails offer "Information sent in the request to publish an offer.";
+		string? policyGroupId "Identifier of the policy group.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+	
+	record RevisePublishedOffer {
+    	summary "Contains the information for updating an offer using a Product Information Management system."
+    	description "Captures the information needed to update a published offer using a Product Information Management system.  Note: This must contain the channelOfferId."
+
+		OfferDetails update "Offer update information. Note: This must contain the channelOfferId.";
+		string? policyGroupId "Identifier of the policy group.";
+	}
+	
+    record RevisePublishedOfferWithProductData {
+    	summary "Contains the information needed to update an offer."
+    	description "Captures all the information needed to update an offer."
+
+		OfferDetailsWithProductData update "Offer update information including any needed product details. Note: This must contain the channelOfferId.";
+		string? policyGroupId "Identifier of the policy group.";
+	}
+
+	record RevisePublishedOfferSucceeded {
+    	summary "Signals that an offer was updated."
+    	description "Notifies the requester that updating a published offer was successful."
+
+		Offer updatedOffer "Offer update information sent in the update request."; 
+		string? policyGroupId "Identifier of the policy group.";
+	}
+	
+	record RevisePublishedOfferFailed {
+    	summary "Signals that an offer was not updated."
+    	description "Notifies the requester that the attempt to update a published offer failed and returns information about the cause of the failure."
+
+		OfferDetails updatedOffer "Offer update information sent in the update request";
+		array<Error>errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+		string? policyGroupId "Identifier of the policy group.";
+	}	
+	
+	record RevokePublishedOffer {
+    	summary "Contains the information needed to revoke an offer."
+    	description "Captures the information needed to revoke a published offer, such as the offer ID, policy group, etc."
+
+		string offerId "Identifier of the offer.";
+		string? policyGroupId "Identifier of the policy group."; 
+	}
+
+	record RevokePublishedOfferSucceeded {
+    	summary "Signals that an offer was revoked."
+    	description "Notifies the requester that revoking a published offer was successful."
+
+		string offerId "Identifier of the offer.";
+		string? policyGroupId "Identifier of the policy group.";
+	}
+
+	record RevokePublishedOfferFailed {
+    	summary "Signals that an offer was not revoked."
+    	description "Notifies the requester that the attempt to revoke a published offer failed and returns information about the cause of the failure."
+
+		CancelOfferError cancelError "Information about the cause of the failure.";
+		string? policyGroupId "Identifier of the policy group.";
+  	}
+  	
+	record OfferDeactivated {
+    	summary "Contains the information about an offer that was deactivated."
+    	description "Captures the information needed to deactivate a published offer, such as the offer ID, policy group, reason, etc."
+
+		string offerId "Identifier of the offer.";
+		string reason "Reason for deactivating an offer was deactivated.";
+		string? policyGroupId "Identifier of the policy group.";
+	}
+	
+	record SearchOffers{
+    	summary "Contains the information needed to search for offers."
+    	description "Captures the information needed to search for offers, such as SKUs, marketplace account ID, etc."
+
+		array<string>? skus "SKUs to search for.";
+		datetime? startTime "Offer start time to search for.";
+		datetime? endTime "Offer end time to search for.";
+
+		string? xAccountId "Merchant's X.commerce identifier.";
+	}	
+
+	record SearchOffersSucceeded{	
+    	summary "Signals that the search for offers was successful."
+    	description "Notifies the requester that the search for offers was successful. Returns the search results and the query request."
+
+		array<Offer> offers "Array of offers found.";
+		SearchOffers request "Search criteria used.";
+	}
+
+	record SearchOffersFailed{
+    	summary "Signals that searching for offers failed."
+    	description "Notifies the requester that the attempt to search for offers failed and returns information about the cause of the failure."
+
+		SearchOffers request "Search criteria used.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+	}
+
+	record SearchTopSellingProducts{
+    	summary "Contains the information needed to search for the top selling products."
+    	description "Captures the information needed to search for the top selling products."
+
+		string? siteCode "Identifier of the site to search.";
+		string? environmentName "Name of the site environment to search.";
+		int numberOfProductsToReturn  "Number greater than 0 that indicates the number of products the consumer wishes to see."
+	}
+	
+	record TopSellingProduct{
+    	summary "Contains details of the top selling product."
+    	description "Captures detailed information about the top selling product, such as ID, name, URL, etc."
+
+		string productId "Identifier of the product defined by the marketplace."
+		string productTitle "Name of the product."
+		int rank "Number between 1 and n where 1 is the highest ranking product. The ranking is determined by the marketplace.";
+		string? imageURL "URL of the product image. A product may or may not have an image.";		
+		CurrencyAmount? minPrice "Minimum price of the product."; 
+		CurrencyAmount? maxPrice "Maximum price of the product.";
+		string productURL "URL of the product.";
+		long reviewCount "Review count of the product.";	
+	}
+
+	record SearchTopSellingProductsSucceeded{
+    	summary "Signals that the search for the top selling products was successful."
+    	description "Signals that the search for the top selling products was successful. Returns the search results and the query request."
+
+		array<TopSellingProduct> products "Array of top selling products. The products are returned in order from highest sales rank to lowest.";
+		SearchTopSellingProducts request "Search criteria used.";
+	}
+	
+	record SearchTopSellingProductsFailed{
+    	summary "Signals that searching for the top selling products failed."
+    	description "Notifies the requester that the attempt to search for the top selling products failed and returns information about the cause of the failure."
+
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
+		SearchTopSellingProducts request "Search criteria used.";
+	}
+	
+}
