@@ -3,11 +3,11 @@ package com.x.core.v1
 	record Locale
 	{
 		summary "Specifies fields for the locale."
-		description "Contains fields for the locale, such as country, language, etc."
+		description "Contains fields that identify the locale, such as country, language, etc."
 		
-		string language "2-letter language code (ISO 639-1). For example, en (english) or fr (French).";
+		string language "2-letter language code. For example, 'en' (English) or 'fr' (French).";
 
-		string country "2-character country code (ISO 3166). For example, US (United States) or FR (France).";
+		string country "2-character country code. For example, US (United States) or FR (France).";
 
         string? variant "Variant for the locale.";
 	}
