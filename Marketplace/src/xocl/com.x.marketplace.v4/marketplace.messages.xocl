@@ -1,8 +1,8 @@
 package com.x.marketplace.v4{
-
 	import com.x.core.v1.*
+	
 	import com.x.pim.v2.*
-	import com.x.ordermanagement.v3.*
+	import com.x.ordermanagement.v2.*  //TN: switch this to V3
 	
 
     record CustomCategory {
