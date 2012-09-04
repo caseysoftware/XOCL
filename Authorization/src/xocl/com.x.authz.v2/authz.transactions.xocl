@@ -1,0 +1,67 @@
+package com.x.authz.v2 {
+	
+	import com.x.authz.v2.*
+	
+	entity Authorization
+	{
+		description "The process of granting software permission to act on your behalf."
+	}
+
+    
+    transaction InitAuthorization response {
+    	description "Grants permission for software to act on behalf of a merchant."
+        sender {
+        	message InitAuthorization {
+        		timeouts(response=1m)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success InitAuthorizationSucceeded 
+            
+            failure InitAuthorizationFailed 
+        }
+    }
+    
+    transaction CompleteAuthorization response {
+    	description "Returns either a succeeded or failed message regarding the authorization process."
+        sender {
+        	message CompleteAuthorization {
+        		timeouts( response =5m)
+        	}
+        }
+        receiver {
+        	success CompleteAuthorizationSucceeded
+            
+            failure CompleteAuthorizationFailed 
+        }
+    }
+    
+   	transaction GetAllAuthorizedAccounts unicast query {
+   		description "Merchant searches for all their authorized accounts."
+        sender {
+        	message GetAllAuthorizedAccounts	{
+        		 timeouts(response=30s) 
+        		 retries=3    		
+        	}
+        }
+        receiver {
+        	success GetAllAuthorizedAccountsSucceeded
+        	failure GetAllAuthorizedAccountsFailed
+        } 
+    }
+    
+    transaction RevokeAuthorization unicast response {
+    	description "Merchant resends their permission for the software to act on their behalf."
+        sender {
+        	message RevokeAuthorization {
+        		timeouts(response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success RevokeAuthorizationSucceeded   
+            failure RevokeAuthorizationFailed 
+        }
+    }
+}

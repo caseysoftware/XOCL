@@ -1,0 +1,120 @@
+package com.x.authz.v2{
+	
+	import com.x.authz.v2.*
+	import com.x.core.v1.*
+	
+	record Credential {
+		summary "Contains the credentials needed for authorization."
+		description "Contains the credentials keys needed for authorization. Each implementation requires a different set of credentials keys with its own name/value pair."
+		
+		map<string> properties "Authorization credentials.";
+	}
+	
+	record InitAuthorization {
+		summary "Contains the marketplace information needed for the authorization process."
+		description "Contains the marketplace information needed for the authorization process. These fields are used only if the web-authorization flow supports them."
+		
+		string? returnURL "Redirect for successful authorization.";
+		string? cancelURL "Redirect for authorization cancelled.";
+		string? environmentName "Marketplace environment name, such as sandbox.";
+		string? userMarketplaceId "Merchant's marketplace ID.";
+		string? runame "Runame for you application.";
+	}
+
+	record InitAuthorizationSucceeded {
+		summary "Signals that the merchant authorization was successful."
+		description "Notification that the merchant authorization was successful."
+		
+		string redirectURL "Redirect URL.";
+		string authId "Unique identifier for the authorization.";
+	    Credential? cred "Any extra credentials needed to proceed with the authorization.";
+	}
+
+	record InitAuthorizationFailed {
+		summary "Signals that the merchant authorization failed."
+		description "Notification that the merchant authorization failed. These fields are used only if the marketplace web-authorization flow supports them."
+		
+		string? environmentName "Marketplace environment name, such as sandbox.";
+		string? userMarketplaceId  "Merchant's marketplace identifier.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
+	}
+
+	record CompleteAuthorization {
+		summary "Contains the information for the successful or failed authorization messages."
+		description "Captures the information for the successful or failed authorization messages."
+		
+		string authId "Merchant's authorization ID.";
+		Credential? cred "Any extra credentials needed to complete the process.";
+	}
+
+	record  CompleteAuthorizationSucceeded  {
+		summary "Signals the that the authorization process has completed."
+		description "Notification that the authorization process has completed. It returns the X.commerce ID, marketplace ID of the merchant and the expiration date of the authorization."
+		
+		string authId "Merchant's authorization ID sent in the request.";
+		string xAccountId "Merchant's X.commerce ID sent in the request.";
+		string? userMarketplaceId "Merchant's marketplace ID.";
+	    long? authorizationExpiration "Date the marketplace authorization expires.";
+	}
+
+	record CompleteAuthorizationFailed {
+		summary "Signals the that the authorization process was not completed."
+		description "Notification that the attempt to complete the authorization process failed."
+		
+		string authId "Merchant's authorization ID sent in the request.";
+		Credential? cred "Any extra credentials sent in the request.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
+	}
+	
+	record GetAllAuthorizedAccounts {
+		summary "Request for all the merchant's authorized accounts in a marketplace."
+		description "Request for all the merchant's authorized accounts in a marketplace."		
+	}
+
+	record GetAllAuthorizedAccountsSucceeded {
+		summary "Signals that the merchant's authorized accounts were found."
+		description "Notification that the merchant's authorized accounts were found. It returns a list of accounts."
+		
+		array<Account> accounts "List of the authorized accounts found.";
+	}
+	
+	record GetAllAuthorizedAccountsFailed {
+		summary "Signals that the merchant's authorized accounts were not found."
+		description "Notification that the attempt to get all the merchant's authorized accounts failed."
+		
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
+	}
+	
+	record RevokeAuthorization {
+		summary "Contains a merchant ID that is used to remove their authorization."
+		description "Captures the merchant X.commerce ID, this is used to remove their authorization."
+		
+		string xAccountId "Merchant's X.commerce ID.";
+	}
+
+	record RevokeAuthorizationSucceeded {
+		summary "Signals that the merchant's authorization was removed."
+		description "Notification that the merchant's authorization to a marketplace was removed."
+		
+		string xAccountId "Merchant's X.commerce ID used.";
+	}
+	
+	record RevokeAuthorizationFailed {
+		summary "Signals that the merchant's authorization was not removed."
+		description "Notification that the attempt to remove a merchant's authorization to a marketplace failed."
+		
+		string xAccountId "Merchant's X.commerce ID used.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
+	}
+
+	record Account {
+		summary "Contains the merchant's authorized account information."
+		description "Captures the merchant's authorized account information."
+		
+		string? xId "Identifier provided by X.commerce.";
+		string? userMarketplaceId  "Merchant's marketplace ID.";
+		string? siteCode "Identifier of the site.";
+		string? environmentName "Marketplace environment name, such as sandbox.";
+		long? authorizationExpiration "Date the marketplace authorization expires.";
+	}	
+}

@@ -1,0 +1,66 @@
+package com.x.authz.v2 {
+	
+	import com.x.authz.v2.*
+	
+    process AuthorizationGrant(Authorization auth) {
+		description "Merchant authorizes software to act on their behalf."
+		roles
+		{
+			AuthorizedUser ""
+			AuthorizationProvider ""
+		}
+		preconditions(!exists(auth))	
+	
+	    
+	    postconditions {
+			success(exists(auth))
+			failure(!exists(auth))
+		}
+		
+	}
+	workflow  AuthorizationGrant[5m] implements AuthorizationGrant {
+			description "Merchant authorizes software to act on their behalf."			
+			transaction InitAuthorization {
+				roles(AuthorizedUser, AuthorizationProvider)
+			}
+			
+			transaction CompleteAuthorization {
+				roles(AuthorizedUser, AuthorizationProvider)
+			}
+	}
+	
+	process AuthorizedAccountSearch (Authorization auth) {
+		description "A merchant retrieves their account information."
+		roles
+		{
+			AuthorizedUser ""
+			AuthorizationProvider ""
+		}
+		preconditions(exists(auth))
+		workflow {
+			description "A merchant retrieves their account information."
+			transaction GetAllAuthorizedAccounts {
+				roles(AuthorizedUser, AuthorizationProvider)
+			}
+		}
+	}
+	
+	process AuthorizationRevoke (Authorization auth) {
+		description "A merchant removes their authorization from a marketplace account."
+		roles
+		{
+			AuthorizedUser ""
+			AuthorizationProvider ""
+		}
+		preconditions(exists(auth))
+		workflow {
+			description "A merchant removes their authorization from a marketplace account."
+			transaction RevokeAuthorization {
+				roles(AuthorizedUser, AuthorizationProvider)
+			}
+		}
+	    postconditions {
+			success(!exists(auth))
+		}	
+	}
+}
