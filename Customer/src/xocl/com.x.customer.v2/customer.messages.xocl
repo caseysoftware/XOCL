@@ -70,7 +70,7 @@ package com.x.customer.v2{
 	
 	record LookupCustomer {
 		summary "Requests a lookup for a customer by system ID."
-		description "Requests a lookup for a customer using the identifier assigned to the customer by the system that created the customer record or a guid."
+		description "Requests a lookup for a customer using the identifier assigned to the customer by the system that created the customer record."
         uri customerId "Identifier assigned to the customer by the system that created the customer record." 
     }
  
@@ -89,7 +89,7 @@ package com.x.customer.v2{
 
     record CustomerEmail{
 		summary "Contains email information for a customer."
-		description "Captures the email address, record modification date, and ID of the customer. This ID can be assigned by the system that created the customer record, a guid, or null."	
+		description "Captures the email address, record modification date, and ID of the customer. This ID can be assigned by the system that created the customer record or null."	
 		Email email "Customer's email address.";		
 		datetime lastModifiedDate "Date the customer information was last modified (changed).";		
 		uri customerId  "Identifier assigned to the customer by the system that created the customer record." 
@@ -97,8 +97,8 @@ package com.x.customer.v2{
 	
 	record CustomerNameAndId{
 		summary "Contains the name of the customer, record modification date, and the customer's ID."
-		description "Captures the customer's full name, record modification date, and ID of the customer. This ID can be assigned  by the system that created the customer record, a guid, or null."	
-		uri customerId "Identifier assigned to the customer by the system that created the customer record or a guid.";
+		description "Captures the customer's full name, record modification date, and ID of the customer. This ID can be assigned  by the system that created the customer record or null."	
+		uri customerId "Identifier assigned to the customer by the system that created the customer record.";
 		Name fullName "Customer's first and last name."; 
 		datetime lastModifiedDate "Date the customer information was last modified (changed).";
 	}
