@@ -1,0 +1,700 @@
+/** This file includes the messages that are part of the
+ *  order management domain
+ */
+package com.x.ordermanagement.v3 {
+	packagetitle "Order Management"
+	
+	import com.x.ordermanagement.v3.* 
+	import com.x.core.v1.*
+	
+	// move these general types to core once this mechanism is validated/approved
+	enum ErrorCodes {
+		INVALID_MESSAGE "The message that was supplied was not valid."
+		OTHER "The error occurred for an unknow reason."
+	}
+	
+	record SimpleError {
+		string code
+		string? _AVDL_message
+	}
+
+	record Error<ErrorCodes> {
+		summary "Specifies fields for error messages."
+		description "Contains fields for the code and details of an error message."
+		
+		string<ErrorCodes> code "Value that indicates the type of error.  Should be stable, short, and easily comparable.";
+ 		string? _AVDL_message "Explanation of the error."
+
+		/**
+		 * Parameters for the message. Parameter place holders identified
+		 * using the format in java.text.MessageFormat. The key of the map is
+		 * the placeholder string, and the value is the string that replaces it.
+		 */
+		map<string>? parameters "Parameters for the message. Parameter place holders identified using the format in java.text.MessageFormat. The key of the map is the placeholder string, and the value is the string that replaces it.";
+		
+		array<SimpleError>? errorDetails
+	}
+	
+	// Order management
+	enum OrderManagementLookupErrorCodes extends ErrorCodes {
+		ORDER_NOT_FOUND "The supplied order number could not be found and processed."
+		ORDER_LINE_NOT_FOUND "The supplied order line number could not be found and processed."
+	}
+	
+	enum ShipppingInformationUpdateErrorCodes extends OrderManagementLookupErrorCodes {
+		CHANNEL_UPDATE_REFUSED "The channel refused the request to update shipping information."
+	}
+	
+	enum ProcessOrderErrorCodes {
+		INVALID_ORDER_SUBMITTED "The supplied order is not valid."
+		PAYMENT_PROCESSING_FAILED "Unable to process payment for this order."
+		INVALID_DESTINATION "Unable to verify shipping destination of this order."
+	}
+	
+	enum SubmitOrderErrorCodes {
+		INVALID_ORDER_SUBMITTED "The supplied order is not valid."
+		DUPLICATE_ORDER_SUBMITTED "The submitted order already exists."
+	}
+	
+	enum CreateOrderErrorCodes {
+		INVALID_ORDER "The supplied order is not valid."
+		DUPLICATE_ORDER "The submitted order already exists."
+	}
+	
+	enum CancelOrderErrorCodes extends OrderManagementLookupErrorCodes {
+		ORDER_ALREADY_CANCELED "The order has already been canceled."
+	}
+	
+	enum PaymentUpdateErrorCodes extends OrderManagementLookupErrorCodes {
+		PAYMENT_UPDATE_DENIED "The system denied your attempt to modify payment information."
+	}
+	
+	enum TaxabilityType {
+		summary "Specifies the taxability types."
+		description "Defines the values use to specify the type of tax that applies to a given order line item."
+		TAXABLE "Indicates tax should be applied to an item.",
+		NONTAXABLE "Indicates tax should not be applied to an item.",
+		EXEMPT "Indicates that the customer has tax exempt status, such as a non-profit organization.",
+		DEFERRED "Indicates that the tax will be paid later."
+	}
+	
+	enum OrderStatus {
+		summary "Specifies the order status types."
+		description "Defines the values used to specify the status of an order."
+		NEW "Indicates that the order has just been created.",
+		ON_HOLD "Indicates that the processing of the order is stopped.",
+		BACKORDERED "Indicates that an item on the order is not available and the order is waiting until the merchant receives the item.",
+		PENDING_PAYMENT "Indicates that the order is waiting for the customer's payment.",
+		READY_TO_SHIP "Indicates that the order is paid for and the items are available for shipping.",
+		PARTIALLY_SHIPPED "Indicates that some of the items on the order have been shipped.",
+		SHIPPED "Indicates that all the items on the order have been shipped.",
+		PROCESSING_RETURN "Indicates that at least one item on the order has been returned.",
+		EXCHANGED "Indicates that at least one item on the order has been returned and the customer wants it exchanged.",
+		CANCELLED "Indicates that the order was cancelled.",
+		COMPLETED "Indicates that all processes for the order have been completed.",
+		PAID "Indicates that payment for the order was received."
+	}
+	
+	enum ShippingServiceType {
+		summary "Specifies the shipping service types."
+		description "Defines the values used to specify the type of service used to ship the purchased goods."
+		MERCHANT_SHIPPED "Indicates that the merchant shipped the order themselves.",
+		DROP_SHIP "Indicates that the merchant used a drop ship service to ship the order.",
+		SHIPPING_SERVICE "Indicates that the merchant used a shipping service to ship the order.",
+		WILL_CALL "Indicates that the customer will pick the order up from the merchant."
+	}
+	
+	enum PromotionDiscountType {
+		summary "Specifies the promotion discount types."
+		description "Defines the values used to specify the promotional discount type."
+		STOREWIDE_SALE "Indicates that the promotion was a store wide sale.",
+		SHIPPING_DISCOUNT "Indicates that the promotion was a shipping discount.",
+		PRODUCT_DISCOUNT "Indicates that the promotion was a product discount.",
+		OTHER "Indicates that the promotion was something other than the discount types available."
+	}
+	
+	enum PaymentStatus {
+		summary "Specifies the payment status values."
+		description "Defines the values used to specify the payment processing status for a an order."
+		AUTHORIZED "Indicates that the order payment has been authorized.",
+		PAID "Indicates that the order has been paid for.",
+		NOT_AUTHORIZED "Indicates that the payment for the order is waiting to be authorized.",
+		PARTIAL "Indicates that some payment has been received but that the order has not been completely paid for.",
+		NONE "Indicates that no payment has been received for the order."
+	}
+	
+	enum CancellationReason {
+		summary "Specifies the cancellation values."
+		description "Defines the values used to specify the cancellation reasons for cancelling an order."
+		BUYER_CANCELED "Indicates that a buyer has cancelled the order.", 
+		MERCHANT_CANCELED "Indicates that a merchant has cancelled the order.",  
+		DUPLICATE_INVALID "Indicates that the order was cancelled because it is a duplicate.", 
+		FRAUD_FAKE "Indicates that a the order was cancelled because it was classified as fraud." 
+	}
+	
+	record PackageDimensions {
+		summary "Contains the package dimensions."
+		description "Captures the depth, length, width, and unit of dimension measurement for a package."
+		float packageDepth "Depth measurement of the shipping package in the units specified."
+		float packageLength "Length measurement of the shipping package in the units specified."
+		float packageWidth "Width measurement of the shipping package in the units specified."
+		union {EnglishLengthMeasurementUnit, MetricLengthMeasurementUnit} measurementUnit "Unit of measurement."
+	}
+	
+	record PackageWeight {
+		summary "Contains the package weight."
+		description "Captures the weight (major and minor) and unit of weight measurement for a package."
+		float packageWeightMajor "Weight of the package in the units specified. For example, lb or kg."
+		union {EnglishWeightMeasurementUnit, MetricWeightMeasurementUnit} majorMeasurementUnit "Unit of measurement used."
+		float? packageWeightMinor "Minor unit of measurement based on the major unit used. For example, if the major package weight measurement unit is lb, this is oz.  If the major is kg, this is g."
+	}
+	
+	record Shipment {
+		summary "Contains shipping information for an order."
+		description "Captures all the shipping information for an order, such as shipping method, shipping fees, surcharge, tracking details, etc."
+		string shipmentId "Unique identifier for a given shipment. Note: The value must be unique only within a given order."
+		CurrencyAmount shippingFees "Fees paid by the customer for this shipment."
+		CurrencyAmount? discountAmount "Total discount amount associated with a shipment. This value is calculated from the individual promotional discounts applied to the shipment."
+		array<PromotionalDiscount>? discounts "Container shipping discount information for one or more specific types of promotional discounts."
+		CurrencyAmount? additionalCost "Sum of any additional fees applied to this shipment. For example, if the order consists of multiple items from the same offer, this specifies the cost of shipping each additional item."
+		CurrencyAmount? packagingHandlingCost "Additional Fee a merchant charges for preparing the item for shipping. This is in addition to the shipping service charge."
+		CurrencyAmount? surcharge  "Additional fee charged to US buyers when shipping via UPS or FedEx to Alaska, Hawaii, or Puerto Rico. This applies only to flat-rate shipping."
+		array<TrackingDetail>? trackingDetails "Array of tracking details, such as carrier and tracking numbers, for a shipment."	
+		string? shippingMethod  "Shipping method used, such as one-day, ground, etc."
+		DateRange? deliveryWindow  "Period of time within which the order will be delivered."
+		DateRange? shippingWindow  "Period of time within which the order will be shipped."
+		string? shippingMessage "Additional information for the customer."
+		PackageDimensions? packageDimensions "Measurement of the package to ship."
+		PackageWeight? packageWeight "Weight of the package to ship."
+		string? packageType "Type of the shipping package, such as envelop, box, etc."
+		boolean shippingIrregular = false "Whether a package is irregular in shape and therefore cannot go through the stamping machine at the shipping service office and thus requires special or fragile handling."		
+	}
+
+	record GiftTag {
+		summary "Contains information for the gift tag."
+		description "Captures the information used on a gift tag."
+		string? from "Name of the person sending the item."
+		string? to "Name of the person receiving this item."
+		string giftMessage "Message to the person receiving the item, such as Happy Birthday."
+	}
+	
+	record CustomerInfo confidential {
+		summary "Contains contact information of the customer placing the order."
+		description "Captures the ID, name, email address and phone number of the customer who placed the order."
+		uri? id "Unique customer identifier assigned by the system that created the customer."	
+		Name name "Customer's name."
+		Email? email "Customer's email address."
+		Phone? phone "Customer's phone number."
+	}
+	
+	record PromotionalDiscount {
+		summary "Contains information about the promotional discount applied to an order."
+		description "Captures the code, promotional description, type, and discount amount of the promotional discount applied to an order."
+		string code "Code that identifies this promotional discount."
+		string promoDescription "Information that describes the promotional discount, such as Labor Day Sale."
+		PromotionDiscountType type "Type of discount applied."
+		CurrencyAmount amount "Amount of the discount applied."
+	}
+	
+	record ShipTo confidential {
+		summary "Contains contact information of the person the order is being shipped to."
+		description "Captures the name and address of the person the order is being shipped to and the gift tag information."
+		Name name "Name of the person the order is being shipped to."
+		Address address "Address of the person the order is being shipped to."
+		GiftTag? giftTag "Information from the GiftTag record for the shipment."
+	}
+	
+	record AdditionalCost {
+		summary "Contains additional shipping cost information."
+		description "Captures the description and amount of any additional shipping costs."
+		string costDescription "Describes what the additional shipping costs were for."
+		CurrencyAmount amount "Amount of the additional shipping costs."
+	}
+	
+	record TrackingDetail {
+		summary "Contains the shipment tracking information for the order."
+		description "Captures the shipment tracking number, carrier or service used and the shipping type."	
+		array<string>? trackingNumbers "Order tracking numbers generated by the carrier or shipping service."
+		string? carrier "Name of the company shipping the order, such as a trucking company."
+		string? service "Name of the shipping service shipping the order, such as FedEx."
+		ShippingServiceType? serviceType "Type of service used."
+	}
+	
+	record ShippingInformationUpdate extends TrackingDetail {
+		summary "Adds fields to the TrackingDetail record."
+		description "Adds order information fields to the TrackingDetail record, such as orderNumber and orderLineId."	
+		string? orderNumber "Unique order identifier generated by the originator of the order."
+		string? orderLineId "Unique identifier of an item."
+	}
+	
+	record MarketplaceShippingInformationUpdate extends ShippingInformationUpdate {
+		summary "Adds fields to the ShippingInformationUpdate record."
+		description "Adds fields that are specific to submitting an order to a marketplace to the ShippingInformationUpdate record, such as the account and source ID and site code."	
+		string? accountId "Unique account identifier assigned by the system that created the account."
+		string? siteCode "Name that identifies the marketplace. For example, eBay_US or eBay_UK." 
+		string? sourceId "Identifier for the channel where this order originated, such as eBay, Amazon, etc."
+	}
+	
+	record ShippingInformationUpdateSucceeded {
+		summary "Signals the update of the TrackingDetail record."
+		description "Confirms that the TrackingDetail record was updated with the order number and order line ID."	
+		string? orderNumber "Unique order identifier generated by the originator of the order."
+		string? orderLineId "Unique identifier of an item."
+	}
+	
+	record ShippingInformationUpdateFailed {
+		summary "Signals shipping information couldn't be updated."
+		description "Signals that the request to update the shipping information has failed and returns the order and item IDs that were sent in the request and information about the failure, which is useful for troubleshooting."		
+		string? orderNumber "Unique order identifier generated by the originator of the order."
+		string? orderLineId "Unique identifier of an item."
+		array<Error<ShipppingInformationUpdateErrorCodes>> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+	}
+	
+	record PaymentInfo {
+		summary "Contains information about the method used to pay for an order."
+		description "Captures detailed information about the method of payment used for an order."
+		PaymentMethod method "Name of the payment method used for an order, such as PayPal, Visa, etc."
+		string datePaid "Date the payment was processed."
+		string? transactionId "Identifier for the payment transaction generated by the payment provider."
+		string? transactionStatus "State of the payment process."
+		CurrencyAmount? processingFee "Amount charged for processing."
+		PaymentStatus paymentStatus = NONE "State of the order payment."
+	}
+	
+	record Tax {
+		summary "Contains information about the tax charged for an order."
+		description "Captures detailed information about the tax applied to an order."
+		TaxabilityType? taxability "Tax status type of an order."
+		string? taxType "Type of tax being applied, such as state, county, federal, etc."
+		double? effectiveRate "Tax rate a taxpayer would be taxed at if taxing was done at a constant rate."
+		CurrencyAmount taxesCharged "Amount of tax charged for an order."
+	}
+		
+	record OrderLinePrice {
+		summary "Contains information about all the charges and credits for a single line item on an order."
+		description "Captures detailed information about all the charges and credits for a single line item on an order, such as total price, insurance cost, total discounts, etc."
+		CurrencyAmount totalPrice "Total price for a single line item including all additional costs (sum of price of the item or multiples of this item, fees, additional costs, etc.)."
+		CurrencyAmount price "Cost of the item without additional fees (unit price)."
+		CurrencyAmount? insuranceCost "Amount charged to insure the shipment."
+		CurrencyAmount? totalDiscountAmount "Total amount of all of the discounts that were applied to a line item."	
+		array<PromotionalDiscount>? allDiscounts "Array of the discounts that were applied to a line item."
+		array<AdditionalCost>? additionalCosts "Array of all the additional costs that were associated with a line item."
+	}
+	
+	record ReturnOrderLineData {
+		summary "Contains information about a single line item that was returned."
+		description "Captures detailed information about a single line item that was returned, such as ID, quantity, SKU, etc. This can be multiples of the same item."
+		string? orderLineId "Unique identifier of the returned item."
+		string? itemId "Ordered index of this item (also referred to as line number)."
+		float quantity "How many of the item were returned."
+		string productSku "Standardized SKU (Stock Keeping Unit) of the returned item. This is a unique identifier supplied by the merchant."
+		string itemDescription "Description of the returned item."
+		CurrencyAmount? totalTaxAmount "Total amount of tax associated with the returned items."
+		datetime dateReturned "Date the returned item was received." 	
+		OrderLinePrice price "Price for the returned item without additional fees."
+		string? shipmentId "Unique identifier of the shipment that was used to send the item to the customer. Note: The value must be unique only within a given order."
+		boolean shippingFeesTaxed = false "True if the order line had taxes applied to its shipping fees."
+	}
+
+	record SimpleOrderLineData {
+		summary "Contains information about a single line item."
+		description "Captures detailed information about a single line item, such as ID, quantity, SKU, etc. This can be multiples of the same item."
+		string? orderLineId "Unique identifier of an item."
+		string? itemId "Ordered index of an item (also referred to as line number)."
+		string? orderNumber "Unique order identifier generated by the originator of the order."
+		float quantity "How many of an item are ordered."
+		string productSku "Standardized SKU (Stock Keeping Unit) of an item. This is a unique identifier supplied by the merchant."
+		string itemDescription "Description of an item."	
+		OrderLinePrice unitPrice "Total price for an item without additional fees."
+		CurrencyAmount? totalTaxAmount "Total amount of tax charged for an item."
+		OrderStatus status "Status of an order line item."
+		CurrencyAmount price "Cost of the item without additional fees (unit price)."		
+		array<PromotionalDiscount>? allDiscounts "Array of the discounts that were applied to a line item."
+		datetime? dateCancelled "Date the item was cancelled."
+		datetime? dateDelivered "Date the item was delivered to the customer."
+		datetime? dateShipped "Date the item was shipped to the customer."
+		datetime? dateReturned "Date the item was returned."
+		datetime? dateInvoiced "Date the invoice for the item was generated."
+		ShipTo destination "Location the item was shipped to."
+		string? shipmentId "Unique identifier of the shipment that was used to send the item to the customer. Note: The value must be unique only within a given order. "
+		string? offerId "Identifier of the offer. This ID is assigned by the channel that published the offer. Note: offerId and offerURL provide information that can be used to construct a link to the product on the sales channel where it was purchased."
+		string? offerUrl "URL of the offer. Note: offerId and offerURL provide information that can be used to construct a link to the product on the sales channel where it was purchased."
+		boolean shippingFeesTaxed = false "True if the order line had taxes applied to its shipping fees."
+	}
+	
+	record OrderLineData extends SimpleOrderLineData {
+		summary "Adds fields to the SimpleOrderLineData record."
+		description "Adds order information fields to the SimpleOrderLineData record, such as autoship, substitution, etc."
+		string? lineMessage "Notes to the customer."
+		boolean? _AVDL_bundle = false "Indicates the order is a bundled item, which means the item consists of several items. For example, a gamebox, controllers, and a game."
+		boolean? expandBundle = false "Indicates you can expand the bundle and see the individual items."
+		boolean? soloShip = false "Indicates the order can be divided into multiple shipments." 
+		boolean? autoShip = false "Indicates item is to be shipped automatically."
+		boolean? autoSubstitution = false "Indicates that if the item is not available a substitution is allowed."
+	}
+
+	record OrderDetails {
+		summary "Contains information for the order."
+		description "Captures the details of the order."
+		string? orderNumber "Unique order identifier generated by the originator of the order."
+		OrderStatus status "Status of an order line item. "
+		string dateOrdered  "Date an item was ordered."
+		CurrencyAmount grandTotal "Total amount paid by the customer (total amount of items, fees, taxes, etc.) for the order."
+		CurrencyAmount? netMerchandiseValue "Total amount minus any non-shipping discounts."
+		CurrencyAmount itemPriceTotal "Total amount of all the items without taxes, fees, etc."	
+		CurrencyAmount? totalInsuranceCost "Total cost of insurance."
+		CurrencyAmount? totalDiscountAmount "Total amount of all discounts."
+		array<AdditionalCost>? additionalCosts "Array of all the additional costs."
+		CurrencyAmount? totalTaxAmount "Total cost of all the taxes charged for this order."
+		CurrencyAmount? totalShippingFees "Total of the shipping fees from each of the associated shipments."
+		array<PromotionalDiscount>? discounts "Array of all the promotional discounts that were applied at the order level."
+		string sourceId "Identifier for the channel where this order originated, such as eBay, Amazon, etc."
+		string sourceGroupId "Unique identifier of the group that classifies the source of the order, such as web, print, email, etc."
+		array<string>? relatedOrderNumbers "Array of order numbers of any related orders. These numbers are assigned by the system that originated the order."
+		array<Shipment>? shipments "Array of the shipments used for an order."
+		string? referralSource "Marketing source that referred this order."
+		string? buyerComments "Additional comments or instructions that the buyer wants to convey to the merchant."
+		boolean shippingFeesTaxed = false "True one or more of the order lines had it taxes applied to its shipping fees."
+	}
+	
+	record SimpleOrder extends OrderDetails {
+		summary "Adds fields to the OrderDetails record."
+		description "Adds customer and order fields to the OrderDetails record, such as the customer ID and order line IDs."
+		uri? customerId "Identifier assigned to the customer by the system that created the customer record."
+		array<SimpleOrderLineData> orderLines "Array of order lines." 
+	}
+	
+	record NonSensitiveOrderData extends OrderDetails {
+		summary "Adds non-sensitive order fields to the OrderDetails record."
+		description "Adds the orderLines field to the OrderDetails record. These are orders that do NOT contain confidential information."	
+		array<OrderLineData> orderLines "Order line item information."
+	}
+	
+	record OrderData extends NonSensitiveOrderData {
+		summary "Adds fields to the NonSensitiveOrderData record."
+		description "Adds order data fields to the NonSensitiveOrderData record, such as customer, billing address, etc."	
+		CustomerInfo customer "Detailed customer information." 
+		Address? billingAddress "Billing address of the customer."
+		array<PaymentInfo> paymentMethods "Array of the payment methods used for an order."
+		ShipTo destination "Location the order is to be shipped to. This can be overwritten by the ShipTo in SimpleOrderLineData when items in an order are shipped to more than one location."	
+		string? purchaseOrder "Purchase order information."
+	}
+	
+	record NonSensitiveOrder extends NonSensitiveOrderData {
+		summary "Adds fields to the NonSensitiveOrderData record."
+		description "Adds the guid field to the NonSensitiveOrderData record."
+		guid id "Unique global identifier."
+	}
+	
+	record Order extends OrderData {
+		summary "Adds fields to the OrderData record."
+		description "Adds the guid field to the OrderData record."
+		guid id "Unique global identifier."
+	}
+	
+	record ProcessOrder {
+		summary "Contains information needed to process an order."
+		description "Captures information needed to process an order."
+		OrderData order "Order information."
+	}
+	
+	record ProcessMarketplaceOrder extends ProcessOrder {
+		summary "Adds marketplace fields to the ProcessOrder record."
+		description "Adds fields that are specific to submitting an order to a marketplace to the ProcessOrder record, such as account ID and site code."
+  		string? accountId "Unique account identifier assigned by the system that created the account."
+		string? siteCode "Name that identifies the marketplace that is processing the order." 
+	}
+	
+	record ProcessOrderSucceeded {
+		summary "Signals that an order was processed successfully."
+		description "Confirms successful processing an order and returns the information that was used to process the order."
+		Order order "Detailed order information."
+	}
+	
+	record ProcessOrderFailed {
+		summary "Signals that the processing of an order has failed."
+		description "Returns the order information that was sent in the request and information about the failure, which is useful for troubleshooting."
+		OrderData order "Order information." 
+		array<Error<ProcessOrderErrorCodes>> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+	}
+	
+	record SubmitOrder {
+		summary "Contains information needed to submit an order." 
+		description "Captures all the information needed to submit an order."
+		OrderData order "Information about the order."   
+	}
+	
+	record SubmitMarketplaceOrder extends SubmitOrder {
+		summary "Adds marketplace fields to the SubmitOrder record."
+		description "Adds fields that are specific to submitting an order to a marketplace to the SubmitOrder record, such as account ID and site code."
+		string? accountId "Unique account identifier assigned by the system that created the account."
+		string? siteCode "Name that identifies the marketplace that is processing the order." 
+	}
+	
+	record SubmitOrderSucceeded {
+		summary "Signals that an order was successfully submitted."
+		description "Confirms successfully submitting an order and returns the information that was used."
+		Order order "Detailed order information."
+	}
+	
+	record SubmitOrderFailed {
+		summary "Signals that submitting an order has failed."
+		description "Returns the order information that was sent in the request and information about the failure, which is useful for troubleshooting."
+		OrderData order "Order information."
+		array<Error<SubmitOrderErrorCodes>> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+	}
+	
+	record OrderShipped {
+		summary "Contains information about an order that has been shipped."
+		description "Captures all the data about an order that has been shipped."
+		string orderNumber "Unique order identifier generated by the originator of the order."
+		guid id "Unique global identifier."
+		Shipment shipment "Shipping information." 
+		string sourceId "Identifier for the channel where this order originated, such as eBay, Amazon, etc."
+		string? referralSource "Marketing source that referred this order."
+    	array<OrderLineData>? orderLines "Order line item information."	
+    }
+	
+	record MarketplaceOrderShipped extends OrderShipped {
+		summary "Adds marketplace fields to the OrderShipped record."
+		description "Adds fields that are specific to submitting an order to a marketplace to the OrderShipped record, such as account ID and site code."
+		string accountId "Unique account identifier assigned by the system that created the account."
+		string? siteCode "Name that identifies the marketplace that is processing the order." 
+	}
+	
+	record ObserveOrderShipped {
+		summary "Contains information about a shipped order." 
+		description "Captures the information about a shipped order, which is sent to the observer."
+		OrderShipped orderShipped "Information about the order that was shipped."
+	}
+	
+	record ObserveMarketplaceOrderShipped {
+		summary "Contains information about a marketplace order that was shipped."
+		description "Captures the information about a marketplace order that was shipped, which is sent to the observer."
+		MarketplaceOrderShipped marketplaceOrderShipped "Order information from the marketplace about the order that was shipped."
+	}
+	
+    record CreateOrder {
+		summary "Contains information needed to create an order."
+		description "Captures detailed information used to create an order."
+   		OrderData orderData "Detailed information about the order to be created."
+	}
+	
+    record CreateMarketplaceOrder extends CreateOrder {
+		summary "Adds marketplace fields to the CreateOrder record."
+		description "Adds fields that are specific to submitting an order to a marketplace to the CreateOrder record, such as account ID and site code."
+		string accountId "Unique account identifier assigned by the system that created the account."
+		string? siteCode "Name that identifies the marketplace that is processing the order." 
+	}
+	
+	record CreateOrderSucceeded {
+		summary "Signals that the creation of an order was successful."
+		description "Confirms successfully creating an order and returns the order number."
+		string orderNumber "Unique order identifier generated by the originator of the order."
+	}
+	
+	record SalesChannelCreateOrderSucceeded extends CreateOrderSucceeded {
+		summary "Adds marketplace fields to the CreateOrderSucceeded record."
+		description "Adds fields that are specific to submitting an order to a marketplace to the CreateOrderSucceeded record, such as account ID and site code."
+		string accountId "Unique account identifier assigned by the system that created the account."
+		string? siteCode "Name that identifies the marketplace that is processing the order." 
+	}
+	
+	record CreateOrderFailed {
+		summary "Signals the attempt to create an order has failed."
+		description "Returns the order ID that was sent in the request and information about the failure, which is useful for troubleshooting."
+		string orderNumber "Unique order identifier generated by the originator of the order."
+		array<Error<CreateOrderErrorCodes>> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+	}
+	
+	record SalesChannelCreateOrderFailed extends CreateOrderFailed {
+		summary "Adds marketplace fields to the CreateOrderFailed record."
+		description "Adds fields that are specific to submitting an order to a marketplace to the CreateOrderFailed record, such as account ID and site code."
+		string accountId "Unique account identifier assigned by the system that created the account."
+		string? siteCode "Name that identifies the marketplace that is processing the order." 	
+	}
+	
+	record OrderCreated {
+		summary "Signals an order was created."
+		description "Confirms an order was created and returns order information that was used to create the order."
+		SimpleOrder simpleOrder "Order information that does not contain sensitive customer information." 
+	}
+	
+	record CancelOrder {
+		summary "Contains information needed to cancel an order."
+		description "Captures all the information needed to cancel an order."
+		array<string> orderNumbers "Array of unique order numbers. These numbers are assigned by the system that originated the order."
+		array<guid> orderIds "Array of internal unique identifiers that are used to manage orders." 
+	}
+	
+	record CancelMarketplaceOrder extends CancelOrder {
+		summary "Adds marketplace fields to the CancelOrder record."
+		description "Adds fields that are specific to submitting an order to a marketplace to the CancelOrder record, such as account ID and site code."
+		string accountId "Unique account identifier assigned by the system that created the account."
+		string? siteCode "Name that identifies the marketplace that is processing the order." 
+	}
+	
+	record CancelOrderSucceeded extends CancelOrder {
+		summary "Contains information for the CancelOrder record." 
+		description "Captures additional information, which is added to the CancelOrder record." 
+	}
+	
+	record CancelMarketplaceOrderSucceeded extends CancelOrderSucceeded {
+		summary "Adds marketplace fields to the CancelOrderSucceeded record."
+		description "Adds fields that are specific to submitting an order to a marketplace to the CancelOrderSucceeded record, such as account ID and site code."
+		string accountId "Unique account identifier assigned by the system that created the account."
+		string? siteCode "Name that identifies the marketplace that is processing the order." 
+	}
+	
+	record CancelOrderFailed {
+		summary "Signals the attempt to cancel an order has failed."
+		description "Returns the order number and guid that were sent in the request and information about the failure, which is useful for troubleshooting."
+		string orderNumber "Unique order identifier generated by the originator of the order."
+		guid id "Unique order identifier assigned by the system that created the order."
+		array<Error<CancelOrderErrorCodes>> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+	}
+	
+	record CancelMarketplaceOrderFailed {
+		summary "Signals the attempt to cancel a marketplace order has failed."
+		description "Returns the failed order numbers that were sent in the request and information about the failure, which is useful for troubleshooting."
+		array<string> failedOrderNumbers "Array of the order numbers that failed to be cancelled. These numbers are assigned by the system that originated the order."
+		array<Error<CancelOrderErrorCodes>> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+	}
+	
+	record OrderCancelled {
+		summary "Signals an order was cancelled."
+		description "Returns the order information of the cancelled order."
+		array<SimpleOrder> cancelledOrders "Order that was cancelled."
+		string? reason "The reason the order was cancelled."
+	}
+	
+	record MarketplaceOrderCancelled {
+		summary "Signals that marketplace orders were cancelled."
+		description "Returns the marketplace orders that were cancelled."
+		array<Order> cancelledOrders "Array of the orders that were cancelled."
+		string? reason "The reason the order was cancelled."
+	}
+	
+    record SearchOrder {
+		summary "Requests a search for orders."
+		description "Requests a search for orders."
+    	Query _AVDL_query "Search criteria." 
+	}
+	
+	record MarketplaceSearchOrder extends SearchOrder {
+		summary "Adds marketplace fields to the SearchOrder record."
+		description "Adds fields that are specific to submitting an order to a marketplace to the SearchOrder record, such as the seller's account ID and site code."
+		string? siteCode "Identifier for the marketplace that is processing the order." 
+		string? sellerAccountId "Unique identifier for the seller's account assigned by the system that created the account."
+	}
+
+	record SearchOrderSucceeded {
+		summary "Signals the search for orders was successful."
+		description "Confirms successfully searching for orders and returns the information that was used for the search."
+    	Query _AVDL_query "Search criteria." 
+		array<Order> orders "Array of order found."
+	}
+
+	record MarketplaceSearchOrderSucceeded extends SearchOrderSucceeded {
+		summary "Adds marketplace fields to the SearchOrderSucceeded record."
+		description "Adds fields that are specific to submitting an order to a marketplace to the SearchOrderSucceeded record, such as the seller's account ID and site code."
+		string? siteCode "Identifier for the marketplace that is processing the order." 
+		string? sellerAccountId "Unique identifier for the seller's account assigned by the system that created the account."
+	}
+	
+	record SearchNonSensitiveOrderSucceeded {
+		summary "Signals searching for an order was successful." 
+		description "Confirms successfully searching for orders that do NOT contain confidential information and returns the search criteria and the result of the query."
+	   	Query _AVDL_query "Search criteria." 
+        array<NonSensitiveOrder> orders "Orders information without sensitive customer information."        	
+	}
+	
+	record SearchOrderFailed {
+		summary "Signals searching for orders has failed." 
+		description "Returns the search criteria that was sent in the request and information about the failure, which is useful for troubleshooting."
+		SearchOrder search "Search criteria used."
+		array<Error<ErrorCodes>> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+	}
+	
+	record MarketplaceSearchOrderFailed extends SearchOrderFailed {
+		summary "Adds marketplace fields to the SearchOrderFailed record."
+		description "Adds fields that are specific to submitting an order to a marketplace to the SearchOrderFailed record, such as the seller's account ID and site code."
+		string? siteCode "Identifier for the marketplace that is processing the order." 
+		string? sellerAccountId "Unique identifier for the seller's account assigned by the system that created the account."
+	}
+	
+	record OrderReturn {
+		summary "Contains information about a returned order."
+		description "Captures the detail information about an order that was returned."
+		string orderNumber "Unique order identifier generated by the originator of the order."
+		datetime? dateReturned "Date the return order was received by the merchant."
+		uri? customerId "Unique customer identifier assigned by the system that created the customer."
+		datetime? dateOrdered "Date the order was created."
+		array<ReturnOrderLineData>? orderLines "Array of the order line items that were returned." 
+		CurrencyAmount totalAmountOfReturn "Total amount of the returned items."
+		CurrencyAmount totalTaxAmountOfReturn "Total amount of the tax associated with the returned items."
+	}
+	
+	record PartialOrderReturn {
+		summary "Contains information about the returned items from an order where only some of the items were returned."
+		description "Captures information about the returned items such as, item, cost, order number, etc. from an order where only some of the items were returned."
+		string orderNumber "Unique order identifier generated by the originator of the order."
+		array<ReturnOrderLineData> returnedItems "Array of the items that were returned."
+		uri customerId "Unique customer identifier assigned by the system that created the customer."
+		datetime? dateOrdered "Date the order was placed."
+		CurrencyAmount totalAmountOfReturn "Total amount of the returned items."
+		CurrencyAmount totalTaxAmountOfReturn "Total amount of the tax associated with the returned items."
+	}
+	
+	record OrderAdjust {
+		summary "Contains information to adjust (change) an order."
+		description "Captures the information needed to adjust orders that were changed in ways that effect the overall price of the product."
+		string? orderNumber "Unique order identifier generated by the originator of the order."
+		
+		/** TODO: Should the scope of the order line data be more constrainer here?
+		 */
+		array<SimpleOrderLineData> adjustedLines "Array of the lines that were adjusted/updated. This does not include items that were not adjusted or updated."
+	}
+	
+	record PaymentUpdate {
+		summary "Requests the update of the payment information in an order."
+		description "Requests the update of the payment information in an order."
+		string? orderNumber "Unique order identifier of the order to be updated."
+		array<PaymentInfo> paymentInfo "Payment data needed for the update."
+	}
+	
+	record MarketplacePaymentUpdate extends PaymentUpdate {
+		summary "Adds marketplace fields to the PaymentUpdate record."
+		description "Adds fields that are specific to submitting an order to a marketplace to the PaymentUpdate record, such as account and site ID."
+		string? accountId "Unique account identifier for the marketplace assigned by the system that created the account." 
+		string? siteId "Unique site identifier of the marketplace."
+	}
+	
+	record PaymentUpdateSucceeded {
+		summary "Signals that updating payment information was successful."
+		description "Confirms successfully updating payment information and returns the number of the order that was updated."
+		string orderNumber "Unique order identifier of the order that was updated."	
+	}
+	
+	record MarketplacePaymentUpdateSucceeded extends PaymentUpdateSucceeded {
+		summary "Adds marketplace fields to the PaymentUpdateSucceeded record."
+		description "Adds fields that are specific to submitting an order to a marketplace to the PaymentUpdateSucceeded record, such as account and site ID."
+		string? accountId "Unique account identifier assigned by the system that created the account."
+		string? siteId "Unique site identifier of the marketplace."
+	}
+	
+	record PaymentUpdateFailed {
+		summary "Signals that updating payment information has failed."
+		description "Returns the order numbers that were sent in the request and information about the failure, which is useful for troubleshooting."
+		string orderNumber "Unique order identifier generated by the originator of the order."
+		array<Error<PaymentUpdateErrorCodes>> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+	}
+	
+	record MarketplacePaymentUpdateFailed extends PaymentUpdateFailed {
+		summary "Adds marketplace fields to the PaymentUpdateFailed record."
+		description "Adds fields that are specific to submitting an order to a marketplace to the PaymentUpdateFailed record, such as account and site ID."
+		string? accountId "Unique account identifier assigned by the system that created the account."
+		string? siteId "Unique site identifier of the marketplace."
+	}
+
+}
