@@ -1,5 +1,6 @@
 /** This file includes the messages that are part of the
  *  order fulfillment domain
+ *
  */
 package com.x.orderfulfillment.v1 {
 	
@@ -215,7 +216,7 @@ package com.x.orderfulfillment.v1 {
 	
 	
 	record CustomerInfo confidential {
-		uri id;   //id is created by the system that creates the record.	
+		union{guid, EntityId} id;   //id is created by the system that creates the record.	
 		Name name
 		Email? email
 		Phone? phone
