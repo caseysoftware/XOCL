@@ -79,17 +79,14 @@ package com.x.ordermanagement.v3 {
     	}
     }
     
-    process ProcessSalesChannelOrder<MarketplaceOrder>(Order order) {
+    process ProcessNewSalesChannelOrder<MarketplaceOrder>(Order order) {
     	
     	summary "Processes an order that originates from a sales channel."
         description "An order is submitted from and sales channel and is processed by making adjustments, changing the status, etc. and notifies observers of the action performed. Note: Use OrderReturn ONLY when all the items in an order are returned at the same time. For all other returns, use PartialOrderReturn. For example, a buyer orders two items. Returns one item and later returns the second item. You would use PartialOrderReturn for both of these returns."
         
         roles {
         	SalesChannel "Submits the order for processing."
-        	OrderProcessor "Performs the order processing."
-        	OrderObserver "Informed of the processing that happened."
-        	CustomerManager "Creates or updates data about the customer associated with this order."
-        
+        	OrderProcessor "Performs the order processing."        
         }
     
 	    workflow {
@@ -97,11 +94,9 @@ package com.x.ordermanagement.v3 {
     		summary "Processes an order."
     		description "Processes an order."
 	    	
-	        any {
-	       	 	transaction ProcessOrder<MarketplaceOrder> {
-	        		roles(SalesChannel, OrderProcessor)
-	        	}
-	        }
+       	 	transaction ProcessOrder<MarketplaceOrder> {
+        		roles(SalesChannel, OrderProcessor)
+        	}
         	
 	        any {
 	        	workflow CustomerUpsert {
@@ -113,57 +108,76 @@ package com.x.ordermanagement.v3 {
 	    		}
 	    	}
 	    	
-       	    transaction OrderCreated {
-        		roles(SalesChannel, OrderObserver)
-       		}
-       		
+			workflow ProcessCreatedOrder<MarketplaceOrder> {
+			   	roles(OrderProcessor, null, null)
+			}	
+	    }
 	    	
-	    	do ((!order[Order.Cancelled]) && ((!order[Order.Shipped]) && (!order[Order.Returned]))) {  
-	    		any {
-	    			noop //TN: Noop added to allow for polling semantic	
-		    		
-		    		transaction OrderAdjust {
-		    			roles(OrderProcessor, OrderObserver)
-		    		}
-		    		
-		    		transaction OrderReturn {
-		    			roles(OrderProcessor, OrderObserver)
-		    		}
-		    	
-		    		transaction PartialOrderReturn {
-		    			roles(OrderProcessor, OrderObserver)
-		    		}
-		    		
-		    		transaction PaymentUpdate<MarketplaceOrder> {
-		    			roles(SalesChannel, OrderProcessor)
-		    		}
-		    		
-		        	all {  
-			        	// An order processor updates shipment tracking information for an order
-			        	transaction OrderShipped<MarketplaceOrder> {
-			        		roles(OrderProcessor, SalesChannel)
-			        	}
-			        	
-			        	transaction ObserveOrderShipped<MarketplaceOrder> {
-			        		roles(OrderProcessor, OrderObserver)
-			        	}
-			        }
-	        	
-		        	any {
-			        	do {
-							// A canceller asks the processer to cancel its order 
-							transaction CancelOrder<MarketplaceOrder> {
-							   	roles(SalesChannel, OrderProcessor)
-							}
-							workflow OrderCancelled<MarketplaceOrder> {
-						   		roles(OrderProcessor, OrderObserver)
-						   	}
+	}
+	   	
+    process ProcessCreatedOrder<MarketplaceOrder>(Order order) {
+    	
+    	summary "Processes an order that was already created."
+        description "An existing order is processed by making adjustments, changing the status, etc. and notifies observers of the action performed. Note: Use OrderReturn ONLY when all the items in an order are returned at the same time. For all other returns, use PartialOrderReturn. For example, a buyer orders two items. Returns one item and later returns the second item. You would use PartialOrderReturn for both of these returns."
+        
+        roles {
+        	OrderProcessor "Performs the order processing."
+        	OrderObserver "Informed of the processing that happened."        
+        	SalesChannel "Notified when an order was shipped."
+        }    
+    }
+    
+    workflow ProcessCreatedOrder implements ProcessCreatedOrder {
+    	
+		workflow OrderCreated<MarketplaceOrder> {
+		   	roles(OrderProcessor, OrderObserver)
+		}
+    	
+    	do ((!order[Order.Cancelled]) && ((!order[Order.Shipped]) && (!order[Order.Returned]))) {  
+    		any {
+    			noop //TN: Noop added to allow for polling semantic	
+	    		
+	    		workflow OrderAdjusted {
+	    			roles(OrderProcessor, OrderObserver)
+	    		}
+	    		
+	    		workflow OrderReturned {
+	    			roles(OrderProcessor, OrderObserver)
+	    		}
+	    	
+	    		workflow OrderPartiallyReturned {
+	    			roles(OrderProcessor, OrderObserver)
+	    		}
+	    		
+	    		transaction PaymentUpdate<MarketplaceOrder> {
+	    			roles(SalesChannel, OrderProcessor)
+	    		}
+	    		
+	        	any {  
+		        	// An order processor updates shipment tracking information for an order
+		        	transaction OrderShipped<MarketplaceOrder> {
+		        		roles(OrderProcessor, SalesChannel)
+		        	}
+		        	
+		        	workflow ObserveOrderShipped<MarketplaceOrder> {
+		        		roles(OrderProcessor, OrderObserver)
+		        	}
+		        }
+        	
+	        	any {
+		        	do {
+						// A canceller asks the processer to cancel its order 
+						transaction CancelOrder<MarketplaceOrder> {
+						   	roles(SalesChannel, OrderProcessor)
 						}
-						
-						// The order processor informs observers that an order was cancelled
 						workflow OrderCancelled<MarketplaceOrder> {
-						   	roles(OrderProcessor, OrderObserver)
-						}
+					   		roles(OrderProcessor, OrderObserver)
+					   	}
+					}
+					
+					// The order processor informs observers that an order was cancelled
+					workflow OrderCancelled<MarketplaceOrder> {
+					   	roles(OrderProcessor, OrderObserver)
 					}
 				}
 			}
@@ -180,13 +194,107 @@ package com.x.ordermanagement.v3 {
         }
 	}
 	
-	workflow OrderCancelled implements OrderCancelled{
+	workflow OrderCancelled implements OrderCancelled {
 		summary "Notification that an order was cancelled."
 		description "OrderProcessor send a notification that an order was cancelled to observers."
+			
+		transaction OrderCancelled<MarketplaceOrder> {
+			roles(OrderProcessor, OrderObserver)
+		}	
+	}
+	
+	process OrderCreated {
+		summary "Notification that an order was created."
+		description "Notification that an order was created."
 		
+		roles {
+         	OrderProcessor "Sends a notification that an order was created."
+        	OrderObserver "Receives an order created notification."      
+        }
+	}
+	
+	workflow OrderCreated implements OrderCreated {
+		summary "Notification that an order was created."
+		description "OrderProcessor send a notification that an order was created to observers."
 		
-		 transaction OrderCancelled<MarketplaceOrder> {
-			 roles(OrderProcessor, OrderObserver)
-		 }	
+		transaction OrderCreated {
+			roles(OrderProcessor, OrderObserver)
+		}	
+	}
+	
+	process OrderAdjusted {
+		summary "Notification that an order was adjusted."
+		description "Notification that an order was adjusted."
+		
+		roles {
+         	OrderProcessor "Sends a notification that an order was adjusted."
+        	OrderObserver "Receives an order adjusted notification."      
+        }
+	}
+	
+	workflow OrderAdjusted implements OrderAdjusted {
+		summary "Notification that an order was adjusted."
+		description "OrderProcessor send a notification that an order was adjusted to observers."
+		
+		transaction OrderAdjust {
+	        roles(OrderProcessor, OrderObserver)
+		}	
+	}
+	
+	process OrderReturned {
+		summary "Notification that an order was returned."
+		description "Notification that an order was returned."
+		
+		roles {
+         	OrderProcessor "Sends a notification that an order was returned."
+        	OrderObserver "Receives an order returned notification."      
+        }
+	}
+	
+	workflow OrderReturned implements OrderReturned {
+		summary "Notification that an order was returned."
+		description "OrderProcessor send a notification that an order was returned to observers."
+			
+		transaction OrderReturn {
+	        roles(OrderProcessor, OrderObserver)
+		}	
+	}
+	
+	process OrderPartiallyReturned {
+		summary "Notification that an order was partially returned."
+		description "Notification that an order was partially returned."
+		
+		roles {
+         	OrderProcessor "Sends a notification that an order was partially returned."
+        	OrderObserver "Receives an order returned notification."      
+        }
+	}
+	
+	workflow OrderPartiallyReturned implements OrderPartiallyReturned {
+		summary "Notification that an order was partially returned."
+		description "OrderProcessor send a notification that an order was returned to observers."
+			
+		transaction PartialOrderReturn {
+		    roles(OrderProcessor, OrderObserver)
+		}	
+	}
+	
+	process ObserveOrderShipped<MarketplaceOrder> {
+		summary "Notification that an order was shipped."
+		description "Notification that an order was shipped."
+		
+		roles {
+         	OrderProcessor "Sends a notification that an order was shipped."
+        	OrderObserver "Receives an order returned notification."      
+        }
+	}
+	
+	workflow ObserveOrderShipped implements ObserveOrderShipped {
+		summary "Notification that an order was shipped."
+		description "OrderProcessor send a notification that an order was returned to observers."
+			
+		transaction ObserveOrderShipped<MarketplaceOrder> {
+		    roles(OrderProcessor, OrderObserver)
+		}	
 	}
 }
