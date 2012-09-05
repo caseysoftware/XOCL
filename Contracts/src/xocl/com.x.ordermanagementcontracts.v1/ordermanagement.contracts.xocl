@@ -1,0 +1,39 @@
+package com.x.ordermanagementcontracts.v1 0.0 earlydraft
+{
+	import com.x.ordermanagement.v3.*
+
+	
+    contract InternalOrderProcessor 
+    {
+    	description "An OrderProcessor for internally created orders"
+    	
+    	roles
+    	{	   
+	   		ProcessCreatedOrder.OrderProcessor
+	   		OrderCancelled.OrderProcessor
+	   		OrderPartiallyReturned.OrderProcessor
+	   		ObserveOrderShipped.OrderProcessor
+	   		OrderCreated.OrderProcessor
+	   		OrderReturned.OrderProcessor
+	   		OrderAdjusted.OrderProcessor //Magento doesn't do. 
+	    } 
+	 }
+	 
+	 contract OrderObserver
+	 {
+	 	description "An observer of Order information"
+	 	
+	 	roles{
+	 		ProcessCreatedOrder.OrderObserver
+	 		OrderCancelled.OrderObserver
+	 		OrderPartiallyReturned.OrderObserver
+	 		OrderCreated.OrderObserver
+	 		OrderReturned.OrderObserver
+	 		OrderAdjusted.OrderObserver
+	 		ObserveOrderShipped.OrderObserver	
+	 	}
+	 	
+	 }
+	 
+	 
+}
