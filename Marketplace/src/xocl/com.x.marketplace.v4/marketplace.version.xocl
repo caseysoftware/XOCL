@@ -1,6 +1,6 @@
 package com.x.marketplace.v4 0.0 earlydraft {	
 	packagetitle "Marketplace and eBay Variant"
-	description "The Marketplace package specifies the processes for publishing products to a marketplace and a variant to support publishing to the eBay marketplace."
+	description "The Marketplace package specifies the processes for publishing products to a marketplace (channel) and a variant to support publishing to the eBay marketplace."
 	
 	import com.x.marketplace.v4.*
 }
