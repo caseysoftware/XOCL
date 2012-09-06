@@ -71,7 +71,7 @@ package com.x.merchantonboarding.v1 {
 	record CompleteAuthorization {
 		AuthorizationSession authorizationSession;
 		Tenant tenant;
-		string verificationToken;
+		string? verificationToken; // required in the needed case
 	}
 	
 	record CompleteAuthorizationSucceeded {
