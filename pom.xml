@@ -156,7 +156,7 @@
 				<inherited>true</inherited>
 				<groupId>com.x.ocl</groupId>
 				<artifactId>xocl-maven-plugin</artifactId>
-				<version>1.4.15</version>
+				<version>1.4.16-SNAPSHOT</version>
 				<executions>
 					<execution>
 						<phase>generate-sources</phase>
