@@ -230,7 +230,7 @@ package com.x.marketplace.v4{
     	description "Revokes an offer."
         sender {
         	message RevokePublishedOffer {
-        		timeouts(receipt=30s, response=2h)     		
+        		timeouts(response=2h)     		
         		retries=3
         	}
         }
