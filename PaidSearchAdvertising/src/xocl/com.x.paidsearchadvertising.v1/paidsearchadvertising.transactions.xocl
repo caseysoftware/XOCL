@@ -11,19 +11,13 @@ package com.x.paidsearchadvertising.v1{
 	transaction CreateAdvertiserAccount response {
         sender {
         	message CreateAdvertiserAccount {
-        		timeouts(receipt=5s, response=15s)     		
+        		timeouts( response=15s)     		
         		retries=3
         	}
         }
         receiver {
-        	success CreateAdvertiserAccountSucceeded {
-            	timeouts(receipt=5s)
-            	retries=3
-            }    
-            failure CreateAdvertiserAccountFailed{
-            	timeouts(receipt=5s)
-            	retries=3
-            }
+        	success CreateAdvertiserAccountSucceeded
+            failure CreateAdvertiserAccountFailed
 		}
     }
 
@@ -34,20 +28,14 @@ package com.x.paidsearchadvertising.v1{
         )
         sender {
         	message CreateCampaign {
-        		timeouts(receipt=5s, response=15s)     		
+        		timeouts(response=15s)     		
         		retries=3
         	}
         }
         receiver {
-        	success CreateCampaignSucceeded {
-            	timeouts(receipt=5s)
-            	retries=3
-            }
+        	success CreateCampaignSucceeded 
             
-            failure CreateCampaignFailed{
-            	timeouts(receipt=5s)
-            	retries=3
-            }
+            failure CreateCampaignFailed
 		}
     }
     	
@@ -58,20 +46,14 @@ package com.x.paidsearchadvertising.v1{
         )
         sender{
         	message DeleteCampaign {
-        		timeouts(receipt=5s, response=15s)     	
+        		timeouts(response=15s)     	
         		retries=3
         	}
         }
         receiver {
-        	success DeleteCampaignSucceeded {
-            	timeouts(receipt=5s)
-            	retries=3
-            }
+        	success DeleteCampaignSucceeded 
             
-            failure DeleteCampaignFailed {
-            	timeouts(receipt=5s)
-            	retries=3
-            }
+            failure DeleteCampaignFailed 
 		}
 		postconditions{
 			    success(
@@ -86,21 +68,15 @@ package com.x.paidsearchadvertising.v1{
         )
         sender{
         	message UpdateCampaign {
-        		timeouts(receipt=5s, response=15s)     		
+        		timeouts(response=15s)     		
         		retries=3
         	}
         }
         receiver {
         	success UpdateCampaignSucceeded
-        	{
-            	timeouts(receipt=5s)
-            	retries=3
-            }
+        	
             
-            failure UpdateCampaignFailed{
-            	timeouts(receipt=5s)
-            	retries=3
-            }
+            failure UpdateCampaignFailed
 		}
     }
     
@@ -111,21 +87,14 @@ package com.x.paidsearchadvertising.v1{
         )
         sender{
         	message SuspendCampaign {
-        		timeouts(receipt=5s, response=15s)     	
+        		timeouts( response=15s)     	
         		retries=3
         	}
         }
         receiver {
         	success SuspendCampaignSucceeded
-        	{
-            	timeouts(receipt=5s)
-            	retries=3
-            }
-            
-            failure SuspendCampaignFailed{
-            	timeouts(receipt=5s)
-            	retries=3
-            }
+        	
+            failure SuspendCampaignFailed
 		}
 		postconditions{
 			    success(
@@ -139,21 +108,14 @@ package com.x.paidsearchadvertising.v1{
         )
         sender{
         	message ResumeCampaign {
-        		timeouts(receipt=5s, response=15s)     		
+        		timeouts( response=15s)     		
         		retries=3
         	}
         }
         receiver {
         	success ResumeCampaignSucceeded
-        	{
-            	timeouts(receipt=5s)
-            	retries=3
-            }
-            
-            failure ResumeCampaignFailed{
-            	timeouts(receipt=5s)
-            	retries=3
-            }
+        	
+            failure ResumeCampaignFailed
 		}
 		postconditions{
 			    success(
@@ -167,21 +129,14 @@ package com.x.paidsearchadvertising.v1{
         )
         sender{
         	message AddOffersToCampaign {
-        		timeouts(receipt=5s, response=15s)     		
+        		timeouts(response=15s)     		
         		retries=3
         	}
         }
         receiver {
         	success AddOffersToCampaignSucceeded
-        	{
-            	timeouts(receipt=5s)
-            	retries=3
-            }
-            
-            failure AddOffersToCampaignFailed{
-            	timeouts(receipt=5s)
-            	retries=3
-            }
+        
+            failure AddOffersToCampaignFailed
 		}
     }
 	
@@ -195,15 +150,8 @@ package com.x.paidsearchadvertising.v1{
         }
         receiver {
         	success LookupCampaignPerformanceReportSucceeded
-        	{
-            	timeouts(receipt=5s)
-            	retries=3
-            }
-            
-            failure LookupCampaignPerformanceReportFailed{
-            	timeouts(receipt=5s)
-            	retries=3
-            }
+        
+            failure LookupCampaignPerformanceReportFailed
 		}
     }
 	
