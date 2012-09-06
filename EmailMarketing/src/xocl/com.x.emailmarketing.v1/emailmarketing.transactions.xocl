@@ -7,20 +7,14 @@ package com.x.emailmarketing.v1{
     	description "Creates a new campaign in the target system"
         sender {
         	message CreateEmailCampaign {
-        		 timeouts(receipt=2s,response=15s)
+        		 timeouts(response=15s)
         		 retries=3     		
         	}
         }
         receiver {
-        	success CreateEmailCampaignSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
+        	success CreateEmailCampaignSucceeded 
          	
-            failure CreateEmailCampaignFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}  
+            failure CreateEmailCampaignFailed
         } 
     }
     
@@ -28,20 +22,14 @@ package com.x.emailmarketing.v1{
     	description "Updates a new campaign in the target system"
         sender {
         	message UpdateEmailCampaign {
-        		 timeouts(receipt=2s,response=15s)
+        		 timeouts(response=15s)
         		 retries=3     		
         	}
         }
         receiver {
-        	success UpdateEmailCampaignSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
+        	success UpdateEmailCampaignSucceeded 
          	
-            failure UpdateEmailCampaignFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}  
+            failure UpdateEmailCampaignFailed 
         } 
     }
     
@@ -49,20 +37,14 @@ package com.x.emailmarketing.v1{
     	description "Updates a new campaign in the target system"
         sender {
         	message DeleteEmailCampaign {
-        		 timeouts(receipt=2s,response=15s)
+        		 timeouts(response=15s)
         		 retries=3     		
         	}
         }
         receiver {
-        	success DeleteEmailCampaignSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
+        	success DeleteEmailCampaignSucceeded 
          	
-            failure DeleteEmailCampaignFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}  
+            failure DeleteEmailCampaignFailed 
         } 
     }
     
@@ -103,83 +85,53 @@ package com.x.emailmarketing.v1{
     	description "Creates a contact list in the target system"
         sender {
         	message CreateContactList {
-        		 timeouts(receipt=2s,response=15s)
+        		 timeouts(response=15s)
         		 retries=3     		
         	}
         	message <Dynamic>CreateDynamicContactList {
-        		 timeouts(receipt=2s,response=15s)
+        		 timeouts(response=15s)
         		 retries=3     		
         	}
         }
         receiver {
-        	success CreateContactListSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
+        	success CreateContactListSucceeded 
          	
-        	success<Dynamic> CreateDynamicContactListSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
-            failure CreateContactListFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	} 
-            failure<Dynamic> CreateDynamicContactListFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}   
+        	success<Dynamic> CreateDynamicContactListSucceeded 
+            failure CreateContactListFailed 
+            failure<Dynamic> CreateDynamicContactListFailed 
         } 
     }
     transaction UpdateContactList<Dynamic> response  {
     	description "Creates a contact list in the target system"
         sender {
         	message UpdateContactList {
-        		 timeouts(receipt=2s,response=15s)
+        		 timeouts(response=15s)
         		 retries=3     		
         	}
         	message <Dynamic>UpdateDynamicContactList {
-        		 timeouts(receipt=2s,response=15s)
+        		 timeouts(response=15s)
         		 retries=3     		
         	}
         }
         receiver {
-        	success UpdateContactListSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
+        	success UpdateContactListSucceeded 
          	
-        	success<Dynamic> UpdateDynamicContactListSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
-            failure UpdateContactListFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	} 
-            failure<Dynamic> UpdateDynamicContactListFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}   
+        	success<Dynamic> UpdateDynamicContactListSucceeded 
+            failure UpdateContactListFailed 
+            failure<Dynamic> UpdateDynamicContactListFailed 
         } 
     }
     transaction DeleteContactList response  {
     	description "Deletes a contact list in the target system"
         sender {
         	message DeleteContactList {
-        		 timeouts(receipt=2s,response=15s)
+        		 timeouts(response=15s)
         		 retries=3     		
         	}
         }
         receiver {
-        	success DeleteContactListSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
-            failure DeleteContactListFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	} 
+        	success DeleteContactListSucceeded 
+            failure DeleteContactListFailed 
  
         } 
     }
@@ -187,80 +139,56 @@ package com.x.emailmarketing.v1{
     	description "Creates a message in the target system"
         sender {
         	message CreateMessage {
-        		 timeouts(receipt=2s,response=15s)
+        		 timeouts(response=15s)
         		 retries=3     		
         	}
         }
         receiver {
-        	success CreateMessageSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
+        	success CreateMessageSucceeded 
          	
-            failure CreateMessageFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}   
+            failure CreateMessageFailed 
         } 
     }
     transaction UpdateMessage response  {
     	description "Updates a message in the target system"
         sender {
         	message UpdateMessage {
-        		 timeouts(receipt=2s,response=15s)
+        		 timeouts(response=15s)
         		 retries=3     		
         	}
         }
         receiver {
-        	success UpdateMessageSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
+        	success UpdateMessageSucceeded 
          	
-            failure UpdateMessageFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}   
+            failure UpdateMessageFailed 
         } 
     }
     transaction DeleteMessage response  {
     	description "Deletes a message in the target system"
         sender {
         	message DeleteMessage {
-        		 timeouts(receipt=2s,response=15s)
+        		 timeouts(response=15s)
         		 retries=3     		
         	}
         }
         receiver {
-        	success DeleteMessageSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
+        	success DeleteMessageSucceeded 
          	
-            failure DeleteMessageFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}   
+            failure DeleteMessageFailed 
         } 
     }
     transaction AddContactListsToCampaign response  {
     	description "Adds contact lists to a campaign"
         sender {
         	message AddContactListsToCampaign {
-        		 timeouts(receipt=2s,response=15s)
+        		 timeouts(response=15s)
         		 retries=3     		
         	}
         }
         receiver {
-        	success AddContactListsToCampaignSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
+        	success AddContactListsToCampaignSucceeded 
          	
-            failure AddContactListsToCampaignFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}   
+            failure AddContactListsToCampaignFailed 
         } 
     }
     
@@ -284,20 +212,14 @@ package com.x.emailmarketing.v1{
     	description "Adds customers to a contact list"
         sender {
         	message AddCustomersToContactList {
-        		 timeouts(receipt=2s,response=15s)
+        		 timeouts(response=15s)
         		 retries=3     		
         	}
         }
         receiver {
-        	success AddCustomersToContactListSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
+        	success AddCustomersToContactListSucceeded 
          	
-            failure AddCustomersToContactListFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}   
+            failure AddCustomersToContactListFailed 
         } 
     }
     
@@ -305,20 +227,14 @@ package com.x.emailmarketing.v1{
     	description "Removes customers from a contact list"
         sender {
         	message RemoveCustomersFromContactList {
-        		 timeouts(receipt=2s,response=15s)
+        		 timeouts(response=15s)
         		 retries=3     		
         	}
         }
         receiver {
-        	success RemoveCustomersFromContactListSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
+        	success RemoveCustomersFromContactListSucceeded
          	
-            failure RemoveCustomersFromContactListFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}   
+            failure RemoveCustomersFromContactListFailed
         } 
     }
     
