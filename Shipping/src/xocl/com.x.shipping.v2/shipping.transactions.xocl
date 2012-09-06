@@ -8,18 +8,13 @@ package com.x.shipping.v2 {
 	transaction CalculateShippingRates response {
 		sender {
 			message CalculateShippingRates {
-            	timeouts(receipt=30s, validation=1m, response=3m)
+            	timeouts(response=3m)
             	retries=3
             }
 		}		
 		receiver {
-			success CalculateShippingRatesSucceeded {
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
-			failure CalculateShippingRatesFailed {
-				timeouts(receipt=30s)
-			}
+			success CalculateShippingRatesSucceeded 
+			failure CalculateShippingRatesFailed 
 		}
 	}
 	
@@ -27,18 +22,13 @@ package com.x.shipping.v2 {
 	transaction CreateShippingLabel response {
 		sender {
 			message CreateShippingLabel {
-            	timeouts(receipt=30s, validation=1m, response=3m)
+            	timeouts( response=3m)
             	retries=3
             }
 		}		
 		receiver {
-			success CreateShippingLabelSucceeded {
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
-			failure CreateShippingLabelFailed {
-				timeouts(receipt=30s)
-			}
+			success CreateShippingLabelSucceeded 
+			failure CreateShippingLabelFailed 
 		}
 	}
 	
@@ -46,18 +36,13 @@ package com.x.shipping.v2 {
 	transaction CancelShipment response {
 		sender {
 			message CancelShipment {
-            	timeouts(receipt=30s, validation=1m, response=3m)
+            	timeouts( response=3m)
             	retries=3
             }
 		}		
 		receiver {
-			success CancelShipmentSucceeded {
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
-			failure CancelShipmentFailed {
-				timeouts(receipt=30s)
-			}
+			success CancelShipmentSucceeded 
+			failure CancelShipmentFailed 
 		}
 	}
 	
@@ -65,18 +50,13 @@ package com.x.shipping.v2 {
 	transaction GetTrackingInformation response {
 		sender {
 			message GetTrackingInformation {
-            	timeouts(receipt=30s, validation=1m, response=3m)
+            	timeouts(response=3m)
             	retries=3
             }
 		}		
 		receiver {
-			success GetTrackingInformationSucceeded {
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
-			failure GetTrackingInformationFailed {
-				timeouts(receipt=30s)
-			}
+			success GetTrackingInformationSucceeded
+			failure GetTrackingInformationFailed 
 		}
 	}
 
@@ -84,7 +64,7 @@ package com.x.shipping.v2 {
 	transaction RequestShipmentPickup notify {
 		sender {
 			message RequestShipmentPickup {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts( validation=3m)
             	retries=3
             }
 		}		
@@ -94,18 +74,13 @@ package com.x.shipping.v2 {
 	transaction FindCarrierOffices response {
 		sender {
 			message FindCarrierOffices {
-            	timeouts(receipt=30s, validation=1m, response=3m)
+            	timeouts( response=3m)
             	retries=3
             }
 		}		
 		receiver {
-			success FindCarrierOfficesSucceeded {
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
-			failure FindCarrierOfficesFailed {
-				timeouts(receipt=30s)
-			}
+			success FindCarrierOfficesSucceeded 
+			failure FindCarrierOfficesFailed
 		}
 	}
 	
@@ -113,18 +88,13 @@ package com.x.shipping.v2 {
 	transaction ValidateShippingAddress response {
 		sender {
 			message ValidateShippingAddress {
-            	timeouts(receipt=30s, validation=1m, response=3m)
+            	timeouts( response=3m)
             	retries=3
             }
 		}		
 		receiver {
-			success ValidateShippingAddressSucceeded {
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
-			failure ValidateShippingAddressFailed {
-				timeouts(receipt=30s)
-			}
+			success ValidateShippingAddressSucceeded 
+			failure ValidateShippingAddressFailed 
 		}
 	}
 	
@@ -132,18 +102,13 @@ package com.x.shipping.v2 {
 	transaction GetShippingServices response {
 		sender {
 			message GetShippingServices {
-            	timeouts(receipt=30s, validation=1m, response=3m)
+            	timeouts(response=3m)
             	retries=3
             }
 		}		
 		receiver {
-			success GetShippingServicesSucceeded {
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
-			failure GetShippingServicesFailed {
-				timeouts(receipt=30s)
-			}
+			success GetShippingServicesSucceeded
+			failure GetShippingServicesFailed 
 		}
 	}
 	
@@ -151,18 +116,13 @@ package com.x.shipping.v2 {
 	transaction GetCarrierSpecialServices response {
 		sender {
 			message GetCarrierSpecialServices {
-            	timeouts(receipt=30s, validation=1m, response=3m)
+            	timeouts(response=3m)
             	retries=3
             }
 		}		
 		receiver {
-			success GetCarrierSpecialServicesSucceeded {
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
-			failure GetCarrierSpecialServicesFailed {
-				timeouts(receipt=30s)
-			}
+			success GetCarrierSpecialServicesSucceeded 
+			failure GetCarrierSpecialServicesFailed
 		}
 	}
 	
@@ -170,18 +130,13 @@ package com.x.shipping.v2 {
 	transaction GetCarrierHandoffTypes response {
 		sender {
 			message GetCarrierHandoffTypes {
-            	timeouts(receipt=30s, validation=1m, response=3m)
+            	timeouts(response=3m)
             	retries=3
             }
 		}		
 		receiver {
-			success GetCarrierHandoffTypesSucceeded {
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
-			failure GetCarrierHandoffTypesFailed {
-				timeouts(receipt=30s)
-			}
+			success GetCarrierHandoffTypesSucceeded
+			failure GetCarrierHandoffTypesFailed
 		}
 	}
 }
