@@ -24,10 +24,6 @@ package com.x.merchantonboarding.v1 {
 			failure StartAuthorizationFailed {
 			}
 		}
-
-		postconditions{
-			success((session[AuthorizationSession.Needed] || session[AuthorizationSession.NotNeeded]) || (session[AuthorizationSession.Accepted] || session[AuthorizationSession.Rejected]))
-		}
 	}
 	
 	transaction CompleteAuthorization (AuthorizationSession session) unicast response {
@@ -43,9 +39,6 @@ package com.x.merchantonboarding.v1 {
 			
 			failure CompleteAuthorizationFailed {
 			}
-		}
-		postconditions{
-			success(session[AuthorizationSession.Accepted] || session[AuthorizationSession.Rejected])
 		}
 	}
 	
