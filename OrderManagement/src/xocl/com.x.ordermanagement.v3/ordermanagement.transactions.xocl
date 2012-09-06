@@ -30,7 +30,6 @@ package com.x.ordermanagement.v3 {
 	
 	transaction SubmitOrder<MarketplaceOrder>(Order order) response {
 		description "Submits a shipped order to the order processor."
-		preconditions(order[Order.Shipped])
 		
 		sender {
 			message SubmitOrder {
@@ -52,7 +51,6 @@ package com.x.ordermanagement.v3 {
 	
 	transaction OrderShipped<MarketplaceOrder>(Order order) notify {
 		description "Updates the shipment tracking information for an order."
-		preconditions(order[Order.Submitted])
 		
 		sender
 		{
@@ -67,7 +65,7 @@ package com.x.ordermanagement.v3 {
 		}
 		
 		postconditions {
-			success(order[Order.Shipped])
+			success(order[Order.Complete])
 		}
 	}
 	
@@ -88,7 +86,6 @@ package com.x.ordermanagement.v3 {
     
 	transaction CancelOrder<MarketplaceOrder>(Order order) response {
 		description "Cancels an order."
-		preconditions(order[Order.Submitted])
 		
         sender {
         	message CancelOrder {
@@ -113,7 +110,7 @@ package com.x.ordermanagement.v3 {
             failure<MarketplaceOrder> CancelMarketplaceOrderFailed
         }
 		postconditions {
-			success(order[Order.Cancelled])
+			success(order[Order.Complete])
 		}
     }
     
@@ -166,18 +163,40 @@ package com.x.ordermanagement.v3 {
     	}
     	
     	postconditions {
-    		success(order[Order.Returned])
+ 			success(order[Order.Complete])
     	}
     }
     
     transaction PartialOrderReturn(Order order) inform {
-    	description "Notifies observers that part of an order was returned."
+    	description "Notifies observers that part of an order was partially returned."
     	sender {
     		message PartialOrderReturn
     	}
     	
     	postconditions {
-    		success(order[Order.Returned])
+    		success(order[Order.PartiallyReturned])
+    	}
+    }
+    
+    transaction PartialOrderShip(Order order) inform {
+    	description "Notifies observers that part of an order was partially shipped."
+    	sender {
+    		message PartialOrderShip
+    	}
+    	
+    	postconditions {
+    		success(order[Order.PartiallyShipped])
+    	}
+    }
+    
+    transaction PartialOrderCancel(Order order) inform {
+    	description "Notifies observers that part of an order was partially cancelled."
+    	sender {
+    		message PartialOrderCancel
+    	}
+    	
+    	postconditions {
+    		success(order[Order.PartiallyCancelled])
     	}
     }
     
@@ -204,5 +223,19 @@ package com.x.ordermanagement.v3 {
             failure PaymentUpdateFailed
             failure <MarketplaceOrder> MarketplacePaymentUpdateFailed
         } 
+    }
+    
+    transaction CompleteOrder(Order order) notify {
+    	description "Marks the current order as being complete."
+        sender {
+        	message CompleteOrder {
+            	timeouts(validation=3m)
+            	retries=3
+        	}
+        }
+        
+        postconditions {
+    		success(order[Order.Complete])
+    	}
     }
 }
