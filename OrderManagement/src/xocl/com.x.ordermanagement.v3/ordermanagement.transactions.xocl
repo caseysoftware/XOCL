@@ -20,10 +20,7 @@ package com.x.ordermanagement.v3 {
 		}
 		
 		receiver {
-			success ProcessOrderSucceeded {
-            	timeouts(validation=3m)
-            	retries=3
-            }
+			success ProcessOrderSucceeded 
 			failure ProcessOrderFailed
 		}
 	}
