@@ -1,0 +1,32 @@
+package com.x.merchantonboarding.v1 {
+	import com.x.merchantonboarding.v1.*
+	
+	contract OnboardingAgent {
+		description "The entity responsible for onboarding merchants/tenants and linking/authorizing them with capabilities."
+		
+		roles
+		{
+			Authorization.OnboardingAgent "Requests authorization for a tenant from a capability"
+			BundleActivation.OnboardingAgent "Notifies participants in bundle that is active"
+		}
+	}
+	
+	contract DiscoveryAgent {
+		description "The entity that starts the onboarding session, typically a cart or app store"
+		
+		roles
+		{
+			BundleActivation.BundleParticipant "Is notified a bundle has been activated"
+		}
+	}
+	
+	contract Capability {
+		description "A capability on the fabric that onboards merchants"
+		
+		roles
+		{
+			Authorization.Capability "Authorizes a tenant for itself in context of a bundle"
+			BundleActivation.BundleParticipant "Is notified a bundle has been activated"
+		}
+	}
+}
