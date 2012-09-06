@@ -7,7 +7,6 @@
 	record EbayOfferDetails extends OfferDetails{
 		summary "Contains fields that are added to the OfferDetails record."
 		description "Contains the listing detail fields that are added to the OfferDetails record."
-		
 		string listingFormat "Type of eBay listing, for example BuyItNow.";
 		string duration  "Duration of the offer. This overrides the duration in the policy. If this is blank, the duration in the policy is used."
         string countryCode "2-character country code, such as US (United States) or FR (France).";
