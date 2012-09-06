@@ -45,7 +45,9 @@ package com.x.ecosystemmanagement.v1 {
     	description "The AppStore requests the Fabric to aquire a specific bundle for the given tenant"
     	sender
     	{
-    		message AcquireBundle
+    		message AcquireBundle{
+    			timeouts(response=30s)
+    		}
     	}
     	receiver
     	{
@@ -58,7 +60,9 @@ package com.x.ecosystemmanagement.v1 {
     	description "The Fabric requests that a capability perform its contracts for the given tenant"
     	sender
     	{
-    		message PerformContracts
+    		message PerformContracts{
+    			timeouts(response=30s)
+    		}
     	}
     	receiver 
     	{
@@ -72,7 +76,9 @@ package com.x.ecosystemmanagement.v1 {
     	description "The Fabric requests that an AppStore collect credentials from a set of capabilities for a given tenant"
     	sender
     	{
-    		message CollectTenantCredentials
+    		message CollectTenantCredentials{
+    			timeouts(response=30s)
+    		}
     	}
     	receiver
     	{
@@ -85,7 +91,9 @@ package com.x.ecosystemmanagement.v1 {
     	description "The Fabric requests that a capability accept a new tenant relationship"
     	sender
     	{
-    		message AcceptTenantRelationship
+    		message AcceptTenantRelationship{
+    			timeouts(response=30s)
+    		}
     	}
     	receiver
     	{
@@ -104,7 +112,9 @@ package com.x.ecosystemmanagement.v1 {
 		description "The merchant or a capability requests the Fabric to remove its participation from a specific bundle"
     	sender
     	{
-    		message ReleaseBundle
+    		message ReleaseBundle{
+    			timeouts(response=30s)
+    		}
     	}
     	receiver
     	{
@@ -118,7 +128,7 @@ package com.x.ecosystemmanagement.v1 {
 		sender
 		{
 			message BundleInvalidated {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts( validation=3m)
             	retries=3
         	}
 		}
