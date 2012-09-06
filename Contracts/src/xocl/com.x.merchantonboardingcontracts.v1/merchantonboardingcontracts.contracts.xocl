@@ -1,4 +1,4 @@
-package com.x.merchantonboarding.v1 {
+package com.x.merchantonboardingcontracts.v1 {
 	import com.x.merchantonboarding.v1.*
 	
 	contract OnboardingAgent {
