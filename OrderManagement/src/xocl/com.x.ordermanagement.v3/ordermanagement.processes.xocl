@@ -5,7 +5,7 @@ package com.x.ordermanagement.v3 {
 	packagetitle "Order Management"
 	
 	import com.x.ordermanagement.v3.*
-	import com.x.customer.v1.*
+	import com.x.customer.v2.*
 	
 	entity Order {
 		summary "Specifies the state of the order and the next valid states if any."
@@ -106,7 +106,7 @@ package com.x.ordermanagement.v3 {
     				summary "Adds a customer or updates an existing customer." 
     				description "Adds a new customer or updates the information of an existing customer based on whether the customer exists."
 	        		
-	    			roles(OrderProcessor, null, null)
+	    			roles(OrderProcessor, null)
 	    		}
 	    	}
 	    	
