@@ -9,13 +9,16 @@ package com.x.ordermanagementcontracts.v1 0.0 earlydraft
     	
     	roles
     	{	   
-	   		//ProcessCreatedOrder.OrderProcessor // should add this back when we can.  
+	   		ProcessNonSalesChannelOrder.OrderProcessor
 	   		OrderCancelled.OrderProcessor
 	   		OrderPartiallyReturned.OrderProcessor
+	   		OrderPartiallyCancelled.OrderProcessor
+	   		OrderPartiallyShipped.OrderProcessor
 	   		ObserveOrderShipped.OrderProcessor
 	   		OrderCreated.OrderProcessor
 	   		OrderReturned.OrderProcessor
-	   		//OrderAdjusted.OrderProcessor //Magento doesn't do. 
+	   		OrderAdjusted.OrderProcessor //Magento doesn't do.  We can remove this if we relax contract validation a bit.  
+	   		OrderSearch.OrderManager<NonSensitive>
 	    } 
 	 }
 	 
@@ -24,12 +27,16 @@ package com.x.ordermanagementcontracts.v1 0.0 earlydraft
 	 	description "An observer of Order information"
 	 	
 	 	roles{
+	 		ProcessNonSalesChannelOrder.OrderObserver
 	 		OrderCancelled.OrderObserver
 	 		OrderPartiallyReturned.OrderObserver
 	 		OrderCreated.OrderObserver
 	 		OrderReturned.OrderObserver
 	 		OrderAdjusted.OrderObserver
-	 		ObserveOrderShipped.OrderObserver	
+	 		ObserveOrderShipped.OrderObserver
+	 		OrderPartiallyCancelled.OrderObserver
+	 		OrderPartiallyShipped.OrderObserver
+	 		OrderSearch.OrderConsumer<NonSensitive>
 	 	}
 	 	
 	 }
