@@ -3,6 +3,6 @@
  * By convention, version and status information for a domain reside in the file <domain>.Version.xocl
  */
 
-package com.x.example.v1 2.1 workingdraft {	
+package com.x.example.v1 2.2 workingdraft {	
 	import com.x.example.v1.* 
 }
