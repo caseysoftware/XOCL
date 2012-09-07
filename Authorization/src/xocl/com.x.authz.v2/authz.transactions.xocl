@@ -28,6 +28,7 @@ package com.x.authz.v2 {
         sender {
         	message CompleteAuthorization {
         		timeouts( response =5m)
+        		retries =3
         	}
         }
         receiver {
