@@ -1,4 +1,4 @@
-package com.x.inventory.v2 0.0 earlydraft {
+package com.x.inventory.v2 0.1 earlydraft {
 	packagetitle "Inventory Management"
 	description "The Inventory Management package specifies the processes used for maintaining an optimal level of products."
 	import com.x.inventory.v2.*
