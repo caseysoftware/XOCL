@@ -123,7 +123,8 @@ package com.x.ordermanagement.v3 {
     	description "Searches for an order."
         sender {
         	message SearchOrder {
-        		 timeouts(response=30s)     		
+        		 timeouts(response=30s) 
+        		 retries=3    		
         	}
         	message <MarketplaceOrderSearch> MarketplaceSearchOrder {
         		 timeouts(response=30s)     		        		
@@ -208,7 +209,8 @@ package com.x.ordermanagement.v3 {
     	description "Updates the payment information."
     	sender {
     		message PaymentUpdate {
-    			timeouts(response=30s)    		
+    			timeouts(response=30s) 
+    			retries=3   		
         	}
         	message <MarketplaceOrder> MarketplacePaymentUpdate {
     			timeouts(response=30s)    		
