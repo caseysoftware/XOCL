@@ -82,7 +82,7 @@ package com.x.inventory.v2
 		description "Captures the SKU, quantity, and condition of the stock item in the snapshot."
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
 		int unitQuantity "Amount of item in the stocking unit of measure. For example, if the UOM is per case and there are 12 items in a case, this value would be 12."
-		string stockingUOM "Stocking unit of measure, such as units per case."
+		string stockingUom "Stocking UOM (unit of measure), such as units per case."
 		InventoryCondition status "Condition of an item."	
 	}
 	

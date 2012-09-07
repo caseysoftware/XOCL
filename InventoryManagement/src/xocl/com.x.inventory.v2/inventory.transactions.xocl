@@ -14,7 +14,8 @@ package com.x.inventory.v2
         {
         	message LookupStockItem
         	{
-        		timeouts(response=30s)     		
+        		timeouts(response=30s)  
+        		retries=3   		
         	}
         }
         receiver
@@ -49,6 +50,7 @@ package com.x.inventory.v2
     	sender{
     		message UpdateStockItemSnapshot{
     			timeouts(response=1m) 
+    			retries=3
     		}
     	}
         receiver{
@@ -65,6 +67,7 @@ package com.x.inventory.v2
     	sender{
     		message UpdateStockItemDelta{
     			timeouts(response=1m) 
+    			retries=3
     		}
     	}
     	receiver{
