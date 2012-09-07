@@ -20,7 +20,8 @@ package com.x.pim.v2
         {
         	message SearchProduct
         	{
-        		 timeouts(response=30s)     		
+        		 timeouts(response=30s)
+        		 retries=3     		
         	}
         }
         receiver
@@ -38,7 +39,8 @@ package com.x.pim.v2
         {
         	message LookupProduct
         	{
-        		timeouts(response=30s)     		
+        		timeouts(response=30s)
+        		retries=3     		
         	}
         }
         receiver
