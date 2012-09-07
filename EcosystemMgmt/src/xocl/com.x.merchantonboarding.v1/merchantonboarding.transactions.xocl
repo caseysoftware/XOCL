@@ -10,11 +10,12 @@ package com.x.merchantonboarding.v1 {
 		state Rejected
 	}
 	
+	
 	transaction StartAuthorization (AuthorizationSession session) unicast response {
 		sender {
 			message StartAuthorization {
 				timeouts(response=3m)
-				retries=3
+				retries=0
 			}
 		}
 		
@@ -31,7 +32,7 @@ package com.x.merchantonboarding.v1 {
 		sender {
 			message CompleteAuthorization {
 				timeouts(response=3m)
-				retries=3
+				retries=0
 			}
 		}
 		
