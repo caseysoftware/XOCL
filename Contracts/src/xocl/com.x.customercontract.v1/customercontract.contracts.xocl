@@ -10,6 +10,7 @@ package com.x.customercontract.v1 0.1 earlydraft
 	 			CustomerSearch.CustomerConsumer 
 	 			CustomerSearch.CustomerConsumer<Email>
 	 			CustomerCreatedOrUpdated.CustomerObserver
+	 			CustomerLookup.CustomerConsumer
 	 		}
 	 }
 	contract CustomerInformationProvider
@@ -19,6 +20,7 @@ package com.x.customercontract.v1 0.1 earlydraft
 	 			CustomerSearch.CustomerManager 
 	 			CustomerSearch.CustomerManager<Email>
 	 			CustomerCreatedOrUpdated.CustomerManager
+	 			CustomerLookup.CustomerManager
 	 		}
 	 }		
 }
