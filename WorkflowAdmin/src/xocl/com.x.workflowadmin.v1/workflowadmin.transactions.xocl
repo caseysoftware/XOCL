@@ -5,6 +5,7 @@ package com.x.workflowadmin.v1 {
 		sender {
 			message WorkflowExecutionControls{
 				timeouts(validation=1m)
+				retries=3
 			}
 		}
 	}
@@ -13,6 +14,7 @@ package com.x.workflowadmin.v1 {
 		sender {
 			message GetWorkflowToAppInstanceMap {
         		timeouts( response=1m)
+        		retries=3
         	}
 		}
 		
