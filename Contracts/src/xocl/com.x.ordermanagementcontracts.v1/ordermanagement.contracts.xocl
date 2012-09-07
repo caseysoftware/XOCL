@@ -19,6 +19,7 @@ package com.x.ordermanagementcontracts.v1 0.0 earlydraft
 	   		OrderReturned.OrderProcessor
 	   		OrderAdjusted.OrderProcessor //Magento doesn't do.  We can remove this if we relax contract validation a bit.  
 	   		OrderSearch.OrderManager<NonSensitive>
+	   		
 	    } 
 	 }
 	 
