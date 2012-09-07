@@ -366,7 +366,8 @@ package com.x.example.v1 {
         {
         	message SearchOrder
         	{
-        		 timeouts(response=3m)     		
+        		 timeouts(response=3m)
+        		 retries=1     		
         	}
         }
         receiver
