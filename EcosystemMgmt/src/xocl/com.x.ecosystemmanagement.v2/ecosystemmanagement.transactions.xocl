@@ -9,7 +9,8 @@ package com.x.ecosystemmanagement.v2 {
         {
         	message Ping
         	{
-        		timeouts(response=30s)     		
+        		timeouts(response=30s)
+        		retries=3     		
         	}
         }
         receiver
