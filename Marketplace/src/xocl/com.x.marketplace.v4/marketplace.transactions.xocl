@@ -132,7 +132,8 @@ package com.x.marketplace.v4{
     	description "Looks up a policy group by ID."
         sender {
         	message LookupPolicyGroup {
-        		 timeouts(response=30s)     		
+        		 timeouts(response=30s)  
+        		 retries=3   		
         	}
         }
         receiver {
