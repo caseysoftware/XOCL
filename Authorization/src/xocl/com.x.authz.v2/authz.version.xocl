@@ -1,4 +1,4 @@
-package com.x.authz.v2 0.0 earlydraft {
+package com.x.authz.v2 0.1 earlydraft {
 	packagetitle "Authorization"
 	description "The Authorization package specifies the processes for authorizing software to act on the merchant's behalf in a marketplace."
 
