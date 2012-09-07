@@ -224,13 +224,10 @@ package com.x.ordermanagement.v3 {
         } 
     }
     
-    transaction CompleteOrder(Order order) notify {
+    transaction CompleteOrder(Order order) inform {
     	description "Marks the current order as being complete."
         sender {
-        	message CompleteOrder {
-            	timeouts(validation=3m)
-            	retries=3
-        	}
+        	message CompleteOrder
         }
         
         postconditions {

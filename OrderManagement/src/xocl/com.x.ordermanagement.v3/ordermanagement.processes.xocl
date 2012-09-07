@@ -157,7 +157,7 @@ package com.x.ordermanagement.v3 {
 			        	}
 			        }
 	        	
-		        	any {
+		        	one {
 			        	do {
 							// A canceller asks the processer to cancel its order 
 							transaction CancelOrder<MarketplaceOrder> {
