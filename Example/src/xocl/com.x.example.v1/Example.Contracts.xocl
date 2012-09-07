@@ -71,10 +71,10 @@ package com.x.example.v1 {
     }
     
     /*
-     * A contract can extend one or more other contracts.
+     * A contract can extend one other contract.
      * Extending a contract causes its roles to be added to the extender.
      */
-    contract InHouseOrderManager extends OutsourceOrderManager, InventoryManager {
+    contract InHouseOrderManager extends OutsourceOrderManager {
     	description "A capability that performs all order fulfillment functions in house"
     	roles {
 	        OrderFulfillment.OrderManager<WithAuthorization>
