@@ -1,4 +1,4 @@
-package com.x.inventorycontracts.v1 0.1 earlydraft
+package com.x.inventorycontracts.v1 0.2 earlydraft
 {	
 	import com.x.inventory.v2.*
 	
