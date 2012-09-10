@@ -1,4 +1,4 @@
-package com.x.marketingcontracts.v1 0.1 earlydraft
+package com.x.marketingcontracts.v1 0.2 earlydraft
 {
 	import com.x.webstore.v1.*
 	import com.x.customer.v1.*
