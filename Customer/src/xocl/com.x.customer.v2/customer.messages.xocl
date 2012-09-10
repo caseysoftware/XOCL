@@ -7,6 +7,7 @@ package com.x.customer.v2{
 		summary "Requests to either update customer information or add a new customer."
 		description "Requests creating a new customer if they do not already exist or updating the information of an existing customer."
 		CustomerData data "Customer information, such as name, address, phone, etc. This is used to either create a new customer or update the information of an existing customer.";
+		uri? customerId "Globally unique identifier assigned to the customer by the system that created the customer record."
 	}
 	record UpsertCustomerSucceeded{
 		summary "Signals that a customer was added or an existing customer's data was updated."
