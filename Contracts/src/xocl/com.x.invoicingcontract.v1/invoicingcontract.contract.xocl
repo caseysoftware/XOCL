@@ -1,4 +1,4 @@
-package com.x.invoicingcontract.v1 0.1 earlydraft {
+package com.x.invoicingcontract.v1 0.2 earlydraft {
 	packagetitle "Invoicing Client contract"
 
 	import com.x.invoicing.v1.*
