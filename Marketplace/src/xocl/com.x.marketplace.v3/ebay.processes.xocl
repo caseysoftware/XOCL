@@ -59,6 +59,7 @@
 		workflow{
 			description ""
 			transaction GetRecommendationsForOffer<WithProductData>{
+				description "During this transaction call, the Marketplace should call ProductLookup in PIM to retrieve product information in the default variant"
 				roles (OfferManager, Marketplace)
 			}
 		

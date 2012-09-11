@@ -147,8 +147,9 @@ package com.x.marketplace.v4{
 			
 	     workflow [12h]  { //timeout: Ontology-492
 	     
-	     	description "Publishes offers to a marketplace. Note: There is only one response to the workflow."
+	     	description "Publishes offers to a marketplace."
 			transaction PublishOffer<Ebay> {
+				description "During this transaction call, the Marketplace should call ProductLookup in PIM to retrieve product information"
 				roles(OfferManager, Marketplace)
 
 			}
@@ -191,6 +192,7 @@ package com.x.marketplace.v4{
 		workflow [12h]  { //timeout: Ontology-492
 			description "Updates published offers using a Product Information Management system. Note: There is only one response to the workflow."
 			transaction RevisePublishedOffer<Ebay> {
+				description "During this transaction call, the Marketplace should call ProductLookup in PIM to retrieve product information"
 				roles(OfferManager, Marketplace)
 			}
 		}
@@ -208,7 +210,7 @@ package com.x.marketplace.v4{
 		preconditions(offer[Offer.Created])
 			
 		workflow [12h]  { //timeout: Ontology-492
-			description "Updates published offers without using a Product Information Management system. Note: There is only one response to the workflow."
+			description "Updates published offers without using a Product Information Management system."
 			transaction RevisePublishedOfferWithProductData<Ebay> {
 				roles(OfferManager, Marketplace)
 			}
