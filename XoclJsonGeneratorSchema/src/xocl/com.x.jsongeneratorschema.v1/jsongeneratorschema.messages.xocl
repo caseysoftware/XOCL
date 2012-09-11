@@ -1,0 +1,219 @@
+package com.x.jsongeneratorschema.v1 0.0  workingdraft {
+	import com.x.jsongeneratorschema.v1.*
+	
+	record XoclWorkflowDocumentation
+	{
+		string? _AVDL_summary;
+		string? _AVDL_description;
+		string implementedProcess;
+		Documentation? processDocumentation;
+	}
+
+	record XoclWorkflow 
+	{
+		string id;
+		XoclWorkflowDocumentation? documentation;
+		array<string> _AVDL_roles;
+		Timeout? timeout;
+		array<Node> nodes;
+		array<Expression>?  _AVDL_preconditions;
+	    array<Expression>? successPostconditions;
+		array<Expression>? failurePostconditions;
+	}
+	
+	record XoclContractRole {
+		string id;
+		string? workflowId;
+		string? variant;
+		string url;
+	}
+	
+	record XoclContract {
+		string id;
+		array<XoclContractRole> _AVDL_roles;
+	}
+	
+	record XoclContractBinding 
+	{
+		XoclContract _AVDL_contract;
+		string? _AVDL_description;
+		string? cardinality;
+		boolean? _AVDL_latebound;
+	}
+	
+	record XoclBundle {
+		string writerSchemaVersion;
+		string id;
+		string version;
+		Documentation? documentation;
+		array<XoclContractBinding> _AVDL_bindings;
+	}
+
+	record XoclPkg {
+		string writerSchemaVersion;
+		string version;
+		string? status;
+		Documentation? documentation;
+		array<Transaction> transactions;
+		array<XoclWorkflow> workflows;
+		array<XoclContract> contracts;
+		array<XoclBundle> bundles;
+	}
+	
+	enum NodeType {
+		TRANSACTION, DO, ANY, SUBWORKFLOW, ONE, ALL, NOOP, IF, ELSE, ENDPOINT
+	}
+	
+	enum TimeUnit {
+		SECONDS, MINUTES, HOURS, DAYS
+	}
+	
+	record Documentation {
+		string? _AVDL_summary
+		string? _AVDL_description
+	}
+
+	record Timeout {
+		int value;
+		TimeUnit unit;
+	}
+	
+	//--- conditions ----------------------------------
+	
+	enum Operator {
+		AND, OR, NOT
+	}
+	
+	record ParamExpression {
+		string name;
+		string _AVDL_state;
+	}
+	
+	record FunctionParam {
+		union{string, ParamExpression} param;
+	}
+	
+	record FunctionExpression {
+		string functionName;
+		array<FunctionParam> params;
+	}
+	
+	record Expression {
+	    Expression? leftOperand;
+	    Operator? operator;
+	    Expression? rightOperand;
+		ParamExpression? param;
+		FunctionExpression? function;
+	}
+	
+	//--- transaction ---------------------------------
+	
+	enum TransactionType {
+		INFORM, NOTIFY, RESPONSE, QUERY
+	}
+	
+	record TransactionTimeouts {
+		Timeout? receiptTimeout 
+		Timeout? validationTimeout
+		Timeout? responseTimeout
+	}
+	
+	record TransactionAction {
+		string messageName;
+		string _AVDL_topic;
+		TransactionTimeouts? _AVDL_timeouts;
+		int? _AVDL_retries;
+	}
+	
+	enum TransactionPublishMode {
+		REGULAR, BROADCAST, UNICAST
+	}
+	
+	record Transaction {
+		string id;
+		Documentation? documentation;
+		TransactionType type;
+		TransactionPublishMode? publishMode;
+		TransactionAction senderAction;
+		TransactionAction? receiverSuccessAction;
+		TransactionAction? receiverFailureAction;
+		array<Expression>? _AVDL_preconditions;
+		array<Expression>? successPostconditions;
+		array<Expression>? failurePostconditions;
+	}
+	
+	//------------------------------------------------------
+	
+	enum TransactionRole {
+		SENDER, RECEIVER
+	}
+	
+	record TransactionNodeDetails {
+		TransactionRole role;
+		Transaction _AVDL_transaction;
+	}
+	
+	record TransactionNodeCompleteDetails {
+		string senderRole;
+		string receiverRole;
+		string transactionId;
+	}
+	
+	record DoNodeDetails {
+		Expression? iterationCondition;
+		string? iterationCountLowerBound;
+		string? iterationCountUpperBound;
+	}
+	
+	record SubWorkflowNodeDetails {
+		string embeddedWorkflowId;
+		array<union{null,string}> _AVDL_roles;
+	}
+	
+	record IfNodeDetails {
+		Expression conditionExpression;
+	}
+	
+	record ElseNodeDetails {
+		string ifNodeId;
+	}
+	
+	record EndpointNodeDetails {
+		string name;
+	}
+	
+	record Node
+	{
+		string id;
+		NodeType type;
+		union{	null, 
+				TransactionNodeDetails, 
+				TransactionNodeCompleteDetails, 
+				DoNodeDetails, 
+				SubWorkflowNodeDetails, 
+				IfNodeDetails, 
+				ElseNodeDetails,
+				EndpointNodeDetails} details;
+		Timeout? timeout;  // not applicable to all node types
+		array<Node>? nodes;
+	}
+	
+	record LocalWorkflow 
+	{
+		string writerSchemaVersion;
+		string id;
+		string version;
+		string role;
+		Timeout? timeout = null;
+		array<Node> nodes;
+		array<Expression>? _AVDL_preconditions;
+		array<Expression>? successPostconditions;
+		array<Expression>? failurePostconditions;
+	}
+
+	record Workflow {
+		LocalWorkflow localWorkflow;
+	}
+	
+	
+}

@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.x.ocl</groupId>
+		<artifactId>xocl-contracts</artifactId>
+		<version>0.0.37-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<artifactId>jsongeneratorschema-xocl</artifactId>
+	<name>Json Generator Schema XOCL</name>
+	<description>
+		This XOCL project contains schemas for use by the JSON generator.    
+	</description>
+	<licenses>
+  		<license>
+    			<name>X.Commerce Developer Package License Agreement, Version 1.0</name>
+    			<url>https://www.x.com/developers/x.commerce/x.commerce-developer-package-license-agreement</url>
+    			<distribution>repo</distribution>
+  		</license>
+	</licenses>
+	<scm>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/XoclJsonGenerator</connection>
+	</scm>
+</project>
