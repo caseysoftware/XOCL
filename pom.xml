@@ -110,6 +110,7 @@
 		<module>WorkflowAdmin</module>
 		<module>Contracts</module>
 		<module>Bundles</module>
+		<module>XoclJsonGeneratorSchema</module>
 		<module>All</module>
 	</modules>
 
