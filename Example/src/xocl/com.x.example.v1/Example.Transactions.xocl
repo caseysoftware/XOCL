@@ -88,12 +88,7 @@ package com.x.example.v1 {
     	/*
     	 * The sender of a notification or command must perform the following actions:
     	 *   Send the appropriate message to start the transaction on the appropriate topic.
-		 *   If the contract requires receipt acknowledgement, wait for com.x.core.v1.MessageReceived 
-		 *       on topic com.x.core.v1/MessageReceived.
-		 *     If timeout occurs, retry
-		 *       If retries exhausted, send com.x.core.v1.TransactionCancelled to the receiver on topic 
-		 *         com.x.core.v1/TransactionCancelled with reason ValidationTimedOut.
-		 *   If the contract requires validation acknowledgement, wait for com.x.core.v1.MessageValidated 
+		 *   Wait for the validation acknowledgemnet on com.x.core.v1.MessageValidated 
 		 *       on topic com.x.core.v1/MessageValidated.
 		 *     If timeout occurs, retry
 		 *       If retries exhausted, send com.x.core.v1.TransactionCancelled to the receiver on topic 
@@ -107,18 +102,9 @@ package com.x.example.v1 {
         	 */
         	message OrderCreated {
         		/*
-        		 * Acknowledgements are subject to timeouts.
+        		 * Validation is subject to timeouts.
 				 * A timeout is measured from the start of the transaction to the receipt of the acknowledgement.
 				 * The unit for a timeout may be 's' for seconds, 'm' for minutes, 'h' for hours, or 'd' for days.
-				 * There are two types of acknowledgement: receipt and validation.
-				 *   A receipt indicates that the receiver received the message and was able to parse it.
-				 *     The timeout for a receipt is specified using the receipt keyword.
-				 *     If a receipt timeout is specified, then the receiver must send a receipt, a validation, 
-				 *       or a cancellation.
-				 *     If a receipt timeout is not specified, then the receiver must not send a receipt.
-				 *     A receipt uses the standard message type com.x.core.v1.MessageReceived.
-				 *     A receipt must be sent to the standard topic com.x.core.v1/MessageReceived.
-				 *     See com.x.core.v1.MessageReceived for more information about receipts.
 				 *   A validation indicates that the receiver was able to validate the message contents.
 				 *     If the receiver cannot validate the message contents, then it must send a cancellation 
 				 *       to abort the transaction, with the Reason set to ValidationError.
@@ -134,7 +120,7 @@ package com.x.example.v1 {
         		timeouts( validation=3m)
         		
         		/*
-				 * If a given acknowledgement is not received within the specified timeout, 
+				 * If a given validation is not received within the specified timeout, 
 				 *   then the sender must retry up to the specified number of times.
 				 * If the specified number of retries is exhausted, then the sender must send a cancellation
 				 *   to abort the transaction, with the Reason set to ReceiptTimedOut or ValidationTimedOut.
@@ -235,19 +221,8 @@ package com.x.example.v1 {
         }
         
         /*
-    	 * After the actions required for a notification, the receiver of a command must perform 
-    	 *     the following additional actions:
-    	 *   Send the appropriate response to the sender on the appropriate topic.
-    	 *   If the contract requires receipt acknowledgement, wait for com.x.core.v1.MessageReceived 
-    	 *       on topic com.x.core.v1/MessageReceived.
-    	 *     If timeout occurs, retry
-    	 *       If retries exhausted, send com.x.core.v1.TransactionCancelled to the sender on topic 
-    	 *          com.x.core.v1/TransactionCancelled with reason ReceiptTimedOut.
-    	 *   If the contract requires validation acknowledgement, wait for com.x.core.v1.MessageValidated 
-    	 *       on topic com.x.core.v1/MessageValidated.
-    	 *     If timeout occurs, retry
-    	 *       If retries exhausted, send com.x.core.v1.TransactionCancelled to the sender on topic 
-    	 *         com.x.core.v1/TransactionCancelled with reason ValidationTimedOut.
+    	 * After the actions required for a notification, the receiver of a command must
+    	 * send the appropriate response to the sender on the appropriate topic.
          */
         receiver {
         	/*
@@ -258,16 +233,11 @@ package com.x.example.v1 {
         	/* 
 			 * By convention, the default success message uses the naming pattern <default_message_name>Succeeded.
         	 */
-        	success PrepareOrderSucceeded {
-
-            }
-            
+        	success PrepareOrderSucceeded 
         	/* 
 			 * By convention, the default failure message uses the naming pattern <default_message_name>Failed.
-			 * If no SLAs are required for a message, then the SLA specification block can be omitted.
         	 */
-            failure PrepareOrderFailed {
-            }
+            failure PrepareOrderFailed 
         }
     }
         
@@ -280,7 +250,7 @@ package com.x.example.v1 {
     	/*
     	 * The sender and receiver declarations are optional. By default, for a command:
     	 *   The sender sends the default message without acknowledgements or retries.
-    	 *   The receiver sends the default success and failure messages without acknowledgements or retries.
+    	 *   The receiver sends the default success and failure messages.
     	 */
     	 
     	/*
@@ -358,7 +328,7 @@ package com.x.example.v1 {
 	 *   A search takes explicitly supplied search criteria and returns an array of objects.
 	 *   A lookup takes an object identifier and returns the object.
 	 * By convention, they use the naming pattern Search<noun> and Lookup<noun>, respectively.
-	 * By default, a query has no acknowledgements or retries.
+	 * By default, a query has no retries.
 	 */
  	transaction SearchOrder query
     {
@@ -367,7 +337,7 @@ package com.x.example.v1 {
         	message SearchOrder
         	{
         		 timeouts(response=3m)
-        		 retries=1     		
+        		 retries=0     		
         	}
         }
         receiver
