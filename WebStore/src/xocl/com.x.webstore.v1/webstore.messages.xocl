@@ -255,7 +255,8 @@ package com.x.webstore.v1{
 
 		string? customerEmail "The email address for the customer who abandoned the cart.";
 		array<WebStoreAbandonedCartItem> cartItems "The product information and quantities in the customer's cart that was abandoned";
-		datetime lastModified "The last modified date for the cart"		
+		datetime lastModified "The last modified date for the cart"	
+		uri abandonedCartId "The ID of the abandoned cart"	
 	}
 	
 	record SearchWebStoreAbandonedCart{
