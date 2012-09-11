@@ -250,6 +250,14 @@ package com.x.ordermanagement.v3 {
 		array<Error<ShipppingInformationUpdateErrorCodes>> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	
+	record CommentLogEntry {
+		summary "Contains information individual log entries for an order."
+		description "Contains information individual log entries for an order."
+		datetime logDate
+		string? author
+		string comment
+	}
+	
 	record PaymentInfo {
 		summary "Contains information about the method used to pay for an order."
 		description "Captures detailed information about the method of payment used for an order."
@@ -373,6 +381,7 @@ package com.x.ordermanagement.v3 {
 		string? buyerComments "Additional comments or instructions that the buyer wants to convey to the merchant."
 		boolean shippingFeesTaxed = false "True one or more of the order lines had it taxes applied to its shipping fees."
 		string? comments "Captures any general purpose notes for the order"
+		array<CommentLogEntry>? commentEntries "A list of separate, time-stamped log entries for an order."
 	}
 	
 	record SimpleOrder extends OrderDetails {
