@@ -1,6 +1,5 @@
 /** This file includes the transactions that are part of the
  *  order fulfillment domain
- *
  */
 package com.x.orderfulfillment.v1 {
 	import com.x.orderfulfillment.v1.*
@@ -10,7 +9,7 @@ package com.x.orderfulfillment.v1 {
 		sender
 		{	
 			message ProcessDropshipFulfillment {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(validation=3m)
             	retries=3
             }
 		}		
@@ -24,7 +23,7 @@ package com.x.orderfulfillment.v1 {
 		sender
 		{	
 			message ProcessThirdPartyFulfillment {   
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(validation=3m)
             	retries=3
             }            
         }		
@@ -40,7 +39,7 @@ package com.x.orderfulfillment.v1 {
     	sender
 		{
 			message FulfillmentCompleted {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(validation=3m)
             	retries=3
             }
 		}
@@ -54,7 +53,7 @@ package com.x.orderfulfillment.v1 {
 	transaction FulfillmentExpectedShipDateUpdated notify {
     	sender {
     		message FulfillmentExpectedShipDateUpdated {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(validation=3m)
             	retries=3
             }
     	}
@@ -64,7 +63,7 @@ package com.x.orderfulfillment.v1 {
 	transaction DropShipSupplierComment notify {
     	sender {
     		message DropShipSupplierComment {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(validation=3m)
             	retries=3
             }
     	}
@@ -74,7 +73,7 @@ package com.x.orderfulfillment.v1 {
 	transaction MerchantComment notify {
     	sender {
     		message MerchantComment {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(validation=3m)
             	retries=3
             }
     	}
@@ -84,7 +83,7 @@ package com.x.orderfulfillment.v1 {
 	transaction FulfillmentShipped notify {		
     	sender {
     		message FulfillmentShipped {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(validation=3m)
             	retries=3
             }
     	}
@@ -94,7 +93,7 @@ package com.x.orderfulfillment.v1 {
 	transaction FulfillmentCancelled notify {
         sender {
         	message FulfillmentCancelled {
-        		timeouts(receipt=30s, validation=3m)     		
+        		timeouts(validation=3m)     		
         		retries=3
         	}
         }
@@ -104,7 +103,8 @@ package com.x.orderfulfillment.v1 {
     transaction SearchShippingRate query {
     	sender {
     		message SearchShippingRate{
-    			timeouts(response=30s)   
+    			timeouts(response=30s)
+    			retries=0   
     		}
     	}
     	receiver {
@@ -117,7 +117,7 @@ package com.x.orderfulfillment.v1 {
     	description "Notifies that whole/parts of fulfillment should be held from further processing"
     	sender{
     		message MerchantHoldFulfillment{
-    			timeouts(receipt=30s, validation=3m)     		
+    			timeouts(validation=3m)     		
         		retries=3
     		}
     	}
@@ -128,7 +128,7 @@ package com.x.orderfulfillment.v1 {
     	description "Notifies that whole/parts of fulfillment should be held from further processing"
     	sender{
     		message FulfillmentProcessorHoldFulfillment{
-    			timeouts(receipt=30s, validation=3m)     		
+    			timeouts(validation=3m)     		
         		retries=3
     		}
     	}
@@ -138,7 +138,8 @@ package com.x.orderfulfillment.v1 {
     transaction ReleaseFulfillment(Fulfillment fulfillment) notify {
     	sender{
     		message ReleaseFulfillment{
-    			timeouts(receipt=30s, validation=3m) 
+    			timeouts( validation=3m)
+    			retries=3   
     		}
     	}
     }
@@ -147,7 +148,8 @@ package com.x.orderfulfillment.v1 {
     transaction FulfillmentInformationUpdated notify {
     	sender{
     		message FulfillmentInformationUpdated{
-    			timeouts(receipt=30s, validation=3m) 
+    			timeouts( validation=3m) 
+    			retries=3 
     		}
     	}
     }
@@ -156,7 +158,8 @@ package com.x.orderfulfillment.v1 {
     transaction LookupFulfillments query {
     	sender {
     		message LookupFulfillments{
-    			timeouts(response=30s)   
+    			timeouts(response=30s)
+    			retries=0    
     		}
     	}
     	receiver {
@@ -169,7 +172,8 @@ package com.x.orderfulfillment.v1 {
     transaction CancelFulfillment notify {
     	sender{
     		message CancelFulfillment{
-    			timeouts(receipt=30s, validation=3m) 
+    			timeouts( validation=3m) 
+    			retries=3 
     		}
     	}
     }
@@ -178,7 +182,8 @@ package com.x.orderfulfillment.v1 {
     transaction FulfillmentProcessorCancelFulfillment notify {
     	sender{
     		message FulfillmentProcessorCancelFulfillment{
-    			timeouts(receipt=30s, validation=3m) 
+    			timeouts( validation=3m) 
+    			retries=3 
     		}
     	}
     }
@@ -188,7 +193,8 @@ package com.x.orderfulfillment.v1 {
     transaction ProcessReceiving(Receiving receiving) notify {
     	sender{
     		message ProcessReceiving{
-    			timeouts(receipt=30s, validation=3m) 
+    			timeouts( validation=3m)
+    			retries=3  
     		}
     	}
     	postconditions {
@@ -200,7 +206,8 @@ package com.x.orderfulfillment.v1 {
     transaction UpdateReceiving notify {
     	sender{
     		message UpdateReceiving{
-    			timeouts(receipt=30s, validation=3m) 
+    			timeouts( validation=3m)
+    			retries=3  
     		}
     	}
     }
@@ -209,7 +216,8 @@ package com.x.orderfulfillment.v1 {
     transaction ReceivingInventoryStatusUpdated notify {
     	sender{
     		message ReceivingInventoryStatusUpdated{
-    			timeouts(receipt=30s, validation=3m) 
+    			timeouts( validation=3m)
+    			retries=3  
     		}
     	}
     }
@@ -218,7 +226,8 @@ package com.x.orderfulfillment.v1 {
     transaction ReceivingCompleted(Receiving receiving) notify {
     	sender{
     		message ReceivingCompleted{
-    			timeouts(receipt=30s, validation=3m) 
+    			timeouts( validation=3m)
+    			retries=3  
     		}
     	}
     	postconditions {
@@ -230,7 +239,8 @@ package com.x.orderfulfillment.v1 {
      transaction CancelReceiving notify {
     	sender{
     		message CancelReceiving{
-    			timeouts(receipt=30s, validation=3m) 
+    			timeouts( validation=3m)
+    			retries=3  
     		}
     	}
     }
@@ -239,7 +249,8 @@ package com.x.orderfulfillment.v1 {
     transaction LookupReceivings query {
     	sender {
     		message LookupReceivings{
-    			timeouts(response=30s)   
+    			timeouts(response=30s)
+    			retries=0    
     		}
     	}
     	receiver {
@@ -252,7 +263,8 @@ package com.x.orderfulfillment.v1 {
      transaction ProcessReturnAdvanceShipmentNotice notify {
     	sender{
     		message ProcessReturnAdvanceShipmentNotice{
-    			timeouts(receipt=30s, validation=3m) 
+    			timeouts( validation=3m)
+    			retries=3  
     		}
     	}
     }
@@ -262,7 +274,8 @@ package com.x.orderfulfillment.v1 {
     	preconditions (returns[Return.Expected])
     	sender{
     		message UpdateReturnAdvanceShipmentNotice{
-    			timeouts(receipt=30s, validation=3m) 
+    			timeouts( validation=3m)
+    			retries=3  
     		}
     	}
     }
@@ -272,7 +285,8 @@ package com.x.orderfulfillment.v1 {
     	preconditions (returns[Return.Expected])
     	sender{
     		message CancelReturnAdvanceShipmentNotice{
-    			timeouts(receipt=30s, validation=3m) 
+    			timeouts( validation=3m)
+    			retries=3  
     		}
     	}
     	postconditions {
@@ -284,17 +298,18 @@ package com.x.orderfulfillment.v1 {
     transaction ReturnReceived notify {
     	sender{
     		message ReturnReceived{
-    			timeouts(receipt=30s, validation=3m) 
+    			timeouts( validation=3m)
+    			retries=3  
     		}
     	}
     }
     
     //Notifies that returns processing is complete
     transaction ReturnProcessCompleted(Return returns) notify {
-    	preconditions (returns[Return.Cancelled], returns[Return.Received])
     	sender{
     		message ReturnProcessCompleted{
-    			timeouts(receipt=30s, validation=3m) 
+    			timeouts( validation=3m)
+    			retries=3  
     		}
     	}
     	postconditions {
@@ -302,6 +317,4 @@ package com.x.orderfulfillment.v1 {
         }
     }
     
-    
-
 }
