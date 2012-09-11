@@ -29,7 +29,7 @@ package com.x.pim.v2
         array<Image>? images "Array of images of the product.";
         array<ProductAttributeValue>? attributes "Values of the product attributes.";
         array<string>? variationFactors "Properties of the product the product may vary.";
-        array<SKU>? skuList "Array of the SKUs of the associated products.";
+        array<SKU>? variationSkuList "Array of the SKUs of the associated product variations.";
     }
 
     record ProductAttributeValue
