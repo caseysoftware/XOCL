@@ -5,7 +5,7 @@ package com.x.authz.v1{
 	
 	record Credential {
 		summary "Contains the credentials needed for authorization."
-		description "Contains the credentials keys needed for authorization. Each implementation requires a different set of credentials keys with its own name/value pair."
+		description "Contains the credentials keys needed for authorization. Each implementation requires a different set of credential keys with its own name/value pair."
 		
 		map<string> properties "Authorization credentials.";
 	}
@@ -32,7 +32,7 @@ package com.x.authz.v1{
 
 	record InitAuthorizationFailed {
 		summary "Signals that the merchant authorization failed."
-		description "Notification that the merchant authorization failed. These fields are used only if the marketplace web-authorization flow supports them."
+		description "Failure response for authorizing a merchant. These fields are used only if the marketplace web-authorization flow supports them."
 		
 		string? environmentName "Marketplace environment name, such as sandbox.";
 		string? userMarketplaceId  "Merchant's marketplace identifier.";
@@ -59,7 +59,7 @@ package com.x.authz.v1{
 
 	record CompleteAuthorizationFailed {
 		summary "Signals the that the authorization process was not completed."
-		description "Notification that the attempt to complete the authorization process failed."
+		description "Failure response for the authorization process."
 		
 		string authId "Merchant's authorization ID sent in the request.";
 		Credential? cred "Any extra credentials sent in the request.";
@@ -80,7 +80,7 @@ package com.x.authz.v1{
 	
 	record GetAllAuthorizedAccountsFailed {
 		summary "Signals that the merchant's authorized accounts were not found."
-		description "Notification that the attempt to get all the merchant's authorized accounts failed."
+		description "Failure response for getting all the merchant's authorized accounts."
 		
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
 	}
@@ -101,7 +101,7 @@ package com.x.authz.v1{
 	
 	record RevokeAuthorizationFailed {
 		summary "Signals that the merchant's authorization was not removed."
-		description "Notification that the attempt to remove a merchant's authorization to a marketplace failed."
+		description "Failure response for removing a merchant's authorization to a marketplace."
 		
 		string xAccountId "Merchant's X.commerce ID used.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting.";
