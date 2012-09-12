@@ -21,8 +21,8 @@ package com.x.webstore.v2{
 		string url "Location (URL) of the web store.";
 	}
 	record WebStoreOffer extends WebStoreOfferData{
-		summary "Adds the offer ID field to the WebStoreOfferData record."
-		description "Adds the offer ID field to the WebStoreOfferData record."
+		summary "Contains fields that are added to the WebStoreOfferData record."
+		description "Contains an ID field, which is added to the WebStoreOfferData record."
 
 		string offerId "Identifier of the offer. This ID is assigned by the channel that published the offer.";
 	}
@@ -34,7 +34,7 @@ package com.x.webstore.v2{
 		CurrencyAmount currentPrice "Selling price of the product."; 
 		long quantity "How many of this product are in stock.";
 		string sku "SKU (Stock Keeping Unit) of the product being offered. This is a unique identifier supplied by the merchant.";
-		string parentSku "The SKU (Stock Keeping Unit) to be used for looking up detailed product information. This is used for variation products. This is a unique identifier supplied by the merchant";
+		string parentSku "SKU (Stock Keeping Unit) to be used for looking up detailed product information. This is used for variation products. This is a unique identifier supplied by the merchant";
 		string webStoreId "Identifier for the web store offering the product.";
 		array<string>? categoryId "Identifiers for the categories in the web store in which the product belongs."; 
 	}
@@ -62,7 +62,7 @@ package com.x.webstore.v2{
 	} 
 	record GetAllCategoryFailed{
 		summary "Signals that searching for product categories has failed."
-		description "Returns the web store ID that was sent in the request and information about the failure, which is useful for troubleshooting."
+		description "Failure response for searching for product categories. It returns the web store ID that was sent in the request and information about the failure, which is useful for troubleshooting."
 
 		string webStoreId "Identifier of the web store.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
@@ -90,7 +90,7 @@ package com.x.webstore.v2{
 	}
 	record GetAllWebStoreFailed {
 		summary "Signals that no web stores were found for the specified provider."
-		description "Returns the provider name and error details related to the failed web store search."
+		description "Failure response for getting all web stores. It returns the provider name and error details related to the failed web store search."
 
 		string providerName "Name of the web store provider.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
@@ -114,7 +114,7 @@ package com.x.webstore.v2{
 	}
 	record SearchWebStoreOfferFailed{
 		summary "Signals that no offers were found for the specified web store."
-		description "Returns the search criteria that was sent in the request and information about the failure, which is useful for troubleshooting."
+		description "Failure response for searching for web store offers. It returns the search criteria that was sent in the request and information about the failure, which is useful for troubleshooting."
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 		SearchWebStoreOffer request "Search criteria used.";
 	}
@@ -136,7 +136,7 @@ package com.x.webstore.v2{
 	
 	record LookupWebStoreOfferFailed{
 		summary "Indicates that no offers were found for the specified web store."
-		description "Returns error details related to the failed offer search."
+		description "Failure response for looking up offers of a web store. It returns error details related to the failed offer search."
 
 		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
 		LookupWebStoreOffer request "Searches for web store offers.";
@@ -157,7 +157,7 @@ package com.x.webstore.v2{
 	}
 	record CreateWebStoreOfferFailed{
 		summary "Signals that the attempt to create an offer failed."
-		description "Returns the offer data that was sent in the request and information about the failure, which is useful for troubleshooting.Returns the error details related to the failed attempt to create an offer."
+		description "Failure response for creating an offer. It returns the offer data that was sent in the request and information about the failure, which is useful for troubleshooting.Returns the error details related to the failed attempt to create an offer."
 
 		WebStoreOfferData offer "Data that defines the web store offer."; 
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
@@ -176,8 +176,7 @@ package com.x.webstore.v2{
 	}
 	record UpdateWebStoreOfferFailed{
 		summary "Signals that updating an offer failed."
-		description "Returns the offer identifier that was sent in the request and information about the failure, which is useful for troubleshooting.Returns the offer ID and the error details related to the failed attempt to update an offer."
-
+		description "Failure response for updating an offer. It returns the offer identifier that was sent in the request and information about the failure, which is useful for troubleshooting.Returns the offer ID and the error details related to the failed attempt to update an offer."
 		WebStoreOffer offer "Identifier of the offer that failed to be updated. This ID is assigned by the channel that published the offer."; 
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
@@ -195,7 +194,7 @@ package com.x.webstore.v2{
 	}
 	record DeleteWebStoreOfferFailed{
 		summary "Signals that deleting an offer failed."
-		description "Returns the offer ID that was sent in the request and information about the failure, which is useful for troubleshooting.Returns the offer ID and the error details related to the failed attempt to delete an offer."
+		description "Failure response for deleting an offer. It returns the offer ID that was sent in the request and information about the failure, which is useful for troubleshooting.Returns the offer ID and the error details related to the failed attempt to delete an offer."
 
 		string offerId "Identifier of the offer.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
@@ -254,7 +253,7 @@ package com.x.webstore.v2{
 		uri abandonedCartId "The ID of the abandoned cart"	
 		string? customerEmail "The email address for the customer who abandoned the cart.";
 		array<WebStoreAbandonedCartItem> cartItems "The product information and quantities in the customer's cart that was abandoned";
-		datetime lastModified "The last modified date for the cart"		
+		datetime lastModified "The last modified date for the cart"	
 	}
 	
 	record SearchWebStoreAbandonedCart{
