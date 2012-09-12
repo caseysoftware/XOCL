@@ -231,4 +231,20 @@ package com.x.ordermanagement.v3 {
     		success(order[Order.Complete])
     	}
     }
+    
+    transaction AddOrderComment response {
+    	description "Adds a comment to an existing order."
+    	sender {
+    		message AddOrderComment {
+    			timeouts(response=30s) 
+    			retries=3   		
+        	}
+        }
+        receiver {
+        	success AddOrderCommentSucceeded                   	        
+            failure AddOrderCommentFailed
+        } 
+    }
+    
+    
 }

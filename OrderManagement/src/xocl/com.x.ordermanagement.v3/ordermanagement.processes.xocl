@@ -80,6 +80,25 @@ package com.x.ordermanagement.v3 {
     	}
     }
     
+    process AddOrderComment {
+    	summary "Add a comment to an existing order."
+    	description "Add a comment to an existing order." 
+    	
+    	roles {		
+    		OrderCommentor "Submits an comments to the order processor." 
+    		OrderProcessor "Accepts and applies comments to orders."
+    	}
+    	
+    	workflow {
+	    	summary "Add a comment to an existing order."
+	    	description "Add a comment to an existing order." 
+    		
+    		transaction AddOrderComment {
+    			roles (OrderCommentor, OrderProcessor)
+    		}   
+    	}
+    }
+    
     process ProcessSalesChannelOrder<MarketplaceOrder>(Order order) {
     	
     	summary "Processes an order that originates from a sales channel."

@@ -748,5 +748,23 @@ package com.x.ordermanagement.v3 {
 		description "Manually transition the state of an order to completed."
 		uri id "Unique order identifier of the order to be completed."
 	}
+	
+	record AddOrderComment {
+		summary "Add a comment to an existing order."
+		description "Add a comment to an existing order."
+		uri id "Unique order identifier of the order that will be updated with the supplied comment."
+		string comment "The comment that will be applied."	
+	}
+	
+	record AddOrderCommentSucceeded {
+		summary "Return information about the successful update."
+		description "Return information about the successful update."
+		uri id "Unique order identifier of the order that was updated with the comment."
+	}
 
+	record AddOrderCommentFailed {
+		summary "Return information about the failed update."
+		description "Return information about the failed update."
+		uri id "Unique order identifier of the order that failed to be updated with the comment."
+	}
 }
