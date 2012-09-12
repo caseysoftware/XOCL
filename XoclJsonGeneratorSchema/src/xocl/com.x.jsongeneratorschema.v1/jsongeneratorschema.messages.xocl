@@ -204,7 +204,7 @@ package com.x.jsongeneratorschema.v1 0.0  workingdraft {
 		string id;
 		string version;
 		string role;
-		Timeout? timeout = null;
+		Timeout? timeout;
 		array<Node> nodes;
 		array<Expression>? _AVDL_preconditions;
 		array<Expression>? successPostconditions;
