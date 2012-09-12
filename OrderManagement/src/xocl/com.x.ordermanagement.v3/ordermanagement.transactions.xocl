@@ -34,6 +34,7 @@ package com.x.ordermanagement.v3 {
             	retries=3
             }
 			message<MarketplaceOrder> SubmitMarketplaceOrder {
+				timeouts(response=30s)
             	retries=3
             }
 		}
@@ -208,7 +209,8 @@ package com.x.ordermanagement.v3 {
     			retries=3   		
         	}
         	message <MarketplaceOrder> MarketplacePaymentUpdate {
-    			timeouts(response=30s)    		
+    			timeouts(response=30s) 
+    			retries=3      		
         	}
         }
         receiver {
