@@ -39,6 +39,7 @@ package com.x.merchantonboarding.v1 {
 		string bundleId;
 		string contractRole;
 		map<string>? parameters;
+		string returnURL;
 	}
 	
 	record NeededData {
