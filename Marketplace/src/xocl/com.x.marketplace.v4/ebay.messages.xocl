@@ -305,7 +305,7 @@
 	
     record UpsertSalesTaxTableFailed{
     	summary "Signals that the request to create or update the sales tax data on eBay failed."
-    	description "Failure response for upserting sales tax data."
+    	description "Failure response for creating or updating the sales tax data."
     	
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message."
 		UpsertSalesTaxTable request "Original request."
@@ -313,7 +313,7 @@
 	
 	record GetRecommendationsForOffer{
 		summary "Captures the offer details. The product details are supplied by a Product Information Management system."
-		description "Contains the offer details. product details are supplied by a Product Information Management system."
+		description "Contains the offer details. The product details are supplied by a Product Information Management system."
 		
 		EbayOfferDetails offer "Offer details."
 		string? policyGroupId "Id of a relevant policy group"

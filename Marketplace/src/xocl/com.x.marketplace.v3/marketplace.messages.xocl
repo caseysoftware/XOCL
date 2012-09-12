@@ -6,13 +6,12 @@ package com.x.marketplace.v3{
 	
 
     record CustomCategory {
-    	summary "Contains the information of a custom category."
-    	description "Captures information about a custom category, such as ID, name, etc."
+    	summary "Contains the information a merchant defined category."
+    	description "A custom category is a category that the merchant uses but isn't in the taxonomy of the channel you are publishing to. The record captures information about a merchant defined category." // For example, in eBay it would be the eBay store categories the merchant defined.  Each channel could have their own 'customizable' category structure.
 
 		long id "Identifier of the custom category.";
 		string name "Name of the custom category.";
-//ask sherri's team what this is? 
-		int order "TBD"; 
+		int order "Order in which the custom category appears in the list of store categories."; 
 		array<CustomCategory> childCategories "Array of the child categories for the custom category.";
 	}
 	
@@ -199,7 +198,7 @@ package com.x.marketplace.v3{
 		string serviceName "Name of the shipping service.";
 		CurrencyAmount cost "Cost to ship a package.";  
 		CurrencyAmount? discountAmount "Amount of any shipping discount.";
-		CurrencyAmount? additionalCost "Amount of any additional shipping costs. Note: For eBay, this is the cost of shipping each additional item beyond the first item and applies to only Flat rate shipping for multi-item purchases.";
+		CurrencyAmount? additionalCost "Amount of any additional shipping costs."; // Note: For eBay, this is the cost of shipping each additional item beyond the first item and applies to only Flat rate shipping for multi-item purchases.
 		CurrencyAmount? packagingHandlingCost "Amount of any packing or handling costs.";
 		CurrencyAmount? surcharge "Amount of any surcharge, such as UPS or FedEx shipping to Alaska, Hawaii or Puerto Rico.";
 		array<string>? shipToLocations "List of locations this service can ship to. This is needed only for international shipping.";
@@ -250,7 +249,6 @@ package com.x.marketplace.v3{
 		ShippingPolicy? shippingPolicy "Data that defines the shipping policy.";
 		ReturnPolicy? returnPolicy "Data that defines the return policy.";
 		CalculatedShippingPolicy? calculatedShippingPolicy "Data that defines the calculated shipping policy."
-//check with sherri
 		string xAccountId "Tenant's X.commerce identifier."
 		string? offerDuration "Duration of the offer."
 	}
@@ -297,7 +295,7 @@ package com.x.marketplace.v3{
 	    ReturnPolicy? returnPolicy "Return policy data specific to this offer. Note: This overrides the data in the return policy profile.";
 	    CalculatedShippingPolicy? calculatedShippingPolicy "Calculated shipping policy data specific to this offer. Note: This overrides the data in the calculated shipping policy profile."
 	    array<Sku> skus "SKUs of the items being offered.";
-	    array<string>? customCategories "Custom categories for the items being offered. Note: For eBay these correspond to the eBay store categories.";
+	    array<string>? customCategories "Custom categories for the items being offered."; // Note: For eBay these correspond to the eBay store categories.
 	}
 	
 	record GetAllAvailableChannels {
@@ -307,7 +305,7 @@ package com.x.marketplace.v3{
 	
     record GetAllAvailableChannelsSucceeded {
     	summary "Signals that the search for marketplaces was successful."
-    	description "Notifies the requester that searching for marketplaces was successful. Returns the search results and the query request."
+    	description "Notifies the requester that searching for marketplaces was successful. It returns the search results and the query request."
 
 		string channelName "Name of the marketplace.";
 		string channelProviderName "Name of the capability that implements this.";
@@ -320,7 +318,7 @@ package com.x.marketplace.v3{
 	
     record GetAllSitesSucceeded {
     	summary "Signals that the search for sites was successful."
-    	description "Notifies the requester that searching for sites was successful. Returns the search results and the query request."
+    	description "Notifies the requester that searching for sites was successful. It returns the search results and the query request."
 
 		array<SiteWithEnvironments> sitesWithEnvironments "List of sites and their environment that were found.";
 	}
@@ -335,7 +333,7 @@ package com.x.marketplace.v3{
 	
     record GetAllSitesFailed {
     	summary "Signals that the search for sites failed."
-    	description "Notifies the requester that searching for all sites failed and returns information about the cause of the failure."
+    	description "Failure response for searching for all sites. It returns information about the cause of the failure."
 
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
 	}
@@ -350,7 +348,7 @@ package com.x.marketplace.v3{
 	
 	record LookupSiteMetadataSucceeded {  
     	summary "Signals that the metadata for a site was found."
-    	description "Notifies the requester that searching for the metadata of a site was successful. Returns the search results and query request."
+    	description "Notifies the requester that searching for the metadata of a site was successful. It returns the search results and query request."
 
 		array<SiteMetadata> siteMetadata "Metadata retrieved."
 		string? environmentName "Name of the site environment used."
@@ -358,7 +356,7 @@ package com.x.marketplace.v3{
 	
 	record LookupSiteMetadataFailed {  
     	summary "Signals that looking up a site failed."
-    	description "Notifies the requester that the attempt to find a site by ID failed and returns information about the cause of the failure."
+    	description "Failure response for finding a site by ID. It returns information about the cause of the failure."
 
 		array<string> siteCode "Identifiers used in the look up."
 		string? environmentName "Name of the site environment used in the look up."
@@ -376,7 +374,7 @@ package com.x.marketplace.v3{
 
 	record SearchCategoriesSucceeded {
     	summary "Signals that the search for categories was successful."
-    	description "Notifies the requester that searching for categories was successful. Returns the search results and the query request."
+    	description "Notifies the requester that searching for categories was successful. It returns the search results and the query request."
 
 		array<Category> categories "List of categories found."; 
 		string? siteCode "Identifier of the site used in the search.";
@@ -385,7 +383,7 @@ package com.x.marketplace.v3{
 
 	record SearchCategoriesFailed {
     	summary "Signals that categories were not found."
-    	description "Notifies the requester that the attempt search for categories failed and returns information about the cause of the failure."
+    	description "Failure response for searching for categories. It returns information about the cause of the failure."
 
 		string? siteCode "Identifier for a site used in the search.";
 		string? environmentName "Name of the site environment used in the search.";
@@ -401,14 +399,14 @@ package com.x.marketplace.v3{
 
 	record LookupPolicyGroupSucceeded {
     	summary "Signals that the policy group was found."
-    	description "Notifies the requester that searching for a policy group was successful. Returns the policy group information and the query request."
+    	description "Notifies the requester that searching for a policy group was successful. It returns the policy group information and the query request."
 
 		PolicyGroup p "Policy group information.";
 	}
 	
 	record LookupPolicyGroupFailed {
     	summary "Signals that search for a policy group failed."
-    	description "Notifies the requester that the attempt find a policy group by ID failed and returns information about the cause of the failure."
+    	description "Failure response for finding a policy group by ID. It returns information about the cause of the failure."
 
 		string policyGroupId "Identifier of the policy group used in the search.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
@@ -430,7 +428,7 @@ package com.x.marketplace.v3{
 	
 	record CreatePolicyGroupFailed {
     	summary "Signals that a policy group was not created."
-    	description "Notifies the requester that the attempt to create a policy group failed and returns information about the cause of the failure."
+    	description "Failure response for creating a policy group. It returns information about the cause of the failure."
 
 		PolicyGroupData p "Policy group information sent in the request.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
@@ -452,7 +450,7 @@ package com.x.marketplace.v3{
 
 	record UpdatePolicyGroupFailed {
     	summary "Signals that a policy group was not updated."
-    	description "Notifies the requester that the attempt to update a policy group failed and returns information about the cause of the failure."
+    	description "Failure response for updating a policy group. It returns information about the cause of the failure."
 
 		PolicyGroup p "Information sent in the request to update a policy group.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
@@ -474,7 +472,7 @@ package com.x.marketplace.v3{
 
 	record DeletePolicyGroupFailed {
     	summary "Signals that a policy group was not deleted."
-    	description "Notifies the requester that the attempt to delete a policy group failed and returns information about the cause of the failure."
+    	description "Failure response for deleting a policy group. It returns information about the cause of the failure."
 
 		string policyGroupId "Identifier of the policy group.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
@@ -506,7 +504,7 @@ package com.x.marketplace.v3{
 
 	record PublishOfferFailed {
     	summary "Signals that an offer was not published."
-    	description "Notifies the requester that the attempt to publish an offer failed and returns information about the cause of the failure."
+    	description "Failure response for publishing an offer. It returns information about the cause of the failure."
 
 		OfferDetails offer "Information sent in the request to publish an offer.";
 		string? policyGroupId "Identifier of the policy group.";
@@ -539,7 +537,7 @@ package com.x.marketplace.v3{
 	
 	record RevisePublishedOfferFailed {
     	summary "Signals that an offer was not updated."
-    	description "Notifies the requester that the attempt to update a published offer failed and returns information about the cause of the failure."
+    	description "Failure response for updating a published offer. It returns information about the cause of the failure."
 
 		OfferDetails updatedOffer "Offer update information sent in the update request";
 		array<Error>errors "Array of the errors that occurred. Each error consists of an error code and error message.";
@@ -564,7 +562,7 @@ package com.x.marketplace.v3{
 
 	record RevokePublishedOfferFailed {
     	summary "Signals that an offer was not revoked."
-    	description "Notifies the requester that the attempt to revoke a published offer failed and returns information about the cause of the failure."
+    	description "Failure response for revoking a published offer. It returns information about the cause of the failure."
 
 		CancelOfferError cancelError "Information about the cause of the failure.";
 		string? policyGroupId "Identifier of the policy group.";
@@ -592,7 +590,7 @@ package com.x.marketplace.v3{
 
 	record SearchOffersSucceeded{	
     	summary "Signals that the search for offers was successful."
-    	description "Notifies the requester that the search for offers was successful. Returns the search results and the query request."
+    	description "Notifies the requester that the search for offers was successful. It returns the search results and the query request."
 
 		array<Offer> offers "Array of offers found.";
 		SearchOffers request "Search criteria used.";
@@ -600,7 +598,7 @@ package com.x.marketplace.v3{
 
 	record SearchOffersFailed{
     	summary "Signals that searching for offers failed."
-    	description "Notifies the requester that the attempt to search for offers failed and returns information about the cause of the failure."
+    	description "Failure response for searching for offers. It returns information about the cause of the failure."
 
 		SearchOffers request "Search criteria used.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
@@ -631,7 +629,7 @@ package com.x.marketplace.v3{
 
 	record SearchTopSellingProductsSucceeded{
     	summary "Signals that the search for the top selling products was successful."
-    	description "Signals that the search for the top selling products was successful. Returns the search results and the query request."
+    	description "Signals that the search for the top selling products was successful. It returns the search results and the query request."
 
 		array<TopSellingProduct> products "Array of top selling products. The products are returned in order from highest sales rank to lowest.";
 		SearchTopSellingProducts request "Search criteria used.";
@@ -639,7 +637,7 @@ package com.x.marketplace.v3{
 	
 	record SearchTopSellingProductsFailed{
     	summary "Signals that searching for the top selling products failed."
-    	description "Notifies the requester that the attempt to search for the top selling products failed and returns information about the cause of the failure."
+    	description "Failure response for searching for the top selling products. It returns information about the cause of the failure."
 
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message.";
 		SearchTopSellingProducts request "Search criteria used.";
