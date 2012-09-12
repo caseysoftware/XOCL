@@ -6,8 +6,8 @@ package com.x.pim.v1
 
 	record Product extends ProductData
     {
-        summary "Adds fields to the ProductData record."
-        description "Adds the ID field to the ProductData record."
+        summary "Contains an ID field that is to the ProductData record."
+        description "Contains an ID field, which is added to the ProductData record."
         string id "Unique identifier of a product.";
     }
 
@@ -173,7 +173,7 @@ package com.x.pim.v1
     record SearchProductFailed
     {
     	summary "Signals that a search for specific products failed."
-    	description "Returns the original search query and any locales specified."
+    	description "Failure response for searching for products. It returns the original search query and information about the cause of the error."
         Query _AVDL_query "Original search query.";
         array<Locale> ? locales "Array of locales associated with the search query. If this is not provided, en_US is used.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
@@ -222,7 +222,7 @@ package com.x.pim.v1
     record LookupProductFailed
     {
     	summary "Signals that specific products couldn't be looked up."
-    	description "Signals that specific products couldn't be looked up by their IDs (in conjunction with a filter)."
+    	description "Failure response for looking up specific products by their IDs (in conjunction with a filter). It returns the original search query and query and information about the cause of the error."
         array<ProductIdentifier> ids "Array of product IDs that couldn't be looked up.";
         FilterType? filter "Type of filter to be used on the results of the search.";
         array<Locale>? locales "Array of locales used on the results of the search.";
@@ -246,7 +246,7 @@ package com.x.pim.v1
     record UpdateProductFailed
     {
     	summary "Signals that specific products couldn't be updated."
-    	description "Returns an array of products that couldn't be updated. Also contains error information about the transaction useful in troubleshooting."
+    	description "Failure response for updating products. It returns an array of products that couldn't be updated. Also contains transaction useful in troubleshooting."
         array<Product> products "Products that couldn't be updated.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
@@ -282,7 +282,7 @@ package com.x.pim.v1
     record CreateProductFailed
     {
     	summary "Signals that creation of the data of one or more products has failed."
-    	description "Signals that creation of one or more products has failed and returns information about the failure useful for troubleshooting."
+    	description "Failure response for creating one or more products. It returns information about the failure useful for troubleshooting."
         array<ProductData> products "Array of product data that couldn't be created.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
@@ -311,7 +311,7 @@ package com.x.pim.v1
     record DeleteProductFailed
     {
     	summary "Signals that a request to delete one or more products using their IDs has failed."
-    	description "Signals that a request to delete one or more product using their IDs has failed and returns information about the failure useful for troubleshooting."
+    	description "Failure response for deleting one or more product using their IDs. It returns information about the failure useful for troubleshooting."
         array<string> productIds "Array of product IDs that reference the products that weren't deleted.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
@@ -333,7 +333,7 @@ package com.x.pim.v1
     record CreateSKUFailed
     {
     	summary "Signals that a request to create new SKUs has failed."
-    	description "Signals that a request to create new SKUs has failed. It returns an array of SKUs that weren't created and error information useful in troubleshooting."
+    	description "Failure response for creating new SKUs. It returns an array of SKUs that weren't created and error information useful in troubleshooting."
         array<SKU> skus "Array of SKUs that couldn't be created.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
@@ -362,7 +362,7 @@ package com.x.pim.v1
     record UpdateSKUFailed
     {
     	summary "Signals that a request to update specific SKUs failed."
-    	description "Signals that a request to update specific SKUs failed. It returns the array of SKUs specified in UpdateSKU by the requestor. It also contains error information useful in troubleshooting."
+    	description "Failure response for updating specific SKUs. It returns the array of SKUs specified in UpdateSKU by the requestor. It also contains error information useful in troubleshooting."
         array<SKU> skus "Array of SKUs that weren't updated.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
@@ -384,7 +384,7 @@ package com.x.pim.v1
     record DeleteSKUFailed
     {
     	summary "Signals that a request to delete specific SKUs failed."
-    	description "Signals that a request to delete specific SKUs failed. Contains the array of SKUs specified in DeleteSKU. It also contains error information useful in troubleshooting."
+    	description "Failure response for deleting specific SKUs. It returns the array of SKUs specified in DeleteSKU. It also contains error information useful in troubleshooting."
         array<string> skus "Array of SKUs that couldn't be deleted.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
