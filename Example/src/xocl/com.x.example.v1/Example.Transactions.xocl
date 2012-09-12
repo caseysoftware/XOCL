@@ -136,7 +136,7 @@ package com.x.example.v1 {
     	     * By convention, variant messages use the naming pattern <default_message_name><variant>.
         	 */
         	message<WithCreationMetadata> OrderCreatedWithCreationMetadata {
-        		timeouts(receipt = 30s, validation=1h)
+        		timeouts( validation=1h)
         		retries=5
         	}
         	
@@ -146,7 +146,7 @@ package com.x.example.v1 {
 	         */
         	message<WithAuthorization> OrderCreatedWithAuthorization {
         		topic "this_string/overrides_the_default/topic_name"
-        		timeouts(receipt = 30s, validation=1h)
+        		timeouts(validation=1h)
         		retries=5
         	}
         }
