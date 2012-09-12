@@ -28,7 +28,7 @@ package com.x.inventory.v1
 	record LookupStockItemFailed
 	{
 		summary "Signals that the attempt to lookup stock items by SKU failed."
-		description "Signals that the request to lookup stock items by SKU has failed and returns information about the failure, which is useful for troubleshooting."
+		description "Failure response for looking up stock items by SKU. It returns information about the failure, which is useful for troubleshooting."
 		array<InventoryLookupError> errors "Collection of the errors related to the failed search for stock items.";
 	}
 	
@@ -105,7 +105,7 @@ package com.x.inventory.v1
 	record UpdateStockItemSnapshotFailed
 	{
 		summary "Signals that updating stock items in a snapshot failed."
-		description "Signals that the updating of stock items in a snapshot failed and returns the information that was sent in the request and information about the failure, which is useful for troubleshooting."
+		description "Failure response for updating stock items in a snapshot. It returns the information that was sent in the request and information about the failure, which is useful for troubleshooting."
 		UpdateStockItemSnapshot request "Stock items that were not updated.";
 		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
@@ -128,7 +128,7 @@ package com.x.inventory.v1
 	record UpdateStockItemDeltaFailed
 	{
 		summary "Signals that updating stock items failed."
-		description "Returns the update data that was sent in the request and information about the failure, which is useful for troubleshooting."
+		description "Failure response for updating stock items. It returns the update data that was sent in the request and information about the failure, which is useful for troubleshooting."
 		UpdateStockItemDelta request "Update data that was sent in the request."
 		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
