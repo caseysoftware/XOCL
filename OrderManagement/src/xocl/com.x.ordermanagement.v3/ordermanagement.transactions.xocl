@@ -119,24 +119,19 @@ package com.x.ordermanagement.v3 {
         }
     }
       
-    transaction SearchOrder<NonSensitive, MarketplaceOrderSearch> query {
+    transaction SearchOrder<NonSensitive> query {
     	description "Searches for an order."
         sender {
         	message SearchOrder {
         		 timeouts(response=30s) 
         		 retries=3    		
         	}
-        	message <MarketplaceOrderSearch> MarketplaceSearchOrder {
-        		 timeouts(response=30s)     		        		
-        	}
         }
         receiver {
-        	success SearchOrderSucceeded   
-        	success<MarketplaceOrderSearch> MarketplaceSearchOrderSucceeded   
+        	success SearchOrderSucceeded
         	success<NonSensitive> SearchNonSensitiveOrderSucceeded           
                     	        
             failure SearchOrderFailed
-        	failure<MarketplaceOrderSearch> MarketplaceSearchOrderFailed   
         } 
     }
     

@@ -69,6 +69,16 @@ package com.x.ordermanagement.v3 {
 		PAYMENT_UPDATE_DENIED "The system denied your attempt to modify payment information."
 	}
 	
+	enum ShipmentStatus {  
+		summary "The overall shipping state of a shipment."
+		description "The overall shipping state of a shipment."
+		READY_TO_SHIP,
+		SHIPPED,
+		UNDELIVERABLE,
+		CANCELLED,
+		COMPLETED
+	}
+	
 	enum TaxabilityType {
 		summary "Specifies the taxability types."
 		description "Defines the values use to specify the type of tax that applies to a given order line item."
@@ -168,6 +178,8 @@ package com.x.ordermanagement.v3 {
 		PackageWeight? packageWeight "Weight of the package to ship."
 		string? packageType "Type of the shipping package, such as envelop, box, etc."
 		boolean shippingIrregular = false "Whether a package is irregular in shape and therefore cannot go through the stamping machine at the shipping service office and thus requires special or fragile handling."		
+		ShipmentStatus shipmentStatus "An indicator of where the shipment is at in the overall shipping process (ready to ship, shipped, etc.)."
+		datetime dateShipped "The date the shipment was sent."
 	}
 
 	record GiftTag {
@@ -605,37 +617,27 @@ package com.x.ordermanagement.v3 {
 	}
 	
     record SearchOrder {
-		summary "Requests a search for orders."
-		description "Requests a search for orders."
-    	Query _AVDL_query "Search criteria." 
-	}
-	
-	record MarketplaceSearchOrder extends SearchOrder {
-		summary "Adds marketplace fields to the SearchOrder record."
-		description "Adds fields that are specific to submitting an order to a marketplace to the SearchOrder record, such as the seller's account ID and site code."
-		string? siteCode "Identifier for the marketplace that is processing the order." 
-		string? sellerAccountId "Unique identifier for the seller's account assigned by the system that created the account."
+		summary "Requests a search for orders based on the supplied criteria."
+		description "Requests a search for orders based on the supplied criteria."
+		datetime? modifiedSince "Modification date for the search criteria."
+		long? itemsRequested "Maximum number of items to return at one time (used for paging). If this is not set, all items are returned."
+		long? startItemIndex "Returns the results starting from this zero-based index. If this is not set, items will be returned started from the first item."
 	}
 
 	record SearchOrderSucceeded {
 		summary "Signals the search for orders was successful."
 		description "Confirms successfully searching for orders and returns the information that was used for the search."
-    	Query _AVDL_query "Search criteria." 
-		array<Order> orders "Array of order found."
-	}
-
-	record MarketplaceSearchOrderSucceeded extends SearchOrderSucceeded {
-		summary "Adds marketplace fields to the SearchOrderSucceeded record."
-		description "Adds fields that are specific to submitting an order to a marketplace to the SearchOrderSucceeded record, such as the seller's account ID and site code."
-		string? siteCode "Identifier for the marketplace that is processing the order." 
-		string? sellerAccountId "Unique identifier for the seller's account assigned by the system that created the account."
+		array<Order> orders "Collection of the orders found."
+		long totalItemsFound "Total number of orders that matched the search criteria."
+		SearchOrder request "Search criteria used." 
 	}
 	
 	record SearchNonSensitiveOrderSucceeded {
 		summary "Signals searching for an order was successful." 
 		description "Confirms successfully searching for orders that do NOT contain confidential information and returns the search criteria and the result of the query."
-	   	Query _AVDL_query "Search criteria." 
-        array<NonSensitiveOrder> orders "Orders information without sensitive customer information."        	
+		array<NonSensitiveOrder> orders "Collection of the orders found."
+		long totalItemsFound "Total number of orders that matched the search criteria."
+		SearchOrder request "Search criteria used." 
 	}
 	
 	record SearchOrderFailed {
@@ -644,14 +646,7 @@ package com.x.ordermanagement.v3 {
 		SearchOrder search "Search criteria used."
 		array<Error<ErrorCodes>> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
-	
-	record MarketplaceSearchOrderFailed extends SearchOrderFailed {
-		summary "Adds marketplace fields to the SearchOrderFailed record."
-		description "Adds fields that are specific to submitting an order to a marketplace to the SearchOrderFailed record, such as the seller's account ID and site code."
-		string? siteCode "Identifier for the marketplace that is processing the order." 
-		string? sellerAccountId "Unique identifier for the seller's account assigned by the system that created the account."
-	}
-	
+		
 	record OrderReturn {
 		summary "Contains information about a returned order."
 		description "Captures the detail information about an order that was returned."

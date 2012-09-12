@@ -18,7 +18,7 @@ package com.x.ordermanagement.v3 {
     	state Complete "Order has been considered complete."
     }
     
-    process OrderSearch<NonSensitive, MarketplaceOrderSearch> {
+    process OrderSearch<NonSensitive> {
     	
     	summary "Searches for orders based on the search criteria provided."
     	description "Searches for orders based on the search criteria provided."
@@ -33,7 +33,7 @@ package com.x.ordermanagement.v3 {
     		summary "Searches for orders."
     		description "Searches for orders and returns the results or a failed message."
     		
-    		transaction SearchOrder<NonSensitive, MarketplaceOrderSearch> {
+    		transaction SearchOrder<NonSensitive> {
     			roles (OrderConsumer,OrderManager)
     		}   
     	}
