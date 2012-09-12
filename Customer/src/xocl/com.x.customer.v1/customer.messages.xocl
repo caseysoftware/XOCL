@@ -15,7 +15,7 @@ package com.x.customer.v1{
 	}
     record UpsertCustomerFailed{
 		summary "Signals that a request to either add or update a customer information has failed."
-		description "Notifies an observer that the request to add or update a customer has failed. Returns the customer data that was sent in the request and information about the failure, which is useful for troubleshooting."
+		description "Failure response for adding or updating a customer. It returns the customer data that was sent in the request and information about the failure, which is useful for troubleshooting."
 		CustomerData data "Customer information that was sent in the request."; 
 		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
@@ -47,8 +47,8 @@ package com.x.customer.v1{
 	}  
 	
     record Customer confidential extends CustomerData {
-		summary "Adds fields to the CustomerData record."
-		description "Adds the customer identifier field to the CustomerData record."
+		summary "Contains fields that are added to the CustomerData record."
+		description "Contains the customer identifier field, which is added to the CustomerData record."
 		union{guid, EntityId} id "Identifier assigned to the customer by the system that created the customer record.";	
 	} 
 	
@@ -82,7 +82,7 @@ package com.x.customer.v1{
     
     record LookupCustomerFailed {
 		summary "Signals that the lookup of a customer by system ID failed."
-		description "Signals that the lookup of a customer has failed and returns the customer ID that was sent in the request and information about the failure, which is useful for troubleshooting."
+		description "Failure response for looking up a customer. It returns the customer ID that was sent in the request and information about the failure, which is useful for troubleshooting."
         union{guid, EntityId} id "Identifier used for the lookup."
 		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
@@ -121,7 +121,7 @@ package com.x.customer.v1{
 	
 	record SearchCustomerFailed{
 		summary "Signals that searching for customers failed."
-		description "Signals that a search for customers failed and returns the search criteria used and error details related to the failed retrieval of a customer."
+		description "Failure response for searching for customers. It returns the search criteria used and error details related to the failed retrieval of a customer."
 		SearchCustomer request "Search criteria used.";
 		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
