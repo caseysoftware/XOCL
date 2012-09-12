@@ -123,7 +123,7 @@ package com.x.example.v1 {
 				 * If a given validation is not received within the specified timeout, 
 				 *   then the sender must retry up to the specified number of times.
 				 * If the specified number of retries is exhausted, then the sender must send a cancellation
-				 *   to abort the transaction, with the Reason set to ReceiptTimedOut or ValidationTimedOut.
+				 *   to abort the transaction, with the Reason set to  ValidationTimedOut.
 				 * If the number of retries is not specified, it defaults to zero.
         		 */
         		retries=3 
@@ -203,10 +203,6 @@ package com.x.example.v1 {
 				 *       which it belongs. 
 				 * The timeout for a response is specified using the response keyword.
 				 *   It is measured from the start of the transaction to the receipt of the reponse.
-				 * If a response timeout is not specified, it defaults to 30s for queries, and to 3m for all 
-				 *   other two way transactions.
-				 * If a receipt timeout and/or a validation timeout is specified, then the receiver may send a 
-				 *   response instead of a receipt and/or a validation, respectively, within the specified timeout.
 				 */
         		timeouts(response=1h)
         		
