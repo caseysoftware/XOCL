@@ -157,7 +157,7 @@ package com.x.producttaxonomy.v1{
 	
 	record SearchProductTypeFailed {
 		summary "Signals that the search for product type failed."
-		description "Returns information about the failure, which is useful for troubleshooting."
+		description "Failure response for searching for product type. It returns information about the failure, which is useful for troubleshooting."
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 
@@ -179,7 +179,7 @@ package com.x.producttaxonomy.v1{
 
 	record GetProductTaxonomyFailed{
 		summary "Signals that search product class by locale failed."
-		description "Returns error details related to the failed retrieval, which are helpful in troubleshooting."
+		description "Failure response for getting product taxonomy. It returns error details related to the failed retrieval, which are helpful in troubleshooting."
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}	
 	
@@ -215,7 +215,7 @@ package com.x.producttaxonomy.v1{
 
 	record GetProductTypeFailed {
 		summary "Signals that the search for product type by ID failed."
-		description "Returns information about the failure, which is useful for troubleshooting"
+		description "Failure response for searching for product type by ID. It returns information about the failure, which is useful for troubleshooting"
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	
