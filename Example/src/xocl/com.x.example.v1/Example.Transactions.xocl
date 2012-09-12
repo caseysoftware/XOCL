@@ -96,8 +96,8 @@ package com.x.example.v1 {
     	 */
         sender {        	
         	/*
-			 * The receiver of a notification or command must send acknowledgements to the sender.
-			 * If an acknowledgement is received out of order, then the sender may send a cancellation
+			 * The receiver of a notification or command must send a validation to the sender.
+			 * If the validation is received out of order, then the sender may send a cancellation
 			 *   to abort the transaction, with the Reason set to ReceiptOutOfSequence or ValidationOutOfSequence.
         	 */
         	message OrderCreated {
