@@ -117,9 +117,9 @@ package com.x.comparisonshopping.v1 {
     	summary "Signals that the search for providers was successful."
     	description "Notification that searching for providers was successful. Returns the search results and the query request."
 
-		string providerName
-		string? providerDescription
-	    //Caller must get destination ID from header - X-XC-PUBLISHER-ID
+		string? providerName "Provider name."
+		string? providerDescription "Description of the provider."
+
 	}
 	
 	record StartDataFeed {
@@ -250,7 +250,7 @@ package com.x.comparisonshopping.v1 {
    		string? channelId "Identifier of the comparison shopping engine channel."
    		array<StoreOffer>? storeOffers "Collection of store offers levels by physical location."
    		ConditionType condition = NEW "Condition of the product. The default is NEW."
-   		string language = "en" "language code (ISO 639-1) If this is not provided, en is used."
+   		string language = "en" "2-letter language code. For example, 'en' (English) or 'fr' (French). If this is not provided, en is used."
    		boolean onlineOnly =  false "Whether the product is available only online. The default is false." 
 		boolean shipFromStore = false "Whether this item is available to be shipped from this location. The default is false." 
 		boolean eligibleForInStorePickup = false "Whether a shopper can visit the location to pickup the product. The default is false."
@@ -269,10 +269,10 @@ package com.x.comparisonshopping.v1 {
     	description "Notifies the publisher that the supplied product feed was processed."
     	
     	string feedId "Identifier of the feed that was processed."
-    	int numSuccessful "The number of records that sucessfully processed."
-    	int numFailed "The number of records that failed during processing."
-    	string statusMessage "A detailed description of the processing status. May include explanations for failure reasons."
-    	string name "Name assigned to this CSE."
+    	int numSuccessful "Number of records that successfully processed."
+    	int numFailed "Number of records that failed during processing."
+    	string statusMessage "Detailed description of the processing status. May include explanations for failure reasons."
+    	string name "Name assigned to this comparison shopping engine."
     }
 	
 	record PublishStoreOffers {
@@ -288,10 +288,10 @@ package com.x.comparisonshopping.v1 {
     	description "Notifies the publisher that the supplied store offer feed was processed."
     	
     	string feedId "Identifier of the feed that was processed."
-    	int numSuccessful "The number of records that sucessfully processed."
-    	int numFailed "The number of records that failed during processing."
-    	string statusMessage "A detailed description of the processing status. May include explanations for failure reasons."
-    	string name "Name assigned to this CSE."
+    	int numSuccessful "Number of records that successfully processed."
+    	int numFailed "Number of records that failed during processing."
+    	string statusMessage "Detailed description of the processing status. May include explanations for failure reasons."
+    	string name "Name assigned to this comparison shopping engine."
     }
 	
 	record PublishStores {
@@ -307,10 +307,10 @@ package com.x.comparisonshopping.v1 {
     	description "Notifies the publisher that the supplied store feed was processed."
     	
     	string feedId "Identifier of the feed that was processed."
-    	int numSuccessful "The number of records that sucessfully processed."
-    	int numFailed "The number of records that failed during processing."
-    	string statusMessage "A detailed description of the processing status. May include explanations for failure reasons."
-    	string name "Name assigned to this CSE."
+    	int numSuccessful "Number of records that successfully processed."
+    	int numFailed "Number of records that failed during processing."
+    	string statusMessage "Detailed description of the processing status. May include explanations for failure reasons."
+    	string name "Name assigned to this comparison shopping engine."
     }
 	
 
