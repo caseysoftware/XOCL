@@ -2,7 +2,6 @@
  *  order management domain
  */
 package com.x.ordermanagement.v2 {
-	packagetitle "Order Management"
 	
 	import com.x.ordermanagement.v2.*
 	import com.x.customer.v1.*
@@ -87,7 +86,7 @@ package com.x.ordermanagement.v2 {
         roles {
         	SalesChannel "Submits the order for processing."
         	OrderProcessor "Performs the order processing."
-        	OrderObserver "Informed of the processing that happened."
+        	OrderObserver "Notified when changes are made to the order's state."
         	CustomerManager "Creates or updates data about the customer associated with this order."
         
         }

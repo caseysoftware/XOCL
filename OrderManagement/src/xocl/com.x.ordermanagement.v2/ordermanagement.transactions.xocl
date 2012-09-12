@@ -2,7 +2,6 @@
  *  order management domain
  */
 package com.x.ordermanagement.v2 {
-	packagetitle "Order Management"
 	
 	import com.x.ordermanagement.v2.*
 	
