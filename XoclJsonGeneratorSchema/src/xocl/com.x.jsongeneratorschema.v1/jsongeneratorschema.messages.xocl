@@ -1,4 +1,4 @@
-package com.x.jsongeneratorschema.v1 0.0  workingdraft {
+package com.x.jsongeneratorschema.v1 0.0  earlydraft {
 	import com.x.jsongeneratorschema.v1.*
 	
 	record XoclWorkflowDocumentation
@@ -45,6 +45,7 @@ package com.x.jsongeneratorschema.v1 0.0  workingdraft {
 		string writerSchemaVersion;
 		string id;
 		string version;
+		string status;
 		Documentation? documentation;
 		array<XoclContractBinding> _AVDL_bindings;
 	}
@@ -52,7 +53,7 @@ package com.x.jsongeneratorschema.v1 0.0  workingdraft {
 	record XoclPkg {
 		string writerSchemaVersion;
 		string version;
-		string? status;
+		string status;
 		Documentation? documentation;
 		array<Transaction> transactions;
 		array<XoclWorkflow> workflows;
