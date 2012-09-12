@@ -117,7 +117,7 @@ package com.x.comparisonshopping.v1 {
     	summary "Signals that the search for providers was successful."
     	description "Notification that searching for providers was successful. Returns the search results and the query request."
 
-		string? providerName "Provider name."
+		string providerName "Provider name."
 		string? providerDescription "Description of the provider."
 
 	}
