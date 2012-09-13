@@ -13,7 +13,7 @@ package com.x.example.v1 {
     /*
      * A process is a distributed activity with a desription and two or more roles.
      * A process can have parameters that can be used in pre and post conditions.
-     * A parameter binds to all entities of the specified type referenced by the process.
+     * A parameter binds to an entity of the specified type referenced by the process.
      * A process references an entity by passing it to a transaction or a workflow.
      * By convention, processes use the naming pattern <noun><verb_as_noun>.
      */
@@ -76,7 +76,7 @@ package com.x.example.v1 {
         }
         
         /*
-    	 * An action may start when it predecessor succeeds. If an action fails, the workflow fails.
+    	 * An action may start when it predecessor succeeds. If an action fails, the sequence ends.
     	 * The following action is a do block, which lets a sequence of nested actions run repeatedly.
     	 * A do block may have an optional iteration condition that specifies what makes it terminate.
     	 * The format of the condition may be a numerical range, following UML range notation, or any 
@@ -88,9 +88,11 @@ package com.x.example.v1 {
 		 do [1d] {
 			/*
 			 * The following action is an any block, which lets one or more nested actions run in parallel.
-			 * The any block succeeds when any of the nested actions succeeds, and fails only if all of 
-			 *   them fail. Actions in progress when the any block succeeds continue to run but their success 
-			 *   or failure does not affect the outcome. Actions in an any block may or may not occur. 
+			 * The any block succeeds when any N of the nested actions succeeds, where N is specified cardinality. 
+			 *   If no cardinality is specified, it defaults to 0.
+			 * Actions within an any block may or may not occur.
+			 *   An action that does not occur does not count as either a success or a failure.
+			 * An any block ends when all of the actions it contains have ended or have not occurred. 
 			 * The following any block indicates that the transaction UpdateInventory may or may not occur.
 			 * The InventoryManager may therefore send InventoryUpdated to the OfferManager, even if the 
 			 *   OrderManager did not first send UpdateInventory, because, for example, the inventory might 
@@ -124,7 +126,7 @@ package com.x.example.v1 {
 
     /*
      * A process can have variants. Process variants control the inclusion or exclusion of workflow 
-     *   features, and can bind to transaction variants.
+     *   features, and  bind to transaction variants.
      */
     process OrderFulfillment<WithConfiguration, WithAuthorization>(Order order) {
         description "Merchant fulfills the sales-channel order from Buyer using Merchant Console"
@@ -152,7 +154,7 @@ package com.x.example.v1 {
 		        }
 		        
 		        /*
-		         * This transaction call is optional because the OrderManager and WarehouseManager rolse may 
+		         * This transaction call is optional because the OrderManager and WarehouseManager roles may 
 		         *   be played by same capability or by different capabilities. If they are different, then the 
 		         *   interaction will go over the wire, but if they are the same, then it will be internal.
 		         */

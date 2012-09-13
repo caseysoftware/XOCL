@@ -43,13 +43,15 @@ package com.x.example.v1 {
     transaction InventoryUpdated inform {
     	/*
     	 * Every transaction has exacty two roles: sender and receiver. One or more capabilities may
-    	 *   play the receiver role at the same time in an event or broadcast transaction.
+    	 *   play the receiver role at the same time in an event or broadcast query.
 	     * The sender of the first message in a workflow must set the X-XC-MESSAGE-GUID-CONTINUATION 
 	     *   header to null, and the X-XC-WORKFLOW-ID header to a new GUID.
 	     * The sender of any other message in a workflow, including an acknowledgement, cancellation 
 	     *     or response, must set 
-	     *   the X-XC-MESSAGE-GUID-CONTINUATION header to the ID of the immediately preceding message,   
-	     *   the X-XC-WORKFLOW-ID header to the value it had on the immediately preceding message. 
+	     *   the X-XC-MESSAGE-GUID-CONTINUATION header to the ID of the immediately preceding message, 
+	     *   the X-XC-WORKFLOW-ID header to the value it had on the immediately preceding message, and 
+	     *   the X-XC-DESTINATION-ID header to the value of the X-XC-PUBLISHER-PSEUDONYM header of the 
+	     *     immediately preceding message.
 	     * The sender of the first message in a transaction must set the X-XC-TRANSACTION-ID to a new GUID.
 	     * The sender of any other message in a transaction, including an acknowledgement, cancellation 
 	     *     or response, must set
@@ -59,9 +61,9 @@ package com.x.example.v1 {
         	/*
         	 * The following line defines the message sent to start the transaction.
         	 * This message uses the default message name, which is the transaction name.
-	    	 * It also uses the default topic name, which is the transaction name.
 	         * A topic is generated for every message in every transaction called by a workflow.
-			 * The default topic name uses the naming pattern <workflow_package>/<workflow_name>/<message_name>.
+			 * The default topic for a messages uses the naming pattern 
+			 *   <workflow_package>/<workflow_name>/<message_name>.
 			 * Since no return messages can be sent, an event has no timeouts or retries.
         	 */
         	message InventoryUpdated
@@ -69,9 +71,9 @@ package com.x.example.v1 {
         
         /*
          * The receiver of an event cannot send any return messages, and does not even have to be declared.
-         * If a message is received out of order, the receiver must send a cancellation to abort the transaction 
-         *   with the Reason set to MessageOutOfSequence.
-         *     A message is out of order if it does not follow a valid predecessor within the current workflow.
+         * If a message that starts a transaction is received out of order, the receiver must send a 
+         *     cancellation to abort the transaction with the Reason set to MessageOutOfSequence.
+         *   A message is out of order if it does not follow a valid predecessor within the current workflow.
 		 *   A cancellation uses the standard message type com.x.core.v1.TransactionCancelled. 
 		 *   A cancellation must be sent to the standard topic com.x.core.v1/TransactionCancelled.
 		 *   See com.x.core.v1.TransactionCancelled for more information about cancellations.
@@ -80,52 +82,43 @@ package com.x.example.v1 {
 	}
 	
 	/*
-	 * A notify transaction, also called a notification, is a one way interaction with acknowledgements.
+	 * A notify transaction, also called a notification, is a one way interaction with validation.
 	 * By convention, a notification uses the naming pattern <noun><past_tense_verb>.
 	 * This transaction has variants, which are specified in angle brackets.
 	 */
     transaction OrderCreated<WithCreationMetadata, WithAuthorization> notify { 
     	/*
-    	 * The sender of a notification or command must perform the following actions:
+    	 * The sender of a notification must perform the following actions:
     	 *   Send the appropriate message to start the transaction on the appropriate topic.
-		 *   Wait for the validation acknowledgemnet on com.x.core.v1.MessageValidated 
-		 *       on topic com.x.core.v1/MessageValidated.
-		 *     If timeout occurs, retry
-		 *       If retries exhausted, send com.x.core.v1.TransactionCancelled to the receiver on topic 
-		 *         com.x.core.v1/TransactionCancelled with reason ValidationTimedOut.
+		 *   Wait for the validation message com.x.core.v1.MessageValidated on topic 
+		 *     com.x.core.v1/MessageValidated.
+		 *   If timeout occurs, retry
+		 *   If retries are exhausted, cancel the transaction as follows:
+		 *     Fail the transaction locally, and
+		 *     Send a cancellation to the receiver with reason ValidationTimedOut if the receiver's 
+		 *       publisher pseudonym is known and can be used to set the X-XC-DESTINATION-ID header.
     	 */
         sender {        	
-        	/*
-			 * The receiver of a notification or command must send a validation to the sender.
-			 * If the validation is received out of order, then the sender may send a cancellation
-			 *   to abort the transaction, with the Reason set to ReceiptOutOfSequence or ValidationOutOfSequence.
-        	 */
         	message OrderCreated {
         		/*
         		 * Validation is subject to timeouts.
-				 * A timeout is measured from the start of the transaction to the receipt of the acknowledgement.
+				 * A timeout is measured from the start of the transaction to the receipt of the validation.
 				 * The unit for a timeout may be 's' for seconds, 'm' for minutes, 'h' for hours, or 'd' for days.
 				 *   A validation indicates that the receiver was able to validate the message contents.
-				 *     If the receiver cannot validate the message contents, then it must send a cancellation 
-				 *       to abort the transaction, with the Reason set to ValidationError.
+				 *     If the receiver cannot validate the message contents, then it must:
+				 *       Fail the transaction locally, and
+				 *       Send a cancellation to the sender with the Reason set to ValidationError.
 				 *     The timeout for a validation is specified using the validation keyword. 
-				 *     If a validation timeout is specified, the receiver must send a validation or a cancellation.
-				 *     If a validation timeout is not specified, then the receiver must not send a validation.
-				 *     If both a receipt timeout and a validation timeout are specified, then the receiver may send 
-				 *       a validation instead of a receipt within the receipt timeout.
 				 *     A validation uses the standard message type com.x.core.v1.MessageValidated.
 				 *     A validation must be sent to the standard topic com.x.core.v1/MessageValidated.
 				 *     See com.x.core.v1.MessageValidated for more information about validations.
+				 * If a validation is received out of order, the sender may either ignore it or 
+				 *     cancel the transaction as follows:
+				 *   Fail the transaction locally, and
+				 *   Send a cancellation to the receiver with reason ValidationOutOfSequence if the receiver's 
+				 *     publisher pseudonym is known and can be used to set the X-XC-DESTINATION-ID header.
         		 */ 
-        		timeouts( validation=3m)
-        		
-        		/*
-				 * If a given validation is not received within the specified timeout, 
-				 *   then the sender must retry up to the specified number of times.
-				 * If the specified number of retries is exhausted, then the sender must send a cancellation
-				 *   to abort the transaction, with the Reason set to  ValidationTimedOut.
-				 * If the number of retries is not specified, it defaults to zero.
-        		 */
+        		timeouts(validation=3m)
         		retries=3 
         	}
         	
@@ -136,7 +129,7 @@ package com.x.example.v1 {
     	     * By convention, variant messages use the naming pattern <default_message_name><variant>.
         	 */
         	message<WithCreationMetadata> OrderCreatedWithCreationMetadata {
-        		timeouts( validation=1h)
+        		timeouts(validation=1h)
         		retries=5
         	}
         	
@@ -150,17 +143,14 @@ package com.x.example.v1 {
         }
         
         /*
-         * The receiver of a notification or command must perform the following actions:
+         * The receiver of a notification must perform the following actions:
 		 *   Receive the incoming message on the appropriate topic.
-		 *   If the contract requires receipt acknowledgement, send com.x.core.v1.MessageReceived to the 
-		 *     sender on topic com.x.core.v1/MessageReceived.
-		 *   Call domain logic to validate the contents of the message
+		 *   Call business logic to validate the contents of the message
 		 *   If validation succeeds
-		 *     If the contract requires validation acknowledgement, send com.x.core.v1.MessageValidated to the 
-		 *       sender on topic com.x.core.v1/MessageValidated.
+		 *     Send com.x.core.v1.MessageValidated to the sender on topic com.x.core.v1/MessageValidated.
 		 *   If validation fails
-		 *     Send com.x.core.v1.TransactionCancelled to the sender on topic com.x.core.v1/TransactionCancelled 
-		 *       with reason ValidationError.
+		 *     Fail the transaction locally, and 
+		 *     Send a cancellation to the sender with reason ValidationError.
          */
         receiver
     }
@@ -171,21 +161,18 @@ package com.x.example.v1 {
      */
     transaction PrepareOrder response {
     	/*
-    	 * After the actions required for a notification, the sender of a command must perform 
-    	 *     the following additional actions:
-		 *   Wait for the response on the appropriate topics.
+    	 * The sender of a command must perform the following actions:
+    	 *   Send the appropriate message to start the transaction on the appropriate topic.
+		 *   Wait for a response on the appropriate topics.
 		 *     If timeout occurs, retry
-		 *       If retries exhausted, send com.x.core.v1.TransactionCancelled to the receiver on topic 
-		 *         com.x.core.v1/TransactionCancelled with reason ResponseTimedOut.
-		 *   If the contract requires receipt acknowledgement, send com.x.core.v1.MessageReceived to the  
-		 *     receiver on topic com.x.core.v1/MessageReceived.
-		 *   Call domain logic to validate the contents of the message
-		 *   If validation succeeds
-		 *     If the contract requires validation acknowledgement, send com.x.core.v1.MessageValidated to the 
-		 *       receiver on topic com.x.core.v1/MessageValidated.
-		 *   If validation fails
-		 *     Send com.x.core.v1.TransactionCancelled to the receiver on topic 
-		 *       com.x.core.v1/TransactionCancelled with reason ValidatonError.
+		 *     If retries are exhausted, cancel the transaction.
+		 *       To cancel the transaction, the sender should:
+		 *       Fail the transaction locally, and
+		 *       Send a cancellation to the receiver with reason ResponseTimedOut if the receiver's 
+		 *         publisher pseudonym is known and can be used to set the X-XC-DESTINATION-ID header.
+		 *   Call business logic to process the contents of the response.
+		 *   If processing fails
+		 *     Send a cancellation to the receiver with reason ValidatonError.
     	 */
         sender {
         	message PrepareOrder {					
@@ -195,28 +182,31 @@ package com.x.example.v1 {
 			     *   X-XC-DESTINATION-ID header to the value of the X-XC-PUBLISHER-PSEUDONYM header 
 			     *   on the request message.
 				 * A response indicates whether the operation succeeded or failed and may contain additional data.
-				 * If a response is received out of order, then the sender must send a cancellation
-				 *   to abort the transaction, with the Reason set to ResponseOutOfSequence.
-				 *     A response is out of order if it does not arrive within the context of the transaction to 
-				 *       which it belongs. 
+				 * If a response is received out of order, then the sender must cancel the transaction as follows:
+				 *     Fail the transaction locally, and 
+				 *     Send a cancellation to the receiver with reason ResponseOutOfSequence.
+				 * A response is out of order if it does not arrive within the context of the transaction to 
+				 *   which it belongs.
 				 * The timeout for a response is specified using the response keyword.
 				 *   It is measured from the start of the transaction to the receipt of the reponse.
 				 */
         		timeouts(response=1h)
-        		
-        		/*
-				 * If a response is not received within the specified timeout, 
-				 *   then the sender must retry up to the specified number of times.
-				 * If the specified number of retries is exhausted, then the sender must send a cancellation
-				 *   to abort the transaction, with the Reason set to ResponseTimedOut.
-        		 */
         		retries=3
         	}
         }
         
         /*
-    	 * After the actions required for a notification, the receiver of a command must
-    	 * send the appropriate response to the sender on the appropriate topic.
+    	 * The receiver of a command must perform the following actions:
+		 *   Receive the incoming message on the appropriate topic.
+		 *   Call business logic to process the contents of the message.
+		 *   If validation fails
+		 *     Fail the transaction locally, and 
+		 *     Send a cancellation to the sender with reason ValidationError.
+		 *   If processing fails
+		 *     Fail the transaction locally, and 
+		 *     Send the failure response to the sender on the appropriate topic.
+		 *   If processing succeeds
+    	 *     Send the success response to the sender on the appropriate topic.
          */
         receiver {
         	/*
@@ -237,35 +227,25 @@ package com.x.example.v1 {
         
     /*
      * A transaction can have parameters that can be used in pre and post conditions.
-     * A parameter binds to all entities of the specified type referenced by the transaction.
+     * A parameter binds to an entity of the specified type referenced by the transaction.
      * A transaction references an entity by using its identity in a message.
      */
     transaction ShipOrder(Order order) response {
     	/*
-    	 * The sender and receiver declarations are optional. By default, for a command:
-    	 *   The sender sends the default message without acknowledgements or retries.
-    	 *   The receiver sends the default success and failure messages.
-    	 */
-    	 
-    	/*
     	 * All preconditions must be true when the transaction starts. 
-    	 * The following precondition requires that all referenced orders be in the Prepared state.
+    	 * The following precondition requires that the referenced entity named order be in the Prepared state.
          */
         preconditions(order[Order.Prepared])
         
         sender {
         	message ShipOrder {
-        		timeouts( response=30m)
+        		timeouts(response=30m)
         		retries = 3
         	}
         }
         receiver {
-        	success ShipOrderSucceeded {
-
-        	}
-        	failure ShipOrderFailed {
-
-        	}
+        	success ShipOrderSucceeded
+        	failure ShipOrderFailed
         }
         /*
          * All success postconditions must be true when the transaction succeeds.
@@ -288,13 +268,12 @@ package com.x.example.v1 {
     }
     
     /*
-     * The entire transaction body is optional.
      * By default, a transaction has no variants or parameters, and no pre or post conditions. 
      */
     transaction UpdateInventory response {
     	sender {
     		message UpdateInventory {
-        		timeouts( response=30m)
+        		timeouts(response=30m)
         		retries = 3
     		}
     	}
@@ -322,7 +301,6 @@ package com.x.example.v1 {
 	 *   A search takes explicitly supplied search criteria and returns an array of objects.
 	 *   A lookup takes an object identifier and returns the object.
 	 * By convention, they use the naming pattern Search<noun> and Lookup<noun>, respectively.
-	 * By default, a query has no retries.
 	 */
  	transaction SearchOrder query
     {
@@ -331,7 +309,7 @@ package com.x.example.v1 {
         	message SearchOrder
         	{
         		 timeouts(response=3m)
-        		 retries=0     		
+        		 retries=0
         	}
         }
         receiver
