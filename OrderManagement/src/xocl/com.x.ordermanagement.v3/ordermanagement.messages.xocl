@@ -8,13 +8,16 @@ package com.x.ordermanagement.v3 {
 	
 	// move these general types to core once this mechanism is validated/approved
 	enum ErrorCodes {
+		description "Defines the values used to specify the type of error."
 		INVALID_MESSAGE "The message that was supplied was not valid."
 		OTHER "The error occurred for an unknown reason."
 	}
 	
 	record SimpleError {
-		string code
-		string? _AVDL_message
+		summary "Contains the fields that define an error message."
+		description "Contains the fields used to specify the error code and error message."
+		string code "Identifier of the error."
+		string? _AVDL_message "Explanation of the error."
 	}
 
 	record Error<ErrorCodes> {
@@ -31,36 +34,42 @@ package com.x.ordermanagement.v3 {
 		 */
 		map<string>? parameters "Parameters for the message. Parameter place holders identified using the format in java.text.MessageFormat. The key of the map is the placeholder string, and the value is the string that replaces it.";
 		
-		array<SimpleError>? errorDetails
+		array<SimpleError>? errorDetails "Array of error codes and messages."
 	}
 	
 	// Order management
 	enum OrderManagementLookupErrorCodes extends ErrorCodes {
+		description "Defines lookup error types that are added to the ErrorCodes record."
 		ORDER_NOT_FOUND "The supplied order number could not be found and processed."
 		ORDER_LINE_NOT_FOUND "The supplied order line number could not be found and processed."
 	}
 	
 	enum ShipppingInformationUpdateErrorCodes extends OrderManagementLookupErrorCodes {
+		description "Defines channel specific error types that are added to the OrderManagementLookupErrorCodes record."
 		CHANNEL_UPDATE_REFUSED "The channel refused the request to update shipping information."
 	}
 	
 	enum ProcessOrderErrorCodes {
+		description "Defines the values used to specify order processing error types."
 		INVALID_ORDER_SUBMITTED "The supplied order is not valid."
 		PAYMENT_PROCESSING_FAILED "Unable to process payment for this order."
 		INVALID_DESTINATION "Unable to verify shipping destination of this order."
 	}
 	
 	enum SubmitOrderErrorCodes {
+		description "Defines the values used to specify order submission error types."
 		INVALID_ORDER_SUBMITTED "The supplied order is not valid."
 		DUPLICATE_ORDER_SUBMITTED "The submitted order already exists."
 	}
 	
 	enum CreateOrderErrorCodes {
+		description "Defines the values used to specify order creation error types."
 		INVALID_ORDER "The supplied order is not valid."
 		DUPLICATE_ORDER "The submitted order already exists."
 	}
 	
 	enum CancelOrderErrorCodes extends OrderManagementLookupErrorCodes {
+		description "Defines the values used to specify order submission error types."
 		ORDER_ALREADY_CANCELED "The order has already been canceled."
 	}
 	
@@ -69,18 +78,16 @@ package com.x.ordermanagement.v3 {
 	}
 	
 	enum ShipmentStatus {  
-		summary "The overall shipping state of a shipment."
-		description "The overall shipping state of a shipment."
-		READY_TO_SHIP,
-		SHIPPED,
-		UNDELIVERABLE,
-		CANCELLED,
-		COMPLETED
+		description "Defines the values used to specify the shipping state of an order."
+		READY_TO_SHIP "Order is ready to be shipped." ,
+		SHIPPED "Order has been shipped.",
+		UNDELIVERABLE "Shipper was unable to deliver the order.",
+		CANCELLED "Order was cancelled.",
+		COMPLETED "Order has been shipped and delivered."
 	}
 	
 	enum TaxabilityType {
-		summary "Specifies the taxability types."
-		description "Defines the values use to specify the type of tax that applies to a given order line item."
+		description "Defines the values used to specify the type of tax that applies to a given order line item."
 		TAXABLE "Indicates tax should be applied to an item.",
 		NONTAXABLE "Indicates tax should not be applied to an item.",
 		EXEMPT "Indicates that the customer has tax exempt status, such as a non-profit organization.",
@@ -88,7 +95,6 @@ package com.x.ordermanagement.v3 {
 	}
 	
 	enum OrderStatus {
-		summary "Specifies the order status types."
 		description "Defines the values used to specify the status of an order."
 		NEW "Indicates that the order has just been created.",
 		ON_HOLD "Indicates that the processing of the order is stopped.",
@@ -105,7 +111,6 @@ package com.x.ordermanagement.v3 {
 	}
 	
 	enum ShippingServiceType {
-		summary "Specifies the shipping service types."
 		description "Defines the values used to specify the type of service used to ship the purchased goods."
 		MERCHANT_SHIPPED "Indicates that the merchant shipped the order themselves.",
 		DROP_SHIP "Indicates that the merchant used a drop ship service to ship the order.",
@@ -114,7 +119,6 @@ package com.x.ordermanagement.v3 {
 	}
 	
 	enum PromotionDiscountType {
-		summary "Specifies the promotion discount types."
 		description "Defines the values used to specify the promotional discount type."
 		STOREWIDE_SALE "Indicates that the promotion was a store wide sale.",
 		SHIPPING_DISCOUNT "Indicates that the promotion was a shipping discount.",
@@ -123,7 +127,6 @@ package com.x.ordermanagement.v3 {
 	}
 	
 	enum PaymentStatus {
-		summary "Specifies the payment status values."
 		description "Defines the values used to specify the payment processing status for a an order."
 		AUTHORIZED "Indicates that the order payment has been authorized.",
 		PAID "Indicates that the order has been paid for.",
@@ -133,7 +136,6 @@ package com.x.ordermanagement.v3 {
 	}
 	
 	enum CancellationReason {
-		summary "Specifies the cancellation values."
 		description "Defines the values used to specify the cancellation reasons for cancelling an order."
 		BUYER_CANCELED "Indicates that a buyer has cancelled the order.", 
 		MERCHANT_CANCELED "Indicates that a merchant has cancelled the order.",  
@@ -696,7 +698,7 @@ package com.x.ordermanagement.v3 {
 		description "Captures the information needed to adjust orders that were changed in ways that effect the overall price of the product."
 		uri? id "Unique order identifier generated by the originator of the order."
 		
-		/** TODO: Should the scope of the order line data be more constrainer here?
+		/** TODO: Should the scope of the order line data be more constrained here?
 		 */
 		array<SimpleOrderLineData> adjustedLines "Array of the lines that were adjusted/updated. This does not include items that were not adjusted or updated."
 	}
