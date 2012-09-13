@@ -2,19 +2,7 @@ package com.x.marketplace.v3{
 
 	import com.x.core.v1.*
 	import com.x.pim.v1.*
-	import com.x.ordermanagement.v2.*
-	
-
-    record CustomCategory {
-    	summary "Contains the information a merchant defined category."
-    	description "A custom category is a category that the merchant uses but isn't in the taxonomy of the channel you are publishing to. The record captures information about a merchant defined category." // For example, in eBay it would be the eBay store categories the merchant defined.  Each channel could have their own 'customizable' category structure.
-
-		long id "Identifier of the custom category.";
-		string name "Name of the custom category.";
-		int order "Order in which the custom category appears in the list of store categories."; 
-		array<CustomCategory> childCategories "Array of the child categories for the custom category.";
-	}
-	
+	import com.x.ordermanagement.v2.*	
 
     record SiteMetadata extends Site {	
     	summary "Adds fields to the Site record."
