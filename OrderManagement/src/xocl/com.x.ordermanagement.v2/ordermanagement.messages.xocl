@@ -7,7 +7,6 @@ package com.x.ordermanagement.v2 {
 	import com.x.core.v1.*
 	
 	enum TaxabilityType {
-		summary "Specifies the taxability types."
 		description "Defines the values use to specify the type of tax that applies to a given order line item."
 		TAXABLE "Indicates tax should be applied to an item.",
 		NONTAXABLE "Indicates tax should not be applied to an item.",
@@ -16,7 +15,6 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	enum OrderStatus {
-		summary "Specifies the order status types."
 		description "Defines the values used to specify the status of an order."
 		NEW "Indicates that the order has just been created.",
 		ON_HOLD "Indicates that the processing of the order is stopped.",
@@ -33,7 +31,6 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	enum ShippingServiceType {
-		summary "Specifies the shipping service types."
 		description "Defines the values used to specify the type of service used to ship the purchased goods."
 		MERCHANT_SHIPPED "Indicates that the merchant shipped the order themselves.",
 		DROP_SHIP "Indicates that the merchant used a drop ship service to ship the order.",
@@ -42,7 +39,6 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	enum PromotionDiscountType {
-		summary "Specifies the promotion discount types."
 		description "Defines the values used to specify the promotional discount type."
 		STOREWIDE_SALE "Indicates that the promotion was a store wide sale.",
 		SHIPPING_DISCOUNT "Indicates that the promotion was a shipping discount.",
@@ -51,7 +47,6 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	enum PaymentStatus {
-		summary "Specifies the payment status values."
 		description "Defines the values used to specify the payment processing status for a an order."
 		AUTHORIZED "Indicates that the order payment has been authorized.",
 		PAID "Indicates that the order has been paid for.",
@@ -61,7 +56,6 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	enum CancellationReason {
-		summary "Specifies the cancellation values."
 		description "Defines the values used to specify the cancellation reasons for cancelling an order."
 		BUYER_CANCELED "Indicates that a buyer has cancelled the order.", 
 		MERCHANT_CANCELED "Indicates that a merchant has cancelled the order.",  
