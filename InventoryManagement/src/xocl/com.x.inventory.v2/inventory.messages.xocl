@@ -63,7 +63,6 @@ package com.x.inventory.v2
 	}
 	
 	enum InventorySnapshotReason {
-		summary "Specifies the reason for an inventory snapshot."
 		description "Defines the values that can be used to specify the reason for an inventory snapshot."
 		CYCLE_COUNT "Indicates the inventory snapshot was for a cycle count. A cycle count is where a small subset of inventory, in a specific location, is counted on a specified day."
 		DAMAGED_INVENTORY "Indicates the inventory snapshot was for damaged inventory."
@@ -71,7 +70,6 @@ package com.x.inventory.v2
 	}
 	
 	enum InventoryCondition {
-		summary "Specifies the condition of an item."
 		description "Defines the values that can be used to specify the condition of an item."
 		SELLABLE "Indicates that the item is in sellable condition."
 		UNSELLABLE "Indicates that the condition of the item makes the item unsellable."
