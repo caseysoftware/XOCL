@@ -219,4 +219,59 @@ package com.x.producttaxonomy.v2{
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	
+	record SuggestProductType
+	{
+	    summary "Requests search for X Product Type "
+	    boolean suggestProductSpecificAttributeDetails "setting the flag fetches Product details."
+	    string? locale "Target locale"
+	    array<SuggestProductRequest> suggestProductRequest
+	}
+ 
+	record SuggestProductRequest
+	{
+    	summary "holds the information for the Product "
+    	string referenceId "Can be the product Id or any reference Id which identifies the Product. Should be unique in a across all the search products"
+    	string title "Product title"
+    	array<AttributeValuePair>? searchProductDetails "Attribute value pairs"
+	}
+ 
+	record AttributeValuePair
+	{
+    	string attribute "Attribute of the Product"
+    	string value "Value for the Attribute"
+	}
+ 
+	enum MATCHTYPE {
+     	EXACT_MATCH,
+    	STRONG_MATCH,
+     	WEAK_MATCH
+	}
+ 
+	record SuggestProductTypeSucceded
+	{	
+   		array<SuggestedProductResult> suggestedProductResult "Array of results equivalent to the Search product"
+   		SuggestProductType request;
+	}
+ 
+	record SuggestProductTypeFailed
+	{
+		array<Error> errors "Errors with Suggest Product Request";
+		SuggestProductType request;
+	}
+ 
+	record SuggestedProductResult
+	{
+    	string referenceId "reference Id for the Search Product"
+    	array<SuggestedProduct> suggestedProducts "Array of X product types for the search product"
+	}
+ 
+	record SuggestedProduct
+	{
+    	string xProductTypeId " X Product Type Id"
+    	string? _AVDL_description "description of the Product"
+    	string? title "Product Title"
+    	MATCHTYPE matchStrength "Defines the accuracy of the match"
+    	array<AttributeValuePair>? productDetails " Arrays or Attribute/Value pairs "
+	} 
+	
 }
