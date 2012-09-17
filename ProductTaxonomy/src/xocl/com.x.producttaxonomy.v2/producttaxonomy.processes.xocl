@@ -52,4 +52,23 @@ package com.x.producttaxonomy.v2 {
 		}
 		
 	}
+	
+	process ProductTypeSuggestion{
+		description "Suggests a product type based on title, description, and NV pairs"
+
+		roles
+			{
+				ProductTaxonomyConsumer "A system such as a cart which needs product taxonomy information"
+				ProductTaxonomyManager "The system which maintains the product taxonomy information and provides product suggestions"
+			}
+		
+		workflow {
+						
+			transaction SuggestProductType {
+				roles(ProductTaxonomyConsumer, ProductTaxonomyManager)
+			}
+		}
+		
+	}
+	
 }

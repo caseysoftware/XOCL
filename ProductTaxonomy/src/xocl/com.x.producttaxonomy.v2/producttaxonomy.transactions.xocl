@@ -51,7 +51,22 @@ package com.x.producttaxonomy.v2{
 			message ProductTaxonomyUpdated
 		}
 	}
-
+	
+    transaction SuggestProductType query {
+        description "Searches products based on product Properties"
+        sender {
+            message SuggestProductType {
+                timeouts(response=1m)
+                retries=3
+            }
+        }
+        receiver {
+            success SuggestProductTypeSucceded{
+            }
+            failure SuggestProductTypeFailed{
+            }
+        }
+    } 
 	
 
 }
