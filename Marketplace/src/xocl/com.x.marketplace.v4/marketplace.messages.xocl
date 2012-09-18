@@ -73,6 +73,7 @@ package com.x.marketplace.v4{
 		boolean returnsAccepted "Specifies whether the site accepts returns.";
 		array<RefundMethod> method "Refund method of the return policy.";
 		int maxReturnByDays "Maximum number of days the customer has to return an item.";
+		array<int>? returnsWithin "Supported numbers of days within which the buyer can return the item." 
 	}
     
     enum ShippingLocaleType {
