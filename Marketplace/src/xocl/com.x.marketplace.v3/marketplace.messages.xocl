@@ -73,6 +73,7 @@ package com.x.marketplace.v3{
 		boolean returnsAccepted "Specifies whether the site accepts returns.";
 		array<RefundMethod> method "Refund method of the return policy.";
 		int maxReturnByDays "Maximum number of days the customer has to return an item.";
+		array<string>? returnsWithin "2-character country code. For example, US (United States) or FR (France)." 
 	}
     
     enum ShippingLocaleType {
@@ -139,6 +140,7 @@ package com.x.marketplace.v3{
 	    string channelAssignedOfferId "Identifier of the offer, which is provided by the marketplace."; 
 		string? channelOfferUrl "URL of the offer, which is provided by the marketplace.";
 		string? channelStatus "Status of the offer, which is provided by the marketplace.";	
+		CurrencyAmount? channelOfferFee "The fee that was incurred to list this offer on the marketplace"
 	}
 	
 	record Category {
@@ -284,6 +286,7 @@ package com.x.marketplace.v3{
 	    CalculatedShippingPolicy? calculatedShippingPolicy "Calculated shipping policy data specific to this offer. Note: This overrides the data in the calculated shipping policy profile."
 	    array<Sku> skus "SKUs of the items being offered.";
 	    array<string>? customCategories "Custom categories for the items being offered."; // Note: For eBay these correspond to the eBay store categories.
+	    CurrencyAmount listing
 	}
 	
 	record GetAllAvailableChannels {

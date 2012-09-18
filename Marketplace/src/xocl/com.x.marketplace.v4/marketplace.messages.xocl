@@ -138,7 +138,8 @@ package com.x.marketplace.v4{
 		OfferState offerState "State of the offer.";
 	    string channelAssignedOfferId "Identifier of the offer, which is provided by the marketplace."; 
 		string? channelOfferUrl "URL of the offer, which is provided by the marketplace.";
-		string? channelStatus "Status of the offer, which is provided by the marketplace.";	
+		string? channelStatus "Status of the offer, which is provided by the marketplace.";
+		CurrencyAmount? channelOfferFee "The fee that was incurred to list this offer on the marketplace"	
 	}
 	
 	record Category {
