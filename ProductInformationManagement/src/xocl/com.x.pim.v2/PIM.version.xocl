@@ -1,4 +1,4 @@
-package com.x.pim.v2 0.2 earlydraft {
+package com.x.pim.v2 0.3 earlydraft {
 	packagetitle "Product Information Management"
 	description "The Product Information Management package specifies processes for managing product information that is used by multiple systems within a merchant’s commerce ecosystem."
 	import com.x.pim.v2.*
