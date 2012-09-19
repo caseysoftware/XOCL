@@ -286,7 +286,6 @@ package com.x.marketplace.v3{
 	    CalculatedShippingPolicy? calculatedShippingPolicy "Calculated shipping policy data specific to this offer. Note: This overrides the data in the calculated shipping policy profile."
 	    array<Sku> skus "SKUs of the items being offered.";
 	    array<string>? customCategories "Custom categories for the items being offered."; // Note: For eBay these correspond to the eBay store categories.
-	    CurrencyAmount listing
 	}
 	
 	record GetAllAvailableChannels {
