@@ -1,4 +1,4 @@
-package com.x.ordermanagement.v3 0.6 workingdraft {
+package com.x.ordermanagement.v3 0.7 workingdraft {
 	packagetitle "Order Management"
 	import com.x.ordermanagement.v3.*
 }

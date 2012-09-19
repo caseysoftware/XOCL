@@ -143,6 +143,12 @@ package com.x.ordermanagement.v3 {
 		FRAUD_FAKE "Indicates that a the order was cancelled because it was classified as fraud." 
 	}
 	
+	record VariationValue {
+		description "The value of a single variation."
+		string name "The name/label of the variation (size, color, etc.)."
+		string value "The value of the varitaion (large, red, etc.)."
+	}
+	
 	record PackageDimensions {
 		summary "Contains the package dimensions."
 		description "Captures the depth, length, width, and unit of dimension measurement for a package."
@@ -314,6 +320,7 @@ package com.x.ordermanagement.v3 {
 		OrderLinePrice price "Price for the item without additional fees."
 		string? shipmentId "Unique identifier of the shipment that was used to send the item to the customer. Note: The value must be unique only within a given order."
 		boolean shippingFeesTaxed = false "True if the order line had taxes applied to its shipping fees."
+		array<VariationValue>? variationValues "The specific combination of variation values associated with the product SKU."
 	}
 	
 	record ReturnOrderLineData extends PartialOrderLineData {
@@ -358,6 +365,7 @@ package com.x.ordermanagement.v3 {
 		string? offerId "Identifier of the offer. This ID is assigned by the channel that published the offer. Note: offerId and offerURL provide information that can be used to construct a link to the product on the sales channel where it was purchased."
 		string? offerUrl "URL of the offer. Note: offerId and offerURL provide information that can be used to construct a link to the product on the sales channel where it was purchased."
 		boolean shippingFeesTaxed = false "True if the order line had taxes applied to its shipping fees."
+		array<VariationValue>? variationValues "The specific combination of variation values associated with the product SKU."
 	}
 	
 	record OrderLineData extends SimpleOrderLineData {
