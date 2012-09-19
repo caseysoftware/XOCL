@@ -146,7 +146,7 @@ package com.x.ordermanagement.v3 {
 	record VariationValue {
 		description "The value of a single variation."
 		string name "The name/label of the variation (size, color, etc.)."
-		string value "The value of the varitaion (large, red, etc.)."
+		string value "The value of the variation (large, red, etc.)."
 	}
 	
 	record PackageDimensions {
