@@ -1,4 +1,4 @@
-package com.x.jsongeneratorschema.v1 0.2  earlydraft {
+package com.x.jsongeneratorschema.v1 0.3  earlydraft {
 	import com.x.jsongeneratorschema.v1.*
 	
 	record XoclWorkflowDocumentation
