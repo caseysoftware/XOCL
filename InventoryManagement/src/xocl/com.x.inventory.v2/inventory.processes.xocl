@@ -29,9 +29,8 @@ package com.x.inventory.v2
 		description "Updates stock items and reports on updates. The stock item consumer submits stock item updates to the inventory manager."
 		
 		roles {
-			StockItemConsumer "Submits requests to update stock item details. "
+			InventoryConsumer "Submits requests to update stock item details. "
 			InventoryManager "Services requests to update stock items and informs inventory observers of inventory updates and out-of-stock conditions."
-			InventoryObserver "Notified of inventory changes, but does not query for the information. In the context of the StockItemUpdate process, the inventory observer sends no messages, but gets informed of stock updates and when an item is out of stock."
 		}
 	}
 	
@@ -40,14 +39,14 @@ package com.x.inventory.v2
 		description "Updates stock items and reports on updates. The stock item consumer tells the inventory manager to do an inventory snapshot or delta update for a stock item. The inventory manager informs the inventory observer that stock item was updated and, optionally, if an item is out of stock. "
 		one{
 			transaction UpdateStockItemDelta {
-				roles(StockItemConsumer, InventoryManager)
+				roles(InventoryConsumer, InventoryManager)
 			}
 			transaction UpdateStockItemSnapshot {
-				roles(StockItemConsumer, InventoryManager)
+				roles(InventoryConsumer, InventoryManager)
 			}
 		}
 		workflow StockItemUpdated{
-			roles(InventoryManager, InventoryObserver)
+			roles(InventoryManager, null)
 		}
 	}
 	
