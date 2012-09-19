@@ -20,14 +20,10 @@ package com.x.pim.v2
         array<LocalizedString>? shortDescription "Brief description of the product.";
         array<LocalizedString>? _AVDL_description "Full description of the product.";
         string? gtin "GTIN (Global Trade Item Number) identifier for the product.";
-        string sku "SKU (Stock Keeping Unit), a unique identifier assigned by the merchant for the product";
+        SKU productSku "SKU (Stock Keeping Unit), a unique identifier assigned by the merchant for the product, with related information";
         array<LocalizedString>? brand "Brand of the product, such as iPod.";
         array<LocalizedString>? manufacturer "Manufacturer of the product, such as Apple.";
         string? mpn "Manufacturer part number of the product.";
-        CurrencyAmount? msrp "Manufacturer suggested retail price.";
-        CurrencyAmount? minimalAdvertisedPrice "Minimal advertisement price (MAP).";
-        array<Image>? images "Array of images of the product.";
-        array<ProductAttributeValue>? attributes "Values of the product attributes.";
         array<string>? variationFactors "Properties of the product the product may vary.";
         array<SKU>? variationSkuList "Array of the SKUs of the associated product variations.";
     }
