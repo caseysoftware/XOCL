@@ -43,6 +43,15 @@ package com.x.pimcontracts.v1 0.2 earlydraft
 	 			ProductDeleted.ProductInformationObserver
 	 		}
 	}
-	 
+	
+	contract ProductInformationManagementUpdater
+    {
+    		description "A client that writes product information to a PIM provider."
+    		roles{
+	 			ProductUpdate.ProductInformationConsumer
+	 			ProductCreation.ProductInformationConsumer
+	 			ProductDeletion.ProductInformationConsumer
+	 		}
+	} 
 	 
 }	
