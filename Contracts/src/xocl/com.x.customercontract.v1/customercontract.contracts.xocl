@@ -1,4 +1,4 @@
-package com.x.customercontract.v1 0.3 earlydraft
+package com.x.customercontract.v1 0.3 workingdraft
 {
 	description "Customer contracts"
 	import com.x.customer.v2.*
@@ -21,6 +21,25 @@ package com.x.customercontract.v1 0.3 earlydraft
 	 			CustomerSearch.CustomerManager<Email>
 	 			CustomerCreatedOrUpdated.CustomerManager
 	 			CustomerLookup.CustomerManager
+	 		}
+	}
+	
+	contract CustomerUpserter{
+			description "A client that can upsert customer data"
+    		roles{
+				CustomerUpsert.CustomerConsumer
+			}
+	}
+	 
+	contract UpdateableCustomerInformationProvider
+    {
+    		description "A read-write provider of customer data."
+    		roles{
+	 			CustomerSearch.CustomerManager 
+	 			CustomerSearch.CustomerManager<Email>
+	 			CustomerCreatedOrUpdated.CustomerManager
+	 			CustomerLookup.CustomerManager
+	 			CustomerUpsert.CustomerManager
 	 		}
 	 }		
 }

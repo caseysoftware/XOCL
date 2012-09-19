@@ -29,5 +29,13 @@ package com.x.inventorycontracts.v1 0.2 earlydraft
 	 			StockItemUpdated.InventoryObserver 
 	 		}
 	}
+	
+	contract InventoryUpdater
+    {
+    		description "The InventoryConsumer contract models a read-only system for a consumer and observer of inventory data."
+    		roles{
+	 			StockItemUpdate.InventoryConsumer
+	 		}
+	}
 
 }	
