@@ -23,7 +23,7 @@ package com.x.webstore.v2{
 	record WebStoreOffer extends WebStoreOfferData{
 		summary "Contains fields that are added to the WebStoreOfferData record."
 		description "Contains an ID field, which is added to the WebStoreOfferData record."
-
+		OfferState offerState "The state of the offer"
 		string offerId "Identifier of the offer. This ID is assigned by the channel that published the offer.";
 	}
 	record WebStoreOfferData {
