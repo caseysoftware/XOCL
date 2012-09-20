@@ -1,0 +1,20 @@
+package com.x.producttaxonomybundles.v1 0.0 earlydraft
+{
+	import com.x.producttaxonomycontracts.v2.*
+	
+	bundle ProductTaxononyIntegration{
+		description "A bundle including a product taxonomy manager and client"
+		bindings{
+			ProductTaxonomyManager
+			ProductTaxonomyConsumer*
+		}		
+	}
+	
+	bundle ProductTaxononyIntegrationWithProductTypeSuggestion{
+		description "A bundle including a product taxonomy manager and client and the ability to suggest product types"
+		bindings{
+			ProductTaxonomyManagerWithProductTypeSuggestion
+			ProductTaxonomyConsumerWithProductTypeSuggestion*
+		}		
+	}
+}
