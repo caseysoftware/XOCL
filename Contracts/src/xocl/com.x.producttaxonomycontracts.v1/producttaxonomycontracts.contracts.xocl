@@ -13,6 +13,17 @@ package com.x.producttaxonomycontracts.v2 0.0 earlydraft
 	 		}			
 	}	
 	
+	contract ProductTaxonomyManagerWithProductTypeSuggestion {
+		
+		description "A system used to store the product taxonomy."
+    		roles {
+					ProductTaxonomyRetrieval.ProductTaxonomyManager
+					ProductTaxonomyUpdate.ProductTaxonomyManager
+					ProductTypeSuggestion.ProductTaxonomyManager
+	 		}			
+	}	
+	
+	
 	contract ProductTaxonomyConsumer {
 		
 		description "An entity that uses or needs to access the information in the product taxonomy system."
@@ -21,4 +32,15 @@ package com.x.producttaxonomycontracts.v2 0.0 earlydraft
 					ProductTaxonomyUpdate.ProductTaxonomyObserver 
 	 		}			
 	}
+	
+	contract ProductTaxonomyConsumerWithProductTypeSuggestion {
+		
+		description "An entity that uses or needs to access the information in the product taxonomy system."
+    		roles {
+					ProductTaxonomyRetrieval.ProductTaxonomyConsumer 
+					ProductTaxonomyUpdate.ProductTaxonomyObserver 
+					ProductTypeSuggestion.ProductTaxonomyConsumer
+	 		}			
+	}
+	
 }
