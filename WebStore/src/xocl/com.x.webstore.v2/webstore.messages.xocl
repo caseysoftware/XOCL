@@ -26,6 +26,7 @@ package com.x.webstore.v2{
 		OfferState offerState "The state of the offer"
 		string offerId "Identifier of the offer. This ID is assigned by the channel that published the offer.";
 	}
+	
 	record WebStoreOfferData {
 		summary "Contains the detailed information of an offer."
 		description "Captures the URL and identifier of the web store, and details for the offer such as price, quantity, SKU, etc."
