@@ -1,8 +1,8 @@
-package com.x.producttaxonomycontracts.v1 0.2 earlydraft
+package com.x.producttaxonomycontracts.v2 0.0 earlydraft
 {
 	packagetitle "Product Taxonomy contracts"
 	
-	import com.x.producttaxonomy.v1.*
+	import com.x.producttaxonomy.v2.*
 	
 	contract ProductTaxonomyManager {
 		
