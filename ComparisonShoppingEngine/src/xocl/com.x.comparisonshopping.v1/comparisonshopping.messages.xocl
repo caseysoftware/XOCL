@@ -61,6 +61,13 @@ package com.x.comparisonshopping.v1 {
 		STORE "Indicates the feed contains stores."
 	}
 	
+	enum WeightUnitType {
+	    POUNDS,
+	    OUNCES,
+    	KILOGRAMS,
+    	GRAMS
+    }
+    
 	record ProductAttribute {
 		summary "Contains the product label/value pairs."
 		description "Captures the various label/value pairs that are collected and associated as attributes with a product."
@@ -96,6 +103,8 @@ package com.x.comparisonshopping.v1 {
 	 	string country "Country where the product will be delivered."
 	 	string region "Region (state) country where the product will be delivered."
 	 	string service "Shipping service (ground, air, etc.) that will be used when the product is shipped."
+	 	double? shippingWeight "Shipping weight of the product."
+	 	WeightUnitType? unit "Unit of measure for the shippingWeight"
 	 	CurrencyAmount price "Amount that will be charged to ship the product."
 	}
 	
@@ -237,13 +246,12 @@ package com.x.comparisonshopping.v1 {
    		string? xProductTypeId  "Product type identifier as defined by the taxonomy manager." 
    		array<string>? productTypes "Product types associated with the product as defined by the taxonomy manager."
    		array<ProductImage>? images  "Collection of  URLs for the product images (with assigned roles)."
-   		string link "Link to the product landing page on the merchant's storefront."
+   		string? link "Link to the product landing page on the merchant's storefront."
    		CurrencyAmount? originalPrice "Original price of the item before any discounting."
    		AvailabilityType availability = UNKNOWN "Availability status of the product. The default is UNKNOWN."
 		datetime? availableDate "Timestamp specifying when the item will be available."
    		TaxRate? taxRate "Tax rate based on the country and region of the product's location (where the product is shipped from)."
    		Shipping? shipping "Shipping profile of a product and its shipping price."
-   		double? shippingWeight "Shipping weight of the product."
    		array<ProductAttribute>? attributes "Name/value attributes pairs used to represent product attributes."
    		array<Variation>? variations "Collection of variations associated with the product."
    		CurrencyAmount? cpc "Amount the merchant is willing to pay per click (cost per click)."
@@ -251,7 +259,9 @@ package com.x.comparisonshopping.v1 {
    		array<StoreOffer>? storeOffers "Collection of store offers levels by physical location."
    		ConditionType condition = NEW "Condition of the product. The default is NEW."
    		string language = "en" "2-letter language code. For example, 'en' (English) or 'fr' (French). If this is not provided, en is used."
-   		boolean onlineOnly =  false "Whether the product is available only online. The default is false." 
+   		boolean local = false "Whether the product is available at a physical location. The default is false."
+   		boolean online = true "Whether the product is available through an online store. The default is true."
+   		CurrencyAmount? onlinePrice "Online pricing. If omitted the price field should be used for online pricing."
 		boolean shipFromStore = false "Whether this item is available to be shipped from this location. The default is false." 
 		boolean eligibleForInStorePickup = false "Whether a shopper can visit the location to pickup the product. The default is false."
 	}
