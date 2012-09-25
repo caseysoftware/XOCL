@@ -258,7 +258,7 @@ package com.x.comparisonshopping.v1 {
    		string? channelId "Identifier of the comparison shopping engine channel."
    		array<StoreOffer>? storeOffers "Collection of store offers levels by physical location."
    		ConditionType condition = NEW "Condition of the product. The default is NEW."
-   		string language = "en" "2-letter language code. For example, 'en' (English) or 'fr' (French). If this is not provided, en is used."
+   		string locale = "en_US" "2-letter language code an underscore and a 2-letter country code. For example 'fr_CA' (French Canadian). If this is not provided, en_US is used."
    		boolean local = false "Whether the product is available at a physical location. The default is false."
    		boolean online = true "Whether the product is available through an online store. The default is true."
    		CurrencyAmount? onlinePrice "Online pricing. If omitted the price field should be used for online pricing."
