@@ -231,7 +231,7 @@ package com.x.webstore.v2{
     record WebStoreOfferQuantityUpdated{
 		summary "Signals that the quantity of an offer was changed."
 		description "Notifies an observer that an offer quantity was changed."
-		string? parentSku "SKU (Stock Keeping Unit) to be used for looking up detailed product information. This is used for variation products. This is a unique identifier supplied by the merchant";
+
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique identifier supplied by the merchant.";
 		long quantity "New value for how many of this product are in stock.";
 		string webStoreId "Identifier for the web store.";
