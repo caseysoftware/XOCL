@@ -16,4 +16,36 @@ package com.x.core.v1
 		 */
 		map<string>? parameters "Parameters for the message. Parameter place holders identified using the format in java.text.MessageFormat. The key of the map is the placeholder string, and the value is the string that replaces it.";
 	}
+	
+	
+		// move these general types to core once this mechanism is validated/approved
+	enum ErrorCodes {
+		description "Defines the values used to specify the type of error."
+		INVALID_MESSAGE "The message that was supplied was not valid."
+		OTHER "The error occurred for an unknown reason."
+	}
+	
+	record SimpleError {
+		summary "Contains the fields that define an error message."
+		description "Contains the fields used to specify the error code and error message."
+		string code "Identifier of the error."
+		string? _AVDL_message "Explanation of the error."
+	}
+
+	record ErrorWithCodes <ErrorCodes> {
+		summary "Specifies fields for error messages."
+		description "Contains fields for the code and details of an error message."
+		
+		string<ErrorCodes> code "Value that indicates the type of error.  Should be stable, short, and easily comparable.";
+ 		string? _AVDL_message "Explanation of the error."
+
+		/**
+		 * Parameters for the message. Parameter place holders identified
+		 * using the format in java.text.MessageFormat. The key of the map is
+		 * the placeholder string, and the value is the string that replaces it.
+		 */
+		map<string>? parameters "Parameters for the message. Parameter place holders identified using the format in java.text.MessageFormat. The key of the map is the placeholder string, and the value is the string that replaces it.";
+		
+		array<SimpleError>? errorDetails "Array of error codes and messages."
+	}
 }
