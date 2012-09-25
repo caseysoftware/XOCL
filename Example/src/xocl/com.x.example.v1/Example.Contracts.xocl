@@ -118,4 +118,18 @@ package com.x.example.v1 {
 	        OrderFulfillment.OrderObserver<WithConfiguration>
     	}
     }
+    
+    contract QuickStartOrderManager {
+    	description "A contract for the QuickStartSample process"
+    	roles {
+    		QuickStartSample.OrderManager
+    	}
+    }
+    contract QuickStartOrderConsumer {
+    	description "A contract for the QuickStartSample process for the order consumer"
+    	roles {
+    		QuickStartSample.OrderObserver
+    		QuickStartSample.ShippingManager
+    	}
+    }
 }

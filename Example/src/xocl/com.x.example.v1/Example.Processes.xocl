@@ -216,4 +216,18 @@ package com.x.example.v1 {
           failure(order[Order.Cancelled])
         }
     }
+    
+	process QuickStartSample(Order order) {
+		description "Merchant fulfills the sales-channel order from Buyer using Merchant Console"
+		roles(OrderManager, OrderObserver, ShippingManager)
+
+		workflow {
+			transaction OrderCreated<null,null> {
+				roles(OrderManager, OrderObserver)
+			}
+			transaction ShipOrder(order) {
+				roles(OrderManager, ShippingManager)
+			}
+		}
+	}
 }
