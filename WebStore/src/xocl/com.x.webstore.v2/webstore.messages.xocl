@@ -35,7 +35,7 @@ package com.x.webstore.v2{
 		CurrencyAmount currentPrice "Selling price of the product."; 
 		long quantity "How many of this product are in stock.";
 		string sku "SKU (Stock Keeping Unit) of the product being offered. This is a unique identifier supplied by the merchant.";
-		string parentSku "SKU (Stock Keeping Unit) to be used for looking up detailed product information. This is used for variation products. This is a unique identifier supplied by the merchant";
+		string? parentSku "SKU (Stock Keeping Unit) to be used for looking up detailed product information. This is used for variation products. This is a unique identifier supplied by the merchant";
 		string webStoreId "Identifier for the web store offering the product.";
 		array<string>? categoryId "Identifiers for the categories in the web store in which the product belongs."; 
 	}
