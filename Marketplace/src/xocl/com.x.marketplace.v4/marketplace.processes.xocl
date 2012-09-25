@@ -273,4 +273,19 @@ package com.x.marketplace.v4{
 				}	
 		}
 	}	
+	process MarketplaceOrderSearch {
+	    
+	    description "The MarketplaceMetadataConsumer queries the marketplace to retrieve order information"
+		roles
+		{
+			OfferManager "Requests a search for orders"
+			Marketplace "Returns the results."
+		}	
+		
+		workflow {
+				transaction SearchOrder {
+						roles(OfferManager, Marketplace)
+				}	
+		}
+	}	
 }

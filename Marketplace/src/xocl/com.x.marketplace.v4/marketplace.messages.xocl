@@ -633,4 +633,36 @@ package com.x.marketplace.v4{
 		SearchTopSellingProducts request "Search criteria used.";
 	}
 	
+	record MarketplaceSearchOrder  {
+		summary "Contains fields that are added to the SearchOrder record."
+		description "Contains marketplace specific fields, which are added to the SearchOrder record."
+		Query _AVDL_query "Search criteria."
+		string? siteCode "Identifier for the marketplace that is processing the order." 
+		string? sellerAccountId "Unique identifier for the seller's account assigned by the system that created the account."
+	}
+
+
+	record MarketplaceSearchOrderSucceeded {
+		summary "Contains fields that are added to the SearchOrderSucceeded record."
+		description "Contains marketplace specific fields, which are added to the SearchOrderSucceeded record."
+		array<Order> orders "Array of order found."
+		MarketplaceSearchOrder request;
+	}
+
+	
+	record SearchOrderFailed {
+		summary "Signals searching for orders has failed." 
+		description "Failure response for searching of orders. It returns the search criteria that was sent in the request and information about the failure, which is useful for troubleshooting."
+		SearchOrder search "Search criteria used."
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+	}
+	
+	record MarketplaceSearchOrderFailed {
+		summary "Contains fields that are added to the SearchOrderFailed record."
+		description "Contains marketplace specific fields, which are added to the SearchOrderFailed record."
+		MarketplaceSearchOrder request;
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms."
+	}
+	
+	
 }

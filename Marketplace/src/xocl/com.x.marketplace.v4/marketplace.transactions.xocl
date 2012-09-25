@@ -271,4 +271,21 @@ package com.x.marketplace.v4{
         } 
     } 
     
+     transaction SearchOrder query {
+    	description "Searches for an order."
+        sender {
+
+        	message  MarketplaceSearchOrder {
+        		 timeouts(response=30s) 
+        		 retries=3    		        		
+        	}
+        }
+        receiver {
+        	success MarketplaceSearchOrderSucceeded            
+        	failure MarketplaceSearchOrderFailed   
+        } 
+    }
+    
+    
+    
 }
