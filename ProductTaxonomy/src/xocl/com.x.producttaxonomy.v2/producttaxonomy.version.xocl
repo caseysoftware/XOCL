@@ -1,4 +1,4 @@
-package com.x.producttaxonomy.v2 0.3 workingdraft{
+package com.x.producttaxonomy.v2 0.4 workingdraft{
 	packagetitle "Product Taxonomy"
 	description "The Product Taxonomy specifies processes that provide a mechanism for a merchant to organize and describe their products in a consistent manner."
 	import com.x.producttaxonomy.v2.*
