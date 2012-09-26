@@ -1,4 +1,4 @@
-package com.x.ordermanagement.v2 2.18 candidaterecommendation {
+package com.x.ordermanagement.v2 2.19 candidaterecommendation {
 	packagetitle "Order Management"
 	
 	import com.x.ordermanagement.v2.*
