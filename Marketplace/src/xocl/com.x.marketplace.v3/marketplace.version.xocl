@@ -1,4 +1,4 @@
-package com.x.marketplace.v3 1.17 candidaterecommendation {	
+package com.x.marketplace.v3 1.18 candidaterecommendation {	
 	packagetitle "Marketplace and eBay Variant"
 	description "The Marketplace package specifies the processes for publishing products to a channel and a variant to support publishing to the eBay marketplace."
 	
