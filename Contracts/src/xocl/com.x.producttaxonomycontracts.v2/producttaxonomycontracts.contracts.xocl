@@ -1,4 +1,4 @@
-package com.x.producttaxonomycontracts.v2 0.0 workingdraft
+package com.x.producttaxonomycontracts.v2 0.1 workingdraft
 {
 	packagetitle "Product Taxonomy contracts"
 	
@@ -10,6 +10,8 @@ package com.x.producttaxonomycontracts.v2 0.0 workingdraft
     		roles {
 					ProductTaxonomyRetrieval.ProductTaxonomyManager
 					ProductTaxonomyUpdate.ProductTaxonomyManager
+					ProductTypeSearch.ProductTaxonomyManager
+					ProductTypeGet.ProductTaxonomyManager
 	 		}			
 	}	
 	
@@ -20,6 +22,8 @@ package com.x.producttaxonomycontracts.v2 0.0 workingdraft
 					ProductTaxonomyRetrieval.ProductTaxonomyManager
 					ProductTaxonomyUpdate.ProductTaxonomyManager
 					ProductTypeSuggestion.ProductTaxonomyManager
+					ProductTypeSearch.ProductTaxonomyManager
+					ProductTypeGet.ProductTaxonomyManager
 	 		}			
 	}	
 	
@@ -29,7 +33,9 @@ package com.x.producttaxonomycontracts.v2 0.0 workingdraft
 		description "An entity that uses or needs to access the information in the product taxonomy system."
     		roles {
 					ProductTaxonomyRetrieval.ProductTaxonomyConsumer 
-					ProductTaxonomyUpdate.ProductTaxonomyObserver 
+					ProductTaxonomyUpdate.ProductTaxonomyObserver
+					ProductTypeSearch.ProductTaxonomyConsumer
+					ProductTypeGet.ProductTaxonomyConsumer 
 	 		}			
 	}
 	
@@ -40,6 +46,8 @@ package com.x.producttaxonomycontracts.v2 0.0 workingdraft
 					ProductTaxonomyRetrieval.ProductTaxonomyConsumer 
 					ProductTaxonomyUpdate.ProductTaxonomyObserver 
 					ProductTypeSuggestion.ProductTaxonomyConsumer
+					ProductTypeSearch.ProductTaxonomyConsumer
+					ProductTypeGet.ProductTaxonomyConsumer 
 	 		}			
 	}
 	
