@@ -7,11 +7,10 @@ package com.x.producttaxonomy.v2 {
 		summary "Searches and returns product taxonomy information."
 		description "ProductTaxonomyConsumer searches for product types and the ProductTaxonomyManager returns product types based on the search criteria."	
 			
-		roles
-			{
+		roles {
 				ProductTaxonomyConsumer "Searches for product types in the product taxonomy."
 				ProductTaxonomyManager "Returns product types based on the search criteria."
-			}
+		}
 		
 		workflow {
 			description "Gets or updates the product taxonomy and then does any, all, or none of the following: returns all product classes by locale, returns product type details for a specified product class and searches for product type." 
@@ -23,15 +22,43 @@ package com.x.producttaxonomy.v2 {
 			}
 			any{ //we may do either, both, or none of these in any order
 				noop
-				transaction SearchProductType {
-					roles(ProductTaxonomyConsumer, ProductTaxonomyManager)
+				workflow ProductTypeSearch {
+					roles(ProductTaxonomyConsumer, null)
 				}
-				transaction GetProductType {
-					roles(ProductTaxonomyConsumer, ProductTaxonomyManager)
+				workflow ProductTypeGet {
+					roles(ProductTaxonomyConsumer, null)
 				}
 			}
 		}
 	}
+	
+    process ProductTypeSearch{
+        description "Allows for searching of produt type information"
+        roles {
+		    ProductTaxonomyConsumer "A system such as a cart which needs product taxonomy information"
+            ProductTaxonomyManager "The system which maintains the product taxonomy information and provides product suggestions"
+        }
+    }
+		
+    workflow ProductTypeSearch implements ProductTypeSearch {				
+        transaction SearchProductType {
+		    roles(ProductTaxonomyConsumer, ProductTaxonomyManager)
+		}
+    }
+		
+    process ProductTypeGet {
+		description "Allows for retrieval of produt type information by product type id"
+		roles {
+            ProductTaxonomyConsumer "A system such as a cart which needs product taxonomy information"
+            ProductTaxonomyManager "The system which maintains the product taxonomy information and provides product suggestions"
+	    }
+	}
+	
+	workflow ProductTypeGet implements ProductTypeGet {				
+        transaction GetProductType {
+		    roles(ProductTaxonomyConsumer, ProductTaxonomyManager)
+		}
+    }
 	
 	process ProductTaxonomyUpdate{
 		summary "Send the product taxonomy update notification."
