@@ -340,4 +340,25 @@ package com.x.example.v1 {
             failure LookupOrderFailed
         } 
     }
+
+    /* A sample inform transaction to support QuickStartSample */
+    transaction SampleOrderCreated inform {
+        sender {             
+            message OrderCreated
+        }
+       
+    }
+    /* A sample response transaction to support QuickStartSample */
+    transaction SampleShipOrder response {
+       sender {
+            message ShipOrder {
+                  timeouts(response=30m)
+                  retries = 3
+            }
+        }
+        receiver {
+            success ShipOrderSucceeded
+            failure ShipOrderFailed
+        }
+    }
 }

@@ -218,14 +218,14 @@ package com.x.example.v1 {
     }
     
 	process QuickStartSample(Order order) {
-		description "Merchant fulfills the sales-channel order from Buyer using Merchant Console"
+		description "A sample process"
 		roles(OrderManager, OrderObserver, ShippingManager)
 
 		workflow {
-			transaction OrderCreated<null,null> {
+			transaction SampleOrderCreated {
 				roles(OrderManager, OrderObserver)
 			}
-			transaction ShipOrder(order) {
+			transaction SampleShipOrder {
 				roles(OrderManager, ShippingManager)
 			}
 		}
