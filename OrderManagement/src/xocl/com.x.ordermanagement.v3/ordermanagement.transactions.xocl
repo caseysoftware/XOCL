@@ -39,9 +39,7 @@ package com.x.ordermanagement.v3 {
 		}
 		
 		receiver {
-			success SubmitOrderSucceeded {
-            	retries=3
-            }
+			success SubmitOrderSucceeded
 			failure SubmitOrderFailed
 		}
 	}
@@ -95,14 +93,8 @@ package com.x.ordermanagement.v3 {
         	}
         }
         receiver {
-        	success CancelOrderSucceeded {
-            	retries=3
-            }
-                        
-        	success<MarketplaceOrder> CancelMarketplaceOrderSucceeded {
-            	retries=3
-            }            
-            
+        	success CancelOrderSucceeded          
+        	success<MarketplaceOrder> CancelMarketplaceOrderSucceeded 
             failure CancelOrderFailed
             failure<MarketplaceOrder> CancelMarketplaceOrderFailed
         }
