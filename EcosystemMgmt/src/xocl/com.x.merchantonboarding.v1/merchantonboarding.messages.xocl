@@ -3,7 +3,7 @@ package com.x.merchantonboarding.v1 {
 	import com.x.core.v1.*
 	
 	record Participant {
-		string contractRole;
+		array<string> contracts;
 		string destinationId;
 	}
 	
@@ -37,7 +37,7 @@ package com.x.merchantonboarding.v1 {
 		AuthorizationSession authorizationSession;
 
 		string bundleId;
-		string contractRole;
+		array<string> contracts;
 		map<string>? parameters;
 		string returnURL;
 	}
