@@ -1,4 +1,4 @@
-package com.x.ordermanagementcontracts.v1 0.2 earlydraft
+package com.x.ordermanagementcontracts.v1 0.3 workingdraft
 {
 	import com.x.ordermanagement.v3.*
 
@@ -12,12 +12,11 @@ package com.x.ordermanagementcontracts.v1 0.2 earlydraft
 	   		ProcessNonSalesChannelOrder.OrderProcessor
 	   		OrderCancelled.OrderProcessor
 	   		OrderPartiallyReturned.OrderProcessor
-	   		OrderPartiallyCancelled.OrderProcessor
 	   		OrderPartiallyShipped.OrderProcessor
 	   		ObserveOrderShipped.OrderProcessor
 	   		OrderCreated.OrderProcessor
 	   		OrderReturned.OrderProcessor
-	   		OrderAdjusted.OrderProcessor //Magento doesn't do.  We can remove this if we relax contract validation a bit.  
+	   		OrderAdjusted.OrderProcessor  
 	   		OrderSearch.OrderManager<NonSensitive>
 	   		
 	    } 
@@ -35,7 +34,6 @@ package com.x.ordermanagementcontracts.v1 0.2 earlydraft
 	 		OrderReturned.OrderObserver
 	 		OrderAdjusted.OrderObserver
 	 		ObserveOrderShipped.OrderObserver
-	 		OrderPartiallyCancelled.OrderObserver
 	 		OrderPartiallyShipped.OrderObserver
 	 		OrderSearch.OrderConsumer<NonSensitive>
 	 	}
