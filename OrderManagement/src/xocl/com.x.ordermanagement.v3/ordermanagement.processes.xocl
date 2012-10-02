@@ -228,10 +228,6 @@ package com.x.ordermanagement.v3 {
 		    			roles(OrderProcessor, OrderObserver)
 		    		}
 		    		
-		    		workflow OrderPartiallyCancelled {
-		    			roles(OrderProcessor, OrderObserver)
-		    		}
-		    		
 		    		workflow OrderPartiallyShipped {
 		    			roles(OrderProcessor, OrderObserver)
 		    		}
