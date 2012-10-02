@@ -103,8 +103,6 @@ package com.x.comparisonshopping.v1 {
 	 	string country "Country where the product will be delivered."
 	 	string region "Region (state) country where the product will be delivered."
 	 	string service "Shipping service (ground, air, etc.) that will be used when the product is shipped."
-	 	double? shippingWeight "Shipping weight of the product."
-	 	WeightUnitType? unit "Unit of measure for the shippingWeight"
 	 	CurrencyAmount price "Amount that will be charged to ship the product."
 	}
 	
@@ -251,7 +249,8 @@ package com.x.comparisonshopping.v1 {
    		AvailabilityType availability = UNKNOWN "Availability status of the product. The default is UNKNOWN."
 		datetime? availableDate "Timestamp specifying when the item will be available."
    		TaxRate? taxRate "Tax rate based on the country and region of the product's location (where the product is shipped from)."
-   		Shipping? shipping "Shipping profile of a product and its shipping price."
+	 	double? shippingWeight "Shipping weight of the product."
+	 	union{null, EnglishWeightMeasurementUnit, MetricWeightMeasurementUnit} weightUnit "Unit of measure for the shippingWeight"
    		array<ProductAttribute>? attributes "Name/value attributes pairs used to represent product attributes."
    		array<Variation>? variations "Collection of variations associated with the product."
    		CurrencyAmount? cpc "Amount the merchant is willing to pay per click (cost per click)."
