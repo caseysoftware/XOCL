@@ -1,4 +1,4 @@
-package com.x.cartwithmarketingprovider.v1 0.1 earlydraft
+package com.x.cartwithmarketingprovider.v1 0.2 workingdraft
 {
 	packagetitle "Cart with Marketing Provider Bundles"
 	
@@ -16,7 +16,9 @@ package com.x.cartwithmarketingprovider.v1 0.1 earlydraft
 			InventoryManager latebound
 			WebStoreOfferProvider latebound
 			InternalOrderProcessor latebound
+			WebStoreMetadataProvider latebound
 		
+			WebStoreMetadataConsumer*
 			CustomerConsumer*
 			ProductInformationManagementConsumer*
 			InventoryConsumer*
