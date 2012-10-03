@@ -1,12 +1,14 @@
 package com.x.ebaywithproductdata.v1 0.0 earlydraft
 {
+	packagetitle "eBay with Product Data Bundles"
+	
 	import com.x.ebaymarketplacecontracts.v1.*
 	
 	bundle EbayWithProductData{
-		description "A bundle including an ebay adapter and a consumer, in which the consumer publishes product data with offers"
+		description "A bundle including an eBay adapter and a consumer, in which the consumer publishes product data with offers"
 		bindings{
 			EbayMarketplaceOfferProducerWithProductDataPublication latebound "An offer producer"
-			EbayMarketplaceWithProductDataPublication "an adapter to ebay marketplace"
+			EbayMarketplaceWithProductDataPublication "an adapter to eBay marketplace"
 		}		
 	}
 }

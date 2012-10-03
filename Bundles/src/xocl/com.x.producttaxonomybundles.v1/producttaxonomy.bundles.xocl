@@ -1,5 +1,7 @@
 package com.x.producttaxonomybundles.v1 0.0 earlydraft
 {
+	packagetitle "Product Taxonomy Bundles"
+	
 	import com.x.producttaxonomycontracts.v2.*
 	
 	bundle ProductTaxononyIntegration{

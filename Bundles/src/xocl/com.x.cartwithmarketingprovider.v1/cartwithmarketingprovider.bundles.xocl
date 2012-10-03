@@ -1,5 +1,7 @@
 package com.x.cartwithmarketingprovider.v1 0.1 earlydraft
 {
+	packagetitle "Cart with Marketing Provider Bundles"
+	
 	import com.x.pimcontracts.v1.*
 	import com.x.inventorycontracts.v1.*
 	import com.x.customercontract.v1.*

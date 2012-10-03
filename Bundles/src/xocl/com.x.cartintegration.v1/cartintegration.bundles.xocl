@@ -1,5 +1,7 @@
 package com.x.cartintegration.v1 0.0 earlydraft
 {
+	packagetitle "Cart Integration Bundles"
+	
 	import com.x.pimcontracts.v1.*
 	import com.x.inventorycontracts.v1.*
 	import com.x.customercontract.v1.*
