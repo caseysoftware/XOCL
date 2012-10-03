@@ -90,7 +90,7 @@ package com.x.orderfulfillment.v1 {
     record ShippingQuote {
     	summary "Contains the quote for shipping a set of items."
     	description "Captures the quote for shipping a set of items."
-		string? shippingMethod  "Method used for the shipment, such as, Next day, ground, etc."
+		string shippingMethod  "Method used for the shipment, such as, Next day, ground, etc."
 		string shippingMethodDescription "Description of the shipping method, such as Next day, ground, etc."
 		CurrencyAmount shippingFees	"Amount to be paid by the customer for this shipment."		
 		CurrencyAmount? packagingHandlingCost "Amount of any packaging or handling costs."
