@@ -6,8 +6,8 @@ package com.x.authz.v2 {
 		description "Merchant authorizes software to act on their behalf."
 		roles
 		{
-			AuthorizedUser ""
-			AuthorizationProvider ""
+			AuthorizedUser "The system requesting authorization on behalf of a merchant."
+			AuthorizationProvider "The system that will become associated with the merchant once the authorization is granted."
 		}
 		preconditions(!exists(auth))	
 	
