@@ -1,4 +1,4 @@
-package com.x.cartintegration.v1 0.0 earlydraft
+package com.x.cartintegration.v1 0.2 workingdraft
 {
 	packagetitle "Cart Integration Bundles"
 	
@@ -15,6 +15,7 @@ package com.x.cartintegration.v1 0.0 earlydraft
 			UpdateableProductInformationManagement latebound
 			UpdateableInventoryManager latebound
 			WebStoreOfferProvider latebound
+			WebStoreMetadataProvider latebound
 			InternalOrderProcessor latebound
 		
 			ProductInformationManagementUpdater
@@ -25,6 +26,7 @@ package com.x.cartintegration.v1 0.0 earlydraft
 			ProductInformationManagementConsumer*
 			InventoryConsumer*
 			WebStoreOfferConsumer*
+			WebStoreMetadataConsumer*
 			OrderObserver*
 		}		
 	}
