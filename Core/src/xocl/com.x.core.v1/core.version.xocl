@@ -1,4 +1,4 @@
-package com.x.core.v1 0.3 candidaterecommendation {
+package com.x.core.v1 0.4 candidaterecommendation {
 	packagetitle "Core"
 	
 	import com.x.core.v1.*
