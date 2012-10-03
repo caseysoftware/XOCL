@@ -61,13 +61,6 @@ package com.x.comparisonshopping.v1 {
 		STORE "Indicates the feed contains stores."
 	}
 	
-	enum WeightUnitType {
-	    POUNDS,
-	    OUNCES,
-    	KILOGRAMS,
-    	GRAMS
-    }
-    
 	record ProductAttribute {
 		summary "Contains the product label/value pairs."
 		description "Captures the various label/value pairs that are collected and associated as attributes with a product."
