@@ -182,9 +182,7 @@ package com.x.marketplace.v4{
     record ShippingServiceOption {
     	summary "Contains information for a specific shipping service."
     	description "Captures the information that defines the rules for a specific shipping service."
-
-//Travis will check this
-		int sellerPriority "TBD";  
+		int sellerPriority "Prioritizes the order that the shipping services appear.";  
 		string serviceName "Name of the shipping service.";
 		CurrencyAmount cost "Cost to ship a package.";  
 		CurrencyAmount? discountAmount "Amount of any shipping discount.";
@@ -646,7 +644,7 @@ package com.x.marketplace.v4{
 		summary "Contains fields that are added to the SearchOrderSucceeded record."
 		description "Contains marketplace specific fields, which are added to the SearchOrderSucceeded record."
 		array<Order> orders "Array of order found."
-		MarketplaceSearchOrder request;
+		MarketplaceSearchOrder request "Search criteria used.";
 	}
 
 	
@@ -660,7 +658,7 @@ package com.x.marketplace.v4{
 	record MarketplaceSearchOrderFailed {
 		summary "Contains fields that are added to the SearchOrderFailed record."
 		description "Contains marketplace specific fields, which are added to the SearchOrderFailed record."
-		MarketplaceSearchOrder request;
+		MarketplaceSearchOrder request "Search criteria used.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms."
 	}
 	
