@@ -13,6 +13,8 @@ package com.x.core.v1
 
 	record Campaign
 	{
+		summary "Contains the information for a marketing campaign."
+		description "Captures the information of a marketing campaign."
 		string? id "Identifier of the campaign."
 		string accountId "Identifier of the campaign account."
 		string name "Name of the campaign."
