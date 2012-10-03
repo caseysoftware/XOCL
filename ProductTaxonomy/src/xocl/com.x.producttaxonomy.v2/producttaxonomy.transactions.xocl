@@ -53,7 +53,7 @@ package com.x.producttaxonomy.v2{
 	}
 	
     transaction SuggestProductType query {
-        description "Searches products based on product Properties"
+        description "Searches products based on product properties"
         sender {
             message SuggestProductType {
                 timeouts(response=1m)

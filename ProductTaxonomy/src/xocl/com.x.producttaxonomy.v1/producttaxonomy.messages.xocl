@@ -4,9 +4,9 @@ package com.x.producttaxonomy.v1{
 	
 	record Locale {
 		summary "Contains the specifics of the product location, which is a combination of ISO language code, country code, and optional variant."
-		description "Contains the specifics of the product location, which is a combination of ISO language code, country code, and optional variant. The locale is used to request Country/Language specific product types."
-		string language "2-letter language code (ISO 639-1). For example, en (english) or fr (French).";
-		string country "2-character country code (ISO 3166). For example, US (United States) or FR (France).";
+		description "Captures the specifics of the product location, which is a combination of ISO language code, country code, and optional variant. The locale is used to request Country/Language specific product types."
+		string language "2-letter language code. For example, en (english) or fr (French).";
+		string country "2-character country code. For example, US (United States) or FR (France).";
 		string? variant "Variant based on the locale, the vendor, or operating system.";
 	}
 
@@ -139,8 +139,8 @@ package com.x.producttaxonomy.v1{
 	//-----------------------------------------------------------------------------------------------------
 
 	record SearchProductType { 
-		summary "Requests a search for product type details for a specific product class."
-		description "Requests a search for a product type using the product class ID. The results can be optionally filtered by locale and the level of detail to return."
+		summary "Contain the information used to search for product type details for a specific product class."
+		description "Captures the information used to search for a product type using the product class ID. The results can be optionally filtered by locale and the level of detail to return."
 		SearchQuery criteria "Criteria used for the SearchProductType search. The criteria is the corresponding productClassId.";
 		Locale? locale "Optional filter used to request Country/Language specific product types.";
 		Filter? filter "Optional filter that determines the level of detail. Two levels of details are supported: 1) summary information only (ID, version, name, productClassID) 2) all product type details. If this is null, only the product type summary is returned.";		
@@ -165,8 +165,8 @@ package com.x.producttaxonomy.v1{
 	// Request & Response: Product Taxonomy Message
 	//-----------------------------------------------------------------------------------------------------
 	record GetProductTaxonomy {
-		summary "Returns all product classes by locale."
-		description "Returns all product classes by locale. If no locale is provided, en_US is used."
+		summary "Contains all product classes by locale."
+		description "Captures all product classes by locale. If no locale is provided, en_US is used."
 		Locale? locale "Optional filter used to request Country/Language specific product types.";
 	}
 	
@@ -197,8 +197,8 @@ package com.x.producttaxonomy.v1{
 	// 	- GetProductTypeFailed- error message
 	//-----------------------------------------------------------------------------------------------------
 	record GetProductType {
-		summary "Requests a search for product type by ID."
-		description "Requests a search for product type by ID and returns the details for a specified product type. Note: More than one product type can be included."
+		summary "Contains the information needed to search for product type by ID."
+		description "Captures the information needed to search for product type by ID and returns the details for a specified product type. Note: More than one product type can be included."
 		array<string>? productTypeIds "Array of ProductTypeIDs. If the productTypeIds field is null, all the productTypes are returned.";
 	    Locale? locale "Optional filter used to request Country/Language specific product types.";
 		Filter? filter "Optional filter to request channel IDs or detail level. If filter is omitted, the detailed information is returned.";

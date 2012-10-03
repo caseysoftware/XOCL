@@ -4,9 +4,9 @@ package com.x.producttaxonomy.v2{
 	
 	record Locale {
 		summary "Contains the specifics of the product location, which is a combination of ISO language code, country code, and optional variant."
-		description "Contains the specifics of the product location, which is a combination of ISO language code, country code, and optional variant. The locale is used to request Country/Language specific product types."
-		string language "2-letter language code (ISO 639-1). For example, en (english) or fr (French).";
-		string country "2-character country code (ISO 3166). For example, US (United States) or FR (France).";
+		description "Captures the specifics of the product location, which is a combination of ISO language code, country code, and optional variant. The locale is used to request Country/Language specific product types."
+		string language "2-letter language code. For example, en (english) or fr (French).";
+		string country "2-character country code. For example, US (United States) or FR (France).";
 		string? variant "Variant based on the locale, the vendor, or operating system.";
 	}
 
@@ -139,8 +139,8 @@ package com.x.producttaxonomy.v2{
 	//-----------------------------------------------------------------------------------------------------
 
 	record SearchProductType { 
-		summary "Requests a search for product type details for a specific product class."
-		description "Requests a search for a product type using the product class ID. The results can be optionally filtered by locale and the level of detail to return."
+		summary "Contains the information needed to search for product type details for a specific product class."
+		description "Captures the information needed to search for a product type using the product class ID. The results can be optionally filtered by locale and the level of detail to return."
 		SearchQuery criteria "Criteria used for the SearchProductType search. The criteria is the corresponding productClassId.";
 		Locale? locale "Optional filter used to request Country/Language specific product types.";
 		Filter? filter "Optional filter that determines the level of detail. Two levels of details are supported: 1) summary information only (ID, version, name, productClassID) 2) all product type details. If this is null, only the product type summary is returned.";		
@@ -165,13 +165,13 @@ package com.x.producttaxonomy.v2{
 	// Request & Response: Product Taxonomy Message
 	//-----------------------------------------------------------------------------------------------------
 	record GetProductTaxonomy {
-		summary "Returns all product classes by locale."
-		description "Returns all product classes by locale. If no locale is provided, en_US is used."
+		summary "Contains all the product classes by locale."
+		description "Captures all the product classes by locale. If no locale is provided, en_US is used."
 		Locale? locale "Optional filter used to request Country/Language specific product types.";
 	}
 	
 	record GetProductTaxonomySucceeded {
-		summary "Search of product classes by locale succeeded."
+		summary "Signals the search of product classes by locale succeeded."
 		description "Confirms successful retrieval of product classes by locale."
 		ProductTaxonomy productTaxonomy "A product taxonomy that can contain one or more productClasses and has its own version.";
 		Locale? locale "Optional filter used to request Country/Language specific product types.";
@@ -197,8 +197,8 @@ package com.x.producttaxonomy.v2{
 	// 	- GetProductTypeFailed- error message
 	//-----------------------------------------------------------------------------------------------------
 	record GetProductType {
-		summary "Requests a search for product type by ID."
-		description "Requests a search for product type by ID and returns the details for a specified product type. Note: More than one product type can be included."
+		summary "Contains the information needed to search for product type by ID."
+		description "Captures the information needed to search for product type by ID and returns the details for a specified product type. Note: More than one product type can be included."
 		array<string>? productTypeIds "Array of ProductTypeIDs. If the productTypeIds field is null, all the productTypes are returned.";
 	    Locale? locale "Optional filter used to request Country/Language specific product types.";
 		Filter? filter "Optional filter to request channel IDs or detail level. If filter is omitted, the detailed information is returned.";
@@ -221,57 +221,70 @@ package com.x.producttaxonomy.v2{
 	
 	record SuggestProductType
 	{
-	    summary "Requests search for X Product Type "
-	    boolean suggestProductSpecificAttributeDetails "setting the flag fetches Product details."
-	    string? locale "Target locale"
-	    array<SuggestProductRequest> suggestProductRequest
+	    summary "Contains the search information for the X.commerce product type."
+	    description "Captures the information needed to search for the X.commerce product type."
+	    boolean suggestProductSpecificAttributeDetails "Indicates whether to fetch the product details."
+	    string? locale "Target locale."
+	    array<SuggestProductRequest> suggestProductRequest "Array of product types found."
 	}
  
 	record SuggestProductRequest
 	{
-    	summary "holds the information for the Product "
-    	string referenceId "Can be the product Id or any reference Id which identifies the Product. Should be unique in a across all the search products"
-    	string title "Product title"
-    	array<AttributeValuePair>? searchProductDetails "Attribute value pairs"
+    	summary "Contains the information for the product."
+    	description "Captures the information for the product."
+    	string referenceId "Identifier of the product. This can be the product ID or any reference ID that identifies the product. The ID needs to be unique across all the searched products."
+    	string title "Title of the product."
+    	array<AttributeValuePair>? searchProductDetails "Array of attribute value pairs."
 	}
  
 	record AttributeValuePair
 	{
-    	string attribute "Attribute of the Product"
-    	string value "Value for the Attribute"
+		summary "Contains the attribute and value of a product."
+		description "Captures the attribute and value of a product."
+    	string attribute "Attribute of the product."
+    	string value "Value for the attribute."
 	}
  
 	enum MATCHTYPE {
-     	EXACT_MATCH,
-    	STRONG_MATCH,
-     	WEAK_MATCH
+		description "Defines the values used to specify the type of match found."
+     	EXACT_MATCH "It is an exact match.",
+    	STRONG_MATCH "It is a strong match.",
+     	WEAK_MATCH "It is a weak match."
 	}
  
 	record SuggestProductTypeSucceded
 	{	
+		summary "Signals that the suggested product type request succeeded."
+		description "Confirms that suggested product types were found."
    		array<SuggestedProductResult> suggestedProductResult "Array of results equivalent to the Search product"
-   		SuggestProductType request;
+   		SuggestProductType request "Search criteria used.";
 	}
  
 	record SuggestProductTypeFailed
 	{
+		summary "Signals that the suggested product type request failed."
+		description "Failure response for returning a suggested product type."
 		array<Error> errors "Errors with Suggest Product Request";
-		SuggestProductType request;
+		SuggestProductType request "Search criteria used.";
 	}
  
 	record SuggestedProductResult
 	{
-    	string referenceId "reference Id for the Search Product"
-    	array<SuggestedProduct> suggestedProducts "Array of X product types for the search product"
+		summary "Contains the suggested product types for the product."
+		description "Captures the suggested product types for the product."
+    	string referenceId "Reference ID of the product to searched for."
+    	array<SuggestedProduct> suggestedProducts "Array of X.commerce product types for the product."
 	}
  
 	record SuggestedProduct
 	{
-    	string xProductTypeId " X Product Type Id"
-    	string? _AVDL_description "description of the Product"
-    	string? title "Product Title"
-    	MATCHTYPE matchStrength "Defines the accuracy of the match"
-    	array<AttributeValuePair>? productDetails " Arrays or Attribute/Value pairs "
+		summary "Contains the information of a suggested product."
+		description "Captures the information of a suggested product."
+    	string xProductTypeId " X.commerce product type ID."
+    	string? _AVDL_description "Description of the product."
+    	string? title "Title of the product."
+    	MATCHTYPE matchStrength "Denotes the accuracy of the match."
+    	array<AttributeValuePair>? productDetails " Arrays of attribute/value pairs."
 	} 
 	
 }

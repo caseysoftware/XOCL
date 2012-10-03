@@ -33,35 +33,37 @@ package com.x.producttaxonomy.v2 {
 	}
 	
     process ProductTypeSearch{
-        description "Allows for searching of produt type information"
+        description "Allows searching for product type information."
         roles {
-		    ProductTaxonomyConsumer "A system such as a cart which needs product taxonomy information"
-            ProductTaxonomyManager "The system which maintains the product taxonomy information and provides product suggestions"
+		    ProductTaxonomyConsumer "A system such as a cart, which needs product taxonomy information."
+            ProductTaxonomyManager "The system that maintains the product taxonomy information and provides product suggestions."
         }
     }
 		
-    workflow ProductTypeSearch implements ProductTypeSearch {				
+    workflow ProductTypeSearch implements ProductTypeSearch {	
+    	description "Allows searching for product type information."			
         transaction SearchProductType {
 		    roles(ProductTaxonomyConsumer, ProductTaxonomyManager)
 		}
     }
 		
     process ProductTypeGet {
-		description "Allows for retrieval of produt type information by product type id"
+		description "Searches by product type ID and returns the product type information."
 		roles {
             ProductTaxonomyConsumer "A system such as a cart which needs product taxonomy information"
             ProductTaxonomyManager "The system which maintains the product taxonomy information and provides product suggestions"
 	    }
 	}
 	
-	workflow ProductTypeGet implements ProductTypeGet {				
+	workflow ProductTypeGet implements ProductTypeGet {	
+		description "Searches by product type ID and returns the product type information."			
         transaction GetProductType {
 		    roles(ProductTaxonomyConsumer, ProductTaxonomyManager)
 		}
     }
 	
 	process ProductTaxonomyUpdate{
-		summary "Send the product taxonomy update notification."
+		summary "Sends the product taxonomy update notification."
 		description "Notifies the ProductTaxonomyObserver that an updated has been done."	
 
 		roles
@@ -81,15 +83,16 @@ package com.x.producttaxonomy.v2 {
 	}
 	
 	process ProductTypeSuggestion{
-		description "Suggests a product type based on title, description, and NV pairs"
+		description "Suggests a product type based on title, description, and name/value pairs."
 
 		roles
 			{
 				ProductTaxonomyConsumer "A system such as a cart which needs product taxonomy information"
-				ProductTaxonomyManager "The system which maintains the product taxonomy information and provides product suggestions"
+				ProductTaxonomyManager "The system that maintains the product taxonomy information and provides product suggestions."
 			}
 		
 		workflow {
+		description "Suggests a product type based on title, description, and name/value pairs."
 						
 			transaction SuggestProductType {
 				roles(ProductTaxonomyConsumer, ProductTaxonomyManager)
