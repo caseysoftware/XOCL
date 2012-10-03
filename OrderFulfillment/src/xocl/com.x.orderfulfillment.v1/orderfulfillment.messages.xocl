@@ -8,286 +8,276 @@ package com.x.orderfulfillment.v1 {
 	
 		
 	record Fulfillment {
-		guid fulfillmentId		
-		FulfillmentData fulfillment
-		/** identifier of warehouse where inventory is stored */
-		string warehouseId
+		summary "Contains the fulfillment and warehouse information."
+		description "Captures the fulfillment and warehouse information."
+		guid fulfillmentId	"Identifier of the fulfillment."	
+		FulfillmentData fulfillment "Detailed information of the fulfillment."
+		string warehouseId "Identifier of the warehouse where the inventory is stored."
 	}
 	
 	record DropShipFulfillment {
+		summary "Contains the dropship supplier information and fulfillment ID."
+		description "Captures the dropship supplier information and fulfillment ID."
 				
-		guid fulfillmenId		
-		DropshipFulfillmentData fulfillment
+		guid fulfillmenId "Identifier of the fulfillment."		
+		DropshipFulfillmentData fulfillment "Dropship supplier information."
 	}
 	
 	record DropshipFulfillmentData extends FulfillmentData{
-		/** details of inventory supplier */
-		string supplierId
-		string supplierName
+		summary "Contains fields that are added to the FulfillmentData record."
+		description "Contains dropship supplier fields, which that are added to the FulfillmentData record."
+		string supplierId "Identifier of the dropship supplier."
+		string supplierName "Name of the dropship supplier."
 	}
 	
 	record FulfillmentData {
+		summary "Contains the details of a fulfillment."
+		description "Captures the information that define a fulfillment."
 		
-		/** Identifier of the order from which the fulfillment  got created.*/
-		string orderNumber 
-		
-		array<FulfillmentLineData> fulfillmentLines
-		
-		FulfillmentStatus status 
-		string dateOrdered 
-
-		/** The total paid by the customer (total of items, fees, taxes, etc.) */ 
-		CurrencyAmount grandTotal
-		
-		/** The grand total minus any non-shipping discounts */
-		CurrencyAmount netMerchandiseValue
-	
-		/** Total of all the items -- without taxes, fees, etc. */
-		CurrencyAmount itemPriceTotal
-
-		/** Breakdown of the total of all related fees that influence the price */		
-		CurrencyAmount totalInsuranceCost
-		CurrencyAmount totalTaxAmount
-		CurrencyAmount totalDiscountAmount
-		array<AdditionalCost> additionalCosts
-		/** A collection of all the promotional discounts that were applied at the order level */
-		array<PromotionalDiscount> discounts
-				
-		/** The channel where this fulfillment originated (ebay, amazon, etc.) */
-		string sourceId
-		
-		/** The list of shipments that were created to ship one or more of the items in this fulfillment */
-		array<Shipment>? shipments
-				
-		/** Default shipping for entire fulfillment that can be overridden by each fulfillment line data */
-		DateRange? expectedShipDate
-		
-		ShipTo destination
-		
-		CustomerInfo? customer
-		Address? billingAddress		
+		string orderNumber "Identifier of the order from which the fulfillment was created."
+		array<FulfillmentLineData> fulfillmentLines "Array of the fulfillment lines."
+		FulfillmentStatus status "State of the fulfillment."
+		string dateOrdered "Date of the order."
+		CurrencyAmount grandTotal "Total of the items, fees, taxes, etc. paid by the customer."
+		CurrencyAmount netMerchandiseValue "Grand total minus any non-shipping discounts."
+		CurrencyAmount itemPriceTotal "Total of all the items without taxes, fees, etc."
+		CurrencyAmount totalInsuranceCost "Total amount of insurance."
+		CurrencyAmount totalTaxAmount "Total amount of taxes."
+		CurrencyAmount totalDiscountAmount "Total amount of discounts."
+		array<AdditionalCost> additionalCosts "Total amount of additional costs."
+		array<PromotionalDiscount> discounts "Total amount of all the promotional discounts that were applied at the order level."
+		string sourceId "Identifier of the channel where this fulfillment originated (ebay, amazon, etc.)."
+		array<Shipment>? shipments "List of shipments that were created to ship one or more of the items in this fulfillment."
+		DateRange? expectedShipDate "Default shipping for the entire fulfillment. Note: This can be overridden by each fulfillment line data."	
+		ShipTo destination "Address the fulfillment will be shipped to."
+		CustomerInfo? customer "Information about the customer the fulfillment is being shipped to."
+		Address? billingAddress	"Billing address for the fulfillment."
 		
 	}
 	record Shipment { 
-		description "A shipment represents a set of items that shipped, in one or more shipment containers"
-		
-		/** only need to be unique to the fulfillment like 1, 2, 3, etc...*/
-		string shipmentId
+		summary "Contains the shipment data of a fulfillment."
+		description "Captures the shipment data of a fulfillment. A shipment represents a set of items that shipped, in one or more shipment containers."
+		string shipmentId "Identifier of the shipment. Note: This needs to be unique only to the fulfillment, such as 1, 2, 3, etc."
 		CurrencyAmount shippingFees	"The fees paid by the customer for this shipment"
 		CurrencyAmount? discountAmount 	"Total discount amount summarized from all PromotionalDiscount."
-		array<PromotionalDiscount>? discounts
-		CurrencyAmount? additionalCost
-		CurrencyAmount? packagingHandlingCost
+		array<PromotionalDiscount>? discounts "List of promotional discounts."
+		CurrencyAmount? additionalCost "Amount of any additional shipping costs."
+		CurrencyAmount? packagingHandlingCost "Amount of any packaging or handling costs."
 		CurrencyAmount? surcharge  "UPS or FedEx to Alaska, Hawaii or Puerto Rico would typically encounter a surcharge."
-
-		array<ShipmentContainer> shipmentContainers;
+		array<ShipmentContainer> shipmentContainers "List of the shipping containers.";
 	}
 
 	record ItemQuantity{
-		string sku
-		string fulfillmentLineId
-		int quantity	
+		summary "Contains the quantity of an item."
+		description "Captures the quantity, SKU, and fulfillment line ID of an item."
+		string sku "SKU of the item."
+		string fulfillmentLineId "Unique identifier of the item."
+		int quantity "Quantity of the item."
 	}
 	
 	record ShipmentContainer {  //TODO: Can one item be in more than one box? if so does it have multiple tracking #s?
-			description "A shipment container represents a set of items that shipped in a single container with one tracking number"
-			array <ItemQuantity> itemsWithQuantity "Reference to items and quantities in the shipment container"
-			TrackingDetail trackingDetail
-			string? shippingMethod  "The method used to ship: Next day, ground, etc. "
-			DateRange? deliveryWindow
-			DateRange? shippingWindow
-			string? shippingMessage
+		summary "Contains the shipment container information."
+		description "Captures the shipment container information. A shipment container represents a set of items that shipped in a single container with one tracking number."
+		array <ItemQuantity> itemsWithQuantity "List of items and quantities in the shipment container."
+		TrackingDetail trackingDetail "Shipment tracking information."
+		string? shippingMethod  "Method used for the shipment, such as, Next day, ground, etc."
+		DateRange? deliveryWindow "Date of the shipment delivery window."
+		DateRange? shippingWindow "Date of the shipment."
+		string? shippingMessage "Any additional instructions or information."
 	}
 	
 	
     record ShippingQuote {
-    	description "A quote for shipping a set of items"
-		string shippingMethod  "The method used to ship: Next day, ground, etc. "
-		string shippingMethodDescription 
-		
-		CurrencyAmount shippingFees		"The fees to be paid by the customer for this shipment"		
-		CurrencyAmount? packagingHandlingCost
+    	summary "Contains the quote for shipping a set of items."
+    	description "Captures the quote for shipping a set of items."
+		string? shippingMethod  "Method used for the shipment, such as, Next day, ground, etc."
+		string shippingMethodDescription "Description of the shipping method, such as Next day, ground, etc."
+		CurrencyAmount shippingFees	"Amount to be paid by the customer for this shipment."		
+		CurrencyAmount? packagingHandlingCost "Amount of any packaging or handling costs."
 		CurrencyAmount? surcharge  "UPS or FedEx to Alaska, Hawaii or Puerto Rico would typically encounter a surcharge."
-		
-		DateRange? deliveryWindow
-		DateRange? shippingWindow
-		
-		array<ShippingTag>? shippingTags	
+		DateRange? deliveryWindow "Date of the shipment delivery window."
+		DateRange? shippingWindow "Date of the shipment."
+		array<ShippingTag>? shippingTags "List of shipping tags."
 	}
 	
 	enum ShippingTag{
-		SIGNATURE_REQUIRED
-		DELIVERY_CONFIRMATION
-		TRACKABLE
-		INSURED
+		description "Defines the values used to specify the shipping tag."
+		SIGNATURE_REQUIRED "Someone must sign for the shipment at the time of delivery."
+		DELIVERY_CONFIRMATION "A delivery confirmation will be send when the shipment is delivered."
+		TRACKABLE "The shipment has a tracking number."
+		INSURED "The shipment is insured."
 	}
 	
 	record LineData {
-		/* The unique id of this item */
-		string fulfillmentLineId
-		
-		/* The ordered index of this item (also referred to as order line number) */
-		string? itemId
-
-		int quantity
-		string sku
-		string itemDescription
-		
-		GiftWrap? giftwrap
-		CustomizationDetail? customizationDetail
+		summary "Contains the line data for an item."
+		description "Captures the line data information for an item, such as item ID, SKU, quantity, etc."
+		string fulfillmentLineId "Unique identifier of the item."
+		string? itemId "Ordered index identifier of this item (also referred to as order line number)."
+		int quantity "Quantity of the item."
+		string sku "SKU of the item."
+		string itemDescription "Description of the item."		
+		GiftWrap? giftwrap "Gift wrap information of the item."
+		CustomizationDetail? customizationDetail "Customization information of the item."
 	}
 	
-	
-	record FulfillmentLineData extends LineData{
-	
-		/* Reference to FulfillmentData.orderNumber */
-		string? orderNumber
-		
-		LineItemPrice unitPrice
 
-		FulfillmentLineStatus status
-		
-		/** This is quantity * unit price */
-		CurrencyAmount? price
-			
-		datetime? dateCancelled
-		datetime? dateDelivered
-		datetime? dateShipped
-		
-		/** A reference to the shipment that is used to ship this item */
-		string? shipmentId
+	record FulfillmentLineData extends LineData{
+		summary "Contains fields that are added to the LineData record."
+		description "Contains the line data fields, which are added to the LineData record."
+
+//Travis I don't know what orderNumber is.		
+		/* Reference to FulfillmentData.orderNumber */
+		string? orderNumber ""
+	
+		LineItemPrice unitPrice "Cost of one item (price per unit)."
+		FulfillmentLineStatus status "Status of the fulfillment line, such as Created, On_Hold, Released."
+		CurrencyAmount? price "Total price of the item(s) (quantity * unit price)."
+		datetime? dateCancelled "Date the fulfillment was cancelled."
+		datetime? dateDelivered "Date the item was delivered."
+		datetime? dateShipped "Date the item was shipped."	
+		string? shipmentId "Reference identifier of the shipment that is used to ship the item."
 	}
 	
 	record LineItemPrice {
-		/** The total price the customer is paying for this line (sum of price, taxes, fees, additional costs, etc.) */
-		CurrencyAmount totalPrice
-		
-		/** The price the customer is paying for this item (without taxes, fees, addtional costs, etc.) */
-		CurrencyAmount price 
-		
-		CurrencyAmount? insuranceCost
-		
-		/** The tax charges for this item with addtional data about the nature of the tax */
-		Tax taxAmount
-
-	    /** The sum all of the discount that were applied to this order line */
-		CurrencyAmount? totalDiscountAmount
-
-		/** A collection of all the discounts that were appled to this order line item */		
-		array<PromotionalDiscount>? allDiscounts
-		
-		/** A collection of additional costs that were associated with this order line  */
-		array<AdditionalCost>? additionalCosts
+		summary "Contains information about the cost of a line item."
+		description "Captures information about the cost of a line item."
+		CurrencyAmount totalPrice "Total amount the customer is paying for this line (sum of price, taxes, fees, additional costs, etc.)."
+		CurrencyAmount price "Price the customer is paying for this item (without taxes, fees, additional costs, etc.)."		
+		CurrencyAmount? insuranceCost "Amount of the insurance cost."
+		Tax taxAmount "Tax charges for this item with additional data about the nature of the tax."
+		CurrencyAmount? totalDiscountAmount "Sum of all  the discounts that were applied to this order line."
+		array<PromotionalDiscount>? allDiscounts "List of the discounts that were applied to this order line item."
+		array<AdditionalCost>? additionalCosts "List of the additional costs that were associated with this order line item."
 	}
 	
 	record Tax {
-		TaxabilityType? taxability
-		string? taxType
-		double? effectiveRate
-		CurrencyAmount taxesCharged
+		summary "Contains information about the tax applied to a line item."
+		description "Captures information about the tax applied to a line item."
+		TaxabilityType? taxability "Taxable status, such as TAXABLE, NONTAXABLE, etc."
+		string? taxType "Type of tax applied."
+		double? effectiveRate "Effective tax rate."
+		CurrencyAmount taxesCharged "Total amount of tax charged."
 	}
 	
 	enum TaxabilityType {
-		TAXABLE,
-		NONTAXABLE,
-		EXEMPT,
-		DEFERRED
+		description "Defines the values used to specify the taxability of a line item."
+		TAXABLE "Item is taxable.",
+		NONTAXABLE "Item is not taxable.",
+		EXEMPT "Item is tax exempt.",
+		DEFERRED "Tax on the item is deferred."
 	}
 	
 	enum FulfillmentStatus {
-		CREATED,
-		IN_PROGRESS,
-		ON_HOLD,
-		CANCELLED,
-		COMPLETED
+		description "Defines the values used to specify the status of the fulfillment."
+		CREATED "Fulfillment order has been created.",
+		IN_PROGRESS "Order is in the process of being fulfilled.",
+		ON_HOLD "Fulfillment order is on hold.",
+		CANCELLED "Fulfillment order was cancelled.",
+		COMPLETED "Fulfillment order was completed."
 	}
 	
 	enum FulfillmentLineStatus {  //TODO:  Discuss whether and how we handle the status of partial line shipment
-		CREATED,
-		PICKED,
-		ON_HOLD,
-		RELEASED,
-		READY_TO_SHIP,
-		SHIPPED,
-		UNDELIVERABLE,
-		CANCELLED,
-		COMPLETED
+		description "Defines the values used to specify the fulfillment line status."
+		CREATED "Fulfillment line item has been created.",
+		PICKED "Fulfillment line item has been picked.",
+		ON_HOLD "Fulfillment line item is on hold.",
+		RELEASED "Fulfillment line item has been released.",
+		READY_TO_SHIP "Fulfillment line item is ready to be shipped.",
+		SHIPPED "Fulfillment line item has been shipped.",
+		UNDELIVERABLE "Were unable to deliver the fulfillment line item.",
+		CANCELLED "Fulfillment line item was cancelled.",
+		COMPLETED "Fulfillment line item was completed."
 	}
 	
 	
 	record CustomerInfo confidential {
-		union{guid, EntityId} id;   //id is created by the system that creates the record.	
-		Name name
-		Email? email
-		Phone? phone
+		summary "Contains information about the customer."
+		description "Captures confidential information about the customer."
+		union{guid, EntityId} id "Identification of the customer. This ID is created by the system that created the customer record.";   	
+		Name name "Name of the customer."
+		Email? email "Email address of the customer."
+		Phone? phone "Telephone number of the customer."
 	}	
 	
 	record ShipTo confidential {
-		Name name
-		Address address
-		GiftTag giftTag
+		summary "Contains information about where the shipment is being shipped to."
+		description "Captures information about where the shipment is being shipped to."
+		Name name "Name of the party receiving the shipment."
+		Address address "Address the shipment is going to."
+		GiftTag giftTag "Gift tag information."
 	}
 	
 	record AdditionalCost {
-		string costDescription
-		CurrencyAmount amount
+		summary "Contains the information about any additional costs."
+		description "Captures the information about any additional costs."
+		string costDescription "Description of the additional costs."
+		CurrencyAmount amount "Amount of the additional cost."
 	}
 	
 	record PromotionalDiscount {
-		string code
-		string promoDescription
-		PromotionDiscountType type
-		CurrencyAmount amount
+		summary "Contain information about a promotional discount."
+		description "Captures information about a promotional discount."
+		string code "Promotional discount code."
+		string promoDescription "Promotional discount description."
+		PromotionDiscountType type "Type of promotional discount."
+		CurrencyAmount amount "Amount of the promotional discount."
 	}
 	
 	enum PromotionDiscountType {
-		STOREWIDE_SALE,
-		SHIPPING_DISCOUNT,
-		PRODUCT_DISCOUNT,
-		OTHER
+		description "Defines the values used to specify the promotional discount type."
+		STOREWIDE_SALE "Store wide sale.",
+		SHIPPING_DISCOUNT "Shipping discount.",
+		PRODUCT_DISCOUNT "Product discount.",
+		OTHER "Other type of discount not covered by the existing types."
 	}
 	
 	record GiftWrap {
-		/** SKU number value of the specific Gift Wrap to be used */
-		string giftwrapSKU
-		CurrencyAmount giftwrapCost
+		summary "Contains information for gift wrapping."
+		description "Captures information for gift wrapping."
+		/**  */
+		string giftwrapSKU "SKU number of the specific gift wrap to use."
+		CurrencyAmount giftwrapCost "Amount of the gift wrapping service."
 	}
 	
 	record GiftTag {
-		string? from
-		string? to
-		string giftMessage		
+		summary "Contains information for the gift tag."
+		description "Capture the information for the gift tag."
+		string? from "Sender of the gift."
+		string? to "Receiver of the gift."
+		string giftMessage "Message from the sender to the receiver."	
 	}
 	
 	record CustomizationDetail {
-		/** Unique identifier for this customization item. */
-		string customizationItemId
-		// customization Type (e.g. Embroidery, Embossing, Engraving, Tshirt, Jersey)
-		string customizationType
-		// Instructions used to explain where logos and such should beplaced on item (e.g. CF, FB, FONT,COLR, TEXT, LOCN)
-		array <string> instructions
-		//e.g. Center, Front, Back, Name and Number
-		string instructionsDescription
-		//customization Content (e.g. "JOHN DOE, 00", <font type>, <font size>, <font color>) or a SKU number of a logo/patch/sticker (e.g. 3983522)
-		string content
-		//e.g.Large Secondary Logo White, Font type is x, Font size is x
-		string contentDescription
-		CurrencyAmount customizationCost
+		summary "Contains details regarding the customization of an item."
+		description "Captures details regarding the customization of an item."
+		string customizationItemId "Unique identifier for this customization item."
+		string customizationType "Type of customization, such as Embroidery, Embossing, Engraving, etc."
+		array <string> instructions "Instructions for where logos and such should be placed and other customization instructions. For example, CF, FB, FONT, COLR, TEXT, LOCN."
+		string instructionsDescription "Instructions for the customization. For example, Center, Front, Back, Name and Number."
+		string content "Customization content. For example 'JOHN DOE, 00', <font type>, <font size>, <font color>) or a SKU number of a logo/patch/sticker (e.g. 3983522)."
+		string contentDescription "Description of the customization. For example, Large Secondary Logo White, Font type is x, Font size is x."
+		CurrencyAmount customizationCost "Cost for the customization."
 	}
 	
 	record DropShipSupplierComment {
-		guid fulfillmentId
-		array<string> fulfillmentLineIds
-		string comment 
+		summary "Contains a comment from the drop ship supplier."
+		description "Captures a comment from the drop ship supplier."
+		guid fulfillmentId "Identifier of the fulfillment."
+		array<string> fulfillmentLineIds "List of fulfillment line IDs."
+		string comment "Comment from the drop ship supplier."
 	}
 	
 	record FulfillmentExpectedShipDateUpdated {
-		guid fulfillmentId
-		array <string> fulfillmentLineIds
-		DateRange expectedShipDate
+		summary "Contains the expected sip date of the fulfillment."
+		description "Captures the expected sip date of the fulfillment."
+		guid fulfillmentId "Identifier of the fulfillment."
+		array <string> fulfillmentLineIds "List of fulfillment IDs."
+		DateRange expectedShipDate "Date fulfillment is expected to be shipped."
 	}
 	
 	record FulfillmentShipped {
+		summary ""
+		description ""
 		guid fulfillmentId
 		/** warehouse that fulfilled the order. Mandatory for a third party fulfillment processor */
 		string? warehouseId
@@ -296,6 +286,8 @@ package com.x.orderfulfillment.v1 {
 	}
 		
 	record TrackingDetail {
+		summary ""
+		description ""
 		array<string> trackingNumbers
 		string carrier
 		string service
@@ -303,40 +295,56 @@ package com.x.orderfulfillment.v1 {
 	
 		
 	record FulfillmentCancelled {
+		summary ""
+		description ""
 		guid fulfillmentId
 		array <FulfillmentLineData> fulfillmentLines
 		string? cancelMessage
 	}
 	
 	record CancelFulfillment {
+		summary ""
+		description ""
 		guid fulfillmentId
 		array <FulfillmentLineData> fulfillmentLines
 		string? cancelMessage
 	}
 	
 	record FulfillmentProcessorCancelFulfillment extends CancelFulfillment{
+		summary " Reserved for future use.Contains fields that are added to the CancelFulfillment record."
+		description " Reserved for future use. Contains fields that are added to the CancelFulfillment record."
 		//no additional fields at this time
 	}
 		
 	record MerchantComment {
+		summary ""
+		description ""
 		guid fulfillmentId
 		array<string> fulfillmentLineIds
 		string merchantComment 
 	}
 	
 	record ProcessThirdPartyFulfillment {
+		summary ""
+		description ""
 		Fulfillment fulfillment
 	}
 	
 	record ProcessDropshipFulfillment {
+		summary ""
+		description ""
 		DropShipFulfillment fulfillment
 	}
 	
 	record FulfillmentCompleted {
+		summary ""
+		description ""
 		Fulfillment fulfillment
 	}
 	
 	record SearchShippingRate {		
+		summary ""
+		description ""
 		/** details of merchant to whom inventory belongs should come from tenantID */
 		/** identifier of warehouse where inventory is stored */
 		string warehouseId
@@ -344,28 +352,36 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record SearchShippingRateSucceeded  {
+		summary ""
+		description ""
 		/** breakup of fulfillment into shipments, each shipment contains its shipping costs */
 		array<ShippingQuote> quotes
 		SearchShippingRate request
 	}
 	
 	record SearchShippingRateFailed {
+		summary ""
+		description ""
 		SearchShippingRate request
 		array<Error> errors
 	}
 	
 	record MerchantHoldFulfillment {
+		summary ""
+		description ""
 		guid fulfillmentId
 		array <string> fulfillmentLineIds
 		string? holdMessage
 	}	
 
 	enum HoldReasonCode{
-		description "The reasons that a hold may occur"
+		description "Defines the values used to specify the reasons a hold may occur."
 		INVENTORY_UNAVAILABLE
 	}
 
 	record FulfillmentProcessorHoldFulfillment {
+		summary ""
+		description ""
 		guid fulfillmentId
 		array <string> fulfillmentLineIds  "The line items that are in this hold"
 		array<HoldReasonCode>? reasonCodes;
@@ -373,6 +389,8 @@ package com.x.orderfulfillment.v1 {
 	}
 
 	record ReleaseFulfillment {
+		summary ""
+		description ""
 		guid fulfillmentId
 		array <string> fulfillmentLineIds
 		string? releaseMessage
@@ -380,6 +398,8 @@ package com.x.orderfulfillment.v1 {
 	
 	
 	record FulfillmentInformationUpdated {
+		summary ""
+		description ""
 		guid fulfillmentId
 		FulfillmentStatus status 
 		DateRange? expectedShipDate  "The Updated expected ship date"
@@ -389,18 +409,25 @@ package com.x.orderfulfillment.v1 {
 	
 	
 	record LookupFulfillments {
+		summary ""
+		description ""
 		string orderNumber   
 	}
 	
 	record LookupFulfillmentsSucceeded extends LookupFulfillments{
+		summary "Contains fields that are added to the LookupFulfillments record."
+		description "Contains the fulfillment information field, which is added to the LookupFulfillments record."
 		array<Fulfillment> fulfillments
 	}
 	
 	record LookupFulfillmentsFailed extends LookupFulfillments {
+		summary "Contains fields that are added to the LookupFulfillments record."
+		description "Contains the error field, which is added to the LookupFulfillments record."
 		array<Error> errors
 	}
 	
 	enum ReceivingInventoryStatus {
+		description "Defines the values used to specify ??."
 		NOT_RECEIVED
 		TRUCK_CHECKIN	
 		RECEIVED
@@ -409,6 +436,8 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record ReceivingLineData {
+		summary ""
+		description ""
 		string masterPurchaseOrderNumber "Master Purchase Order #" 
 		string? purchaseOrderLineNumber
 		string invoiceNumber  "purchase order # or ASN #"
@@ -423,6 +452,8 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record RecievingContainer{
+		summary ""
+		description ""
 		string sku
 		int expectedQty
 		TrackingDetail? trackingDetail	
@@ -433,6 +464,8 @@ package com.x.orderfulfillment.v1 {
 	}
 		
 	record ReceivingData {
+		summary ""
+		description ""
 		/** details of supplier */
 		string? supplierId
 		string? supplierName
@@ -446,38 +479,53 @@ package com.x.orderfulfillment.v1 {
 	
 		
 	record Receiving {
+		summary ""
+		description ""
 		guid receivingId
 		ReceivingData receiving
 	}
 	
 	record ProcessReceiving {
+		summary ""
+		description ""
 		Receiving receiving
 	}
 	
 	record UpdateReceiving {
+		summary ""
+		description ""
 		Receiving receiving
 	}
 	
 	record LookupReceivings {
+		summary ""
+		description ""
 		string masterPurchaseOrderNumber
 	}
 	
 	record LookupReceivingsSuceeded extends LookupReceivings{		
+		summary "Contains fields that are added to the LookupReceivings record."
+		description "Contains line data fields, which are added to the LookupReceivings record."
 		array<ReceivingLineData> receivings
 	}
 	
 	record LookupReceivingsFailed extends LookupReceivings{
+		summary "Contains fields that are added to the LookupReceivings record."
+		description "Contains the lookup receiving error field, which is added to the LookupReceivings record."
 		array<Error> errors
 	}
 	
 	record ReceivingInventoryStatusUpdated {
+		summary ""
+		description ""
 		guid receivingId
-		//inventory for which update occured
+		//inventory for which update occurred
 		array<ReceivingLineData> receivingLines
 		ReceivingUpdateReason updateReason
 	}
 	
 	enum ReceivingUpdateReason {
+		description "Defines the values used to specify ??."
 		RECEIPT_TRUCK_CHECKIN
 		INVENTORY_RECEIPT
 		INVENTORY_PUT_AWAY
@@ -485,10 +533,14 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record ReceivingCompleted {
+		summary ""
+		description ""
 		Receiving receiving
 	}
 	
 	record CancelReceiving {
+		summary ""
+		description ""
 		guid receivingId
 		array<ReceivingLineData> receivingLines
 		string? reasonCode
@@ -497,11 +549,15 @@ package com.x.orderfulfillment.v1 {
 	
 	
 	record Return {
+		summary ""
+		description ""
 		guid returnId
 		ReturnData returnDetails
 	}
 	
 	record ReturnData {
+		summary ""
+		description ""
 		/** identifier of fulfillment that is being returned */
 		guid fulfillmentId
 		/** Same as sales order number */
@@ -520,11 +576,14 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	enum ReturnReason{
+		description "Defines the values used to specify ??."
 		CUSTOMER "The customer initiated the return from either an RMA or return label"
 		UNDELIVERABLE "The shipment was undeliverable"
 	}
 	
 	record ReturnLineData {
+		summary ""
+		description ""
 		string returntLineId	"unique id for the returned item"	
 		string sku
 		int quantity
@@ -534,32 +593,45 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record ReturnReceived {
+		summary ""
+		description ""
 		ReturnData returnedData
 		datetime dateReceived
 	}
 	
 	record ReturnAdvanceShipmentNotice {
+		summary ""
+		description ""
 		ReturnData returnedData
 		DateRange? expectedDeliveryDate
 	}
 	
 	record ProcessReturnAdvanceShipmentNotice {
+		summary ""
+		description ""
 		ReturnAdvanceShipmentNotice asn
 	}
 	
 	record UpdateReturnAdvanceShipmentNotice {
+		summary ""
+		description ""
 		ReturnAdvanceShipmentNotice asn
 	}
 	
 	record CancelReturnAdvanceShipmentNotice {
+		summary ""
+		description ""
 		ReturnAdvanceShipmentNotice asn
 	}
 	
 	record ReturnProcessCompleted {
+		summary ""
+		description ""
 		ReturnData returnedData
 	}
 	
 	enum InventoryCondition {
+		description "Defines the values used to specify ??."
 		SELLABLE
 		UNSELLABLE
 	}

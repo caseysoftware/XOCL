@@ -4,8 +4,8 @@
 package com.x.orderfulfillment.v1 {
 	import com.x.orderfulfillment.v1.*
 	
-	// Notifies that a dropship fulfillment needs to be processed
 	transaction ProcessDropshipFulfillment(Fulfillment fulfillment) notify {
+		description "Sends a notification that a dropship fulfillment needs to be processed."
 		sender
 		{	
 			message ProcessDropshipFulfillment {
@@ -18,8 +18,8 @@ package com.x.orderfulfillment.v1 {
 	 	}
 	}
 	
-	// Notifies third party fulfillment needs to be processed
 	transaction ProcessThirdPartyFulfillment(Fulfillment fulfillment) notify {
+		description "Sends a notification that a third-party fulfillment needs to be processed."
 		sender
 		{	
 			message ProcessThirdPartyFulfillment {   
@@ -33,8 +33,8 @@ package com.x.orderfulfillment.v1 {
 		
 	}	
 	
-	// Notifies that fulfillment processing was completed
 	transaction FulfillmentCompleted(Fulfillment fulfillment) notify {
+		description "Sends a notification that the fulfillment processing was completed."
     	preconditions(fulfillment[Fulfillment.Cancelled], fulfillment[Fulfillment.Shipped])
     	sender
 		{
@@ -49,8 +49,8 @@ package com.x.orderfulfillment.v1 {
     }
 	
 	
-	// Notifies that expected ship date got updated for part/whole of Fulfillment  
 	transaction FulfillmentExpectedShipDateUpdated notify {
+ 		description "Sends a notification that the expected ship date was updated for all or part of the fulfillment."
     	sender {
     		message FulfillmentExpectedShipDateUpdated {
             	timeouts(validation=3m)
@@ -61,6 +61,7 @@ package com.x.orderfulfillment.v1 {
 	
 	//Notifies a drop ship suppliers comment
 	transaction DropShipSupplierComment notify {
+ 		description "Sends a comment from the dropship supplier."
     	sender {
     		message DropShipSupplierComment {
             	timeouts(validation=3m)
@@ -71,6 +72,7 @@ package com.x.orderfulfillment.v1 {
     
     //Notifies a merchants comment
 	transaction MerchantComment notify {
+		description "Sends a comment from a merchant."
     	sender {
     		message MerchantComment {
             	timeouts(validation=3m)
@@ -79,8 +81,8 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-    // Notifies that part/whole of Fulfillment was shipped 
 	transaction FulfillmentShipped notify {		
+		description "Sends a notification that all or part of the fulfillment was shipped."
     	sender {
     		message FulfillmentShipped {
             	timeouts(validation=3m)
@@ -89,8 +91,8 @@ package com.x.orderfulfillment.v1 {
     	}
     }    
      
-     // Notifies that part/whole of Fulfillment was cancelled 
 	transaction FulfillmentCancelled notify {
+		description "Sends a notification that all or part of the fulfillment was cancelled."
         sender {
         	message FulfillmentCancelled {
         		timeouts(validation=3m)     		
@@ -99,8 +101,8 @@ package com.x.orderfulfillment.v1 {
         }
     }
     
-    // A query to look up the shipping rate for a fulfillment 
     transaction SearchShippingRate query {
+    	description "Retrieves the shipping rate for a fulfillment."
     	sender {
     		message SearchShippingRate{
     			timeouts(response=30s)
@@ -114,7 +116,7 @@ package com.x.orderfulfillment.v1 {
     }
 
     transaction MerchantHoldFulfillment(Fulfillment fulfillment) notify {
-    	description "Notifies that whole/parts of fulfillment should be held from further processing"
+    	description "Sends a notification that all or part of a fulfillment should be held from further processing."
     	sender{
     		message MerchantHoldFulfillment{
     			timeouts(validation=3m)     		
@@ -123,9 +125,8 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-        // Notifies that whole/parts of fulfillment should be held from further processing
     transaction FulfillmentProcessorHoldFulfillment(Fulfillment fulfillment) notify {
-    	description "Notifies that whole/parts of fulfillment should be held from further processing"
+    	description "Sends a notification that all or part of a fulfillment should be held from further processing."
     	sender{
     		message FulfillmentProcessorHoldFulfillment{
     			timeouts(validation=3m)     		
@@ -136,6 +137,7 @@ package com.x.orderfulfillment.v1 {
     
     // Notifies that whole/parts of fulfillment should be released for further processing
     transaction ReleaseFulfillment(Fulfillment fulfillment) notify {
+    	description "Sends a notification that all or part of a fulfillment should be released for further processing."
     	sender{
     		message ReleaseFulfillment{
     			timeouts( validation=3m)
@@ -144,8 +146,8 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-    // Notifies that information got updated for whole/parts of fulfillment
     transaction FulfillmentInformationUpdated notify {
+    	description "Sends a notification that all or part of a fulfillment was updated."
     	sender{
     		message FulfillmentInformationUpdated{
     			timeouts( validation=3m) 
@@ -154,8 +156,8 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-    // A query to look up all fulfillments for a order number 
     transaction LookupFulfillments query {
+    	description "Retrieves all the fulfillment for an order number."
     	sender {
     		message LookupFulfillments{
     			timeouts(response=30s)
@@ -168,8 +170,8 @@ package com.x.orderfulfillment.v1 {
         }
     }
     
-    // Notifies that whole/parts of fulfillment should be cancelled
     transaction CancelFulfillment notify {
+    	description "Sends a notification that all or part of a fulfillment should be cancelled."
     	sender{
     		message CancelFulfillment{
     			timeouts( validation=3m) 
@@ -178,8 +180,8 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-        // Notifies that whole/parts of fulfillment should be cancelled
     transaction FulfillmentProcessorCancelFulfillment notify {
+    	description "Sends a notification that all or part of a fulfillment should be cancelled."
     	sender{
     		message FulfillmentProcessorCancelFulfillment{
     			timeouts( validation=3m) 
@@ -189,9 +191,9 @@ package com.x.orderfulfillment.v1 {
     }
     
     
-    // Notifies that data pertaining to future expected inventory a.k.a receiving should be processed
     transaction ProcessReceiving(Receiving receiving) notify {
     	sender{
+    		description "Sends a notification that data pertaining to future expected inventory (receiving) should be processed."
     		message ProcessReceiving{
     			timeouts( validation=3m)
     			retries=3  
@@ -202,8 +204,8 @@ package com.x.orderfulfillment.v1 {
 	 	}
     }
     
-    //Notifies that previously provided information for receiving should be updated
     transaction UpdateReceiving notify {
+    	description "Sends a notification that previously provided information for receiving should be updated."
     	sender{
     		message UpdateReceiving{
     			timeouts( validation=3m)
@@ -212,8 +214,8 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-    //Notifies that status got updated for all/part of receiving inventory
     transaction ReceivingInventoryStatusUpdated notify {
+    	description "Sends a notification that the status was updated for all or part of receiving inventory."
     	sender{
     		message ReceivingInventoryStatusUpdated{
     			timeouts( validation=3m)
@@ -222,8 +224,8 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-    //Notifies that processing of receiving got completed
     transaction ReceivingCompleted(Receiving receiving) notify {
+    	description "Sends a notification that the processing of a receiving was completed."
     	sender{
     		message ReceivingCompleted{
     			timeouts( validation=3m)
@@ -235,8 +237,8 @@ package com.x.orderfulfillment.v1 {
 	 	}
     }
     
-     //Notifies that whole/part of inventory should be cancelled
      transaction CancelReceiving notify {
+     	description "Sends a notification that all or part of the inventory should be cancelled."
     	sender{
     		message CancelReceiving{
     			timeouts( validation=3m)
@@ -245,8 +247,8 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-    //A query to lookup receivings for a purchase order number
     transaction LookupReceivings query {
+    	description "Retrieves receivings for a purchase order number."
     	sender {
     		message LookupReceivings{
     			timeouts(response=30s)
@@ -259,8 +261,8 @@ package com.x.orderfulfillment.v1 {
         }
     }
     
-     //Notifies of a return advance shipping notice that needs to be processed
      transaction ProcessReturnAdvanceShipmentNotice notify {
+    	description "Sends a notification of a return advance shipping notice that needs to be processed."
     	sender{
     		message ProcessReturnAdvanceShipmentNotice{
     			timeouts( validation=3m)
@@ -269,8 +271,8 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-    //Notifies of a return ASN previously sent that needs to be updated
     transaction UpdateReturnAdvanceShipmentNotice (Return returns) notify {
+    	description "Sends a notification that a return advance shipping notice, which was previously sent, needs to be updated."
     	preconditions (returns[Return.Expected])
     	sender{
     		message UpdateReturnAdvanceShipmentNotice{
@@ -280,8 +282,8 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-    //Notifies of a return ASN previously sent that needs to be cancelled
     transaction CancelReturnAdvanceShipmentNotice (Return returns) notify {
+    	description "Sends a notification that a return advance shipping notice, which was previously sent, needs to be cancelled."
     	preconditions (returns[Return.Expected])
     	sender{
     		message CancelReturnAdvanceShipmentNotice{
@@ -294,8 +296,8 @@ package com.x.orderfulfillment.v1 {
         }
     }
     
-    //Notifies that product was returned with or without ASN
     transaction ReturnReceived notify {
+    	description "Sends a notification that a product was returned with or without an advance shipping notice."
     	sender{
     		message ReturnReceived{
     			timeouts( validation=3m)
@@ -304,8 +306,8 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-    //Notifies that returns processing is complete
     transaction ReturnProcessCompleted(Return returns) notify {
+    	description "Sends a notification that the returns processing is complete."
     	sender{
     		message ReturnProcessCompleted{
     			timeouts( validation=3m)
