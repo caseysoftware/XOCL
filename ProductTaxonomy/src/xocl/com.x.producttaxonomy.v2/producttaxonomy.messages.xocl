@@ -247,9 +247,9 @@ package com.x.producttaxonomy.v2{
  
 	enum MATCHTYPE {
 		description "Defines the values used to specify the type of match found."
-     	EXACT_MATCH "It is an exact match.",
-    	STRONG_MATCH "It is a strong match.",
-     	WEAK_MATCH "It is a weak match."
+     	EXACT_MATCH "Indicates it was an exact match.",
+    	STRONG_MATCH "Indicates it was a strong match.",
+     	WEAK_MATCH "Indicates it was a weak match."
 	}
  
 	record SuggestProductTypeSucceded
