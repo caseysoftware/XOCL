@@ -1,4 +1,4 @@
-package com.x.webstorecontracts.v1 0.2 earlydraft
+package com.x.webstorecontracts.v1 0.3 workingdraft
 {	
 	packagetitle "Webstore Contracts"
 	
@@ -10,6 +10,14 @@ package com.x.webstorecontracts.v1 0.2 earlydraft
     		description "A provider of webstore metadata, such as store and offer information"
     		roles{
 		 		WebStoreMetadataProvision.WebStoreMetadataProvider
+	 			
+	 		}
+	}
+	contract WebStoreMetadataConsumer
+    {
+    		description "A consumer of webstore metadata, such as store and offer information"
+    		roles{
+		 		WebStoreMetadataProvision.WebStoreMetadataConsumer
 	 			
 	 		}
 	}
