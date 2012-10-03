@@ -1,5 +1,5 @@
 package com.x.thirdpartyorderfulfillment.v1 0.2 earlydraft {
-	packagetitle "Third Party Order Fulfillment contract"
+	packagetitle "Third-party Order Fulfillment Contracts"
 
 	import com.x.orderfulfillment.v1.*
 	import com.x.inventory.v1.*

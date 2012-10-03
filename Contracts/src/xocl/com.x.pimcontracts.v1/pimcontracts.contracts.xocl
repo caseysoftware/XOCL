@@ -1,6 +1,6 @@
 package com.x.pimcontracts.v1 0.3 earlydraft
 {	
-	packagetitle "Product Information Management"
+	packagetitle "Product Information Management Contracts"
 	
 	import com.x.pim.v2.*
 	

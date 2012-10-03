@@ -1,5 +1,7 @@
 package com.x.marketingcontracts.v1 0.2 earlydraft
 {
+	packagetitle "Marketing Contracts"
+	
 	import com.x.webstore.v1.*
 	import com.x.customer.v1.*
 	import com.x.ordermanagement.v2.*

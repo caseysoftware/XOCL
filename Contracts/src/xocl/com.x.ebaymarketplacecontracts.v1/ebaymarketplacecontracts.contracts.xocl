@@ -1,5 +1,7 @@
 package com.x.ebaymarketplacecontracts.v1 0.3 candidaterecommendation
 {
+		packagetitle "eBay Marketplace Contracts"
+	
 	import com.x.marketplace.v3.*
 	import com.x.ordermanagement.v2.*
 	import com.x.authz.v1.*

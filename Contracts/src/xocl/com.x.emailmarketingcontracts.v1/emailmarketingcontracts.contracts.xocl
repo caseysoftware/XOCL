@@ -1,6 +1,6 @@
 package com.x.emailmarketingcontracts.v1 0.2 earlydraft
 {
-	description "Email Marketing contracts"
+	packagetitle "Email Marketing Contracts"
 	import com.x.core.v1.*
 	import com.x.emailmarketing.v1.*
 	import com.x.customer.v1.*

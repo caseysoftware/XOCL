@@ -1,6 +1,7 @@
 package com.x.ecosystemmanagementcontracts.v1 0.2 earlydraft
 { 	
-	description "Ecosystem Management contracts"
+	
+	packagetitle "Ecosystem Management Contracts"
     import com.x.ecosystemmanagement.v1.*
     
     contract XManager {

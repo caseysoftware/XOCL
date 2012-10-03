@@ -1,5 +1,7 @@
 package com.x.ordermanagementcontracts.v1 0.3 workingdraft
 {
+	packagetitle "Order Management Contracts"
+	
 	import com.x.ordermanagement.v3.*
 
 	

@@ -1,5 +1,7 @@
 package com.x.inventorycontracts.v1 0.3 earlydraft
 {	
+	packagetitle "Inventory Management Contracts"
+	
 	import com.x.inventory.v2.*
 	
     contract InventoryManager

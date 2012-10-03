@@ -1,5 +1,5 @@
 package com.x.dropshiporderfulfillment.v1 0.2 earlydraft {
-	packagetitle "Drop Ship Order Fulfillment contract"
+	packagetitle "Drop Ship Order Fulfillment Contracts"
 
 	import com.x.orderfulfillment.v1.*
 	import com.x.inventory.v1.*

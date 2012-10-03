@@ -1,6 +1,6 @@
 package com.x.magentocommercecontract.v1 0.2 earlydraft
 {
-	description "Magento Commerce contract"
+	packagetitle "Magento Commerce Contract"
 	import com.x.webstore.v1.*
 	import com.x.customer.v1.*
 	import com.x.ordermanagement.v2.*
@@ -12,7 +12,7 @@ package com.x.magentocommercecontract.v1 0.2 earlydraft
     	// A description defines the purpose of the contract
     	description "Magento Commerce"
     	
-    	// A set of roles collectivley define the implementer's responsibilities
+    	// A set of roles collectively define the implementer's responsibilities
     	roles
     	{
 	        CustomerSearch.CustomerManager

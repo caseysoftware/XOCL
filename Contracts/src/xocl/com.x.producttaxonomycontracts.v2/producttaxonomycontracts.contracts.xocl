@@ -1,6 +1,6 @@
 package com.x.producttaxonomycontracts.v2 0.1 workingdraft
 {
-	packagetitle "Product Taxonomy contracts"
+	packagetitle "Product Taxonomy Contracts"
 	
 	import com.x.producttaxonomy.v2.*
 	

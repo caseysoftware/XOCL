@@ -1,6 +1,6 @@
 package com.x.customercontract.v1 0.4 workingdraft
 {
-	description "Customer contracts"
+	description "Customer Contracts"
 	import com.x.customer.v2.*
 	
 	contract CustomerConsumer

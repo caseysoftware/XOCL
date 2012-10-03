@@ -1,6 +1,6 @@
 package com.x.webstorecontracts.v1 0.2 earlydraft
 {	
-	packagetitle "Web store metadata contracts"
+	packagetitle "Webstore Contracts"
 	
 	import com.x.webstore.v2.*
 	
