@@ -666,6 +666,7 @@ package com.x.ordermanagement.v3 {
 		array<ParitalShipmentOrderLineData> shippedItems "Array of the items that were shipped."
 		uri customerId "Unique customer identifier assigned by the system that created the customer."
 		datetime? dateOrdered "Date the order was placed."
+		Shipment shipment "Shipping information." 
 		CurrencyAmount totalAmountOfShipment "Total amount of the shipped items."
 		CurrencyAmount totalTaxAmountOfShipment "Total amount of the tax associated with the shipped items."
 	}
