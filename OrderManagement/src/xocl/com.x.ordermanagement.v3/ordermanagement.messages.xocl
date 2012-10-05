@@ -38,11 +38,12 @@ package com.x.ordermanagement.v3 {
 	}
 	
 	enum CancelOrderErrorCodes extends OrderManagementLookupErrorCodes {
-		description "Defines the values used to specify order submission error types."
+		description "Defines the values used to specify order submission error types. This field is added to the OrderManagementLookupErrorCodes record."
 		ORDER_ALREADY_CANCELED "The order has already been canceled."
 	}
 	
 	enum PaymentUpdateErrorCodes extends OrderManagementLookupErrorCodes {
+		description "Defines the values used to specify payment update errors. This field is added to the OrderManagementLookupErrorCodes record."
 		PAYMENT_UPDATE_DENIED "The system denied your attempt to modify payment information."
 	}
 	
@@ -113,9 +114,10 @@ package com.x.ordermanagement.v3 {
 	}
 	
 	record VariationValue {
-		description "The value of a single variation."
-		string name "The name/label of the variation (size, color, etc.)."
-		string value "The value of the variation (large, red, etc.)."
+		summary "Captures the name/label and value of the variation."
+		description "Contains the information a single variation."
+		string name "Name/label  of the variation, such as size, color, etc."
+		string value "Value of the variation such as, large, red, etc."
 	}
 	
 	record PackageDimensions {
@@ -154,8 +156,8 @@ package com.x.ordermanagement.v3 {
 		PackageWeight? packageWeight "Weight of the package to ship."
 		string? packageType "Type of the shipping package, such as envelop, box, etc."
 		boolean shippingIrregular = false "Whether a package is irregular in shape and therefore cannot go through the stamping machine at the shipping service office and thus requires special or fragile handling."		
-		ShipmentStatus shipmentStatus "An indicator of where the shipment is at in the overall shipping process (ready to ship, shipped, etc.)."
-		datetime dateShipped "The date the shipment was sent."
+		ShipmentStatus shipmentStatus "Indicates where the shipment is at in the overall shipping process (ready to ship, shipped, etc.)."
+		datetime dateShipped "Date the shipment was sent."
 	}
 
 	record GiftTag {
@@ -239,11 +241,11 @@ package com.x.ordermanagement.v3 {
 	}
 	
 	record CommentLogEntry {
-		summary "Contains information individual log entries for an order."
-		description "Contains information individual log entries for an order."
-		datetime logDate
-		string? author
-		string comment
+		summary "Contains information for a log entry or merchant comment for an order."
+		description "Contains information for log entry or merchant comment for an order."
+		datetime logDate "Date of the entry."
+		string? author "Originator of the entry."
+		string comment "Comment or entry text."
 	}
 	
 	record PaymentInfo {
@@ -289,7 +291,7 @@ package com.x.ordermanagement.v3 {
 		OrderLinePrice price "Price for the item without additional fees."
 		string? shipmentId "Unique identifier of the shipment that was used to send the item to the customer. Note: The value must be unique only within a given order."
 		boolean shippingFeesTaxed = false "True if the order line had taxes applied to its shipping fees."
-		array<VariationValue>? variationValues "The specific combination of variation values associated with the product SKU."
+		array<VariationValue>? variationValues "Specific combination of variation values associated with the product SKU."
 	}
 	
 	record ReturnOrderLineData extends PartialOrderLineData {
@@ -334,12 +336,12 @@ package com.x.ordermanagement.v3 {
 		string? offerId "Identifier of the offer. This ID is assigned by the channel that published the offer. Note: offerId and offerURL provide information that can be used to construct a link to the product on the sales channel where it was purchased."
 		string? offerUrl "URL of the offer. Note: offerId and offerURL provide information that can be used to construct a link to the product on the sales channel where it was purchased."
 		boolean shippingFeesTaxed = false "True if the order line had taxes applied to its shipping fees."
-		array<VariationValue>? variationValues "The specific combination of variation values associated with the product SKU."
+		array<VariationValue>? variationValues "Specific combination of variation values associated with the product SKU."
 	}
 	
 	record OrderLineData extends SimpleOrderLineData {
 		summary "Contains fields that are added to the SimpleOrderLineData record."
-		description "Contains order information fields, which are added to the SimpleOrderLineData record."
+		description "Captures order information fields, which are added to the SimpleOrderLineData record."
 		string? lineMessage "Notes to the customer."
 		boolean? _AVDL_bundle = false "Indicates the order is a bundled item, which means the item consists of several items. For example, a gamebox, controllers, and a game."
 		boolean? expandBundle = false "Indicates you can expand the bundle and see the individual items."
@@ -371,7 +373,7 @@ package com.x.ordermanagement.v3 {
 		string? buyerComments "Additional comments or instructions that the buyer wants to convey to the merchant."
 		boolean shippingFeesTaxed = false "True one or more of the order lines had it taxes applied to its shipping fees."
 		string? comments "Captures any general purpose notes for the order"
-		array<CommentLogEntry>? commentEntries "A list of separate, time-stamped log entries for an order."
+		array<CommentLogEntry>? commentEntries "List of separate, time-stamped log entries for an order."
 	}
 	
 	record SimpleOrder extends OrderDetails {
@@ -536,7 +538,7 @@ package com.x.ordermanagement.v3 {
 		summary "Signals an order was created."
 		description "Confirms an order was created and returns order information that was used to create the order."
 		NonSensitiveOrder order "Order information that does not contain sensitive customer information." 
-		string? buyerEmail "The email address of the person buying the product."
+		string? buyerEmail "Email address of the person buying the product."
 	}
 	
 	record CancelOrder {
@@ -584,14 +586,14 @@ package com.x.ordermanagement.v3 {
 		summary "Signals an order was cancelled."
 		description "Returns the order information of the cancelled order."
 		array<SimpleOrder> cancelledOrders "Order that was cancelled."
-		string? reason "The reason the order was cancelled."
+		string? reason "Reason the order was cancelled."
 	}
 	
 	record MarketplaceOrderCancelled {
 		summary "Signals that marketplace orders were cancelled."
 		description "Returns the marketplace orders that were cancelled."
 		array<Order> cancelledOrders "Array of the orders that were cancelled."
-		string? reason "The reason the order was cancelled."
+		string? reason "Reason the order was cancelled."
 	}
 	
     record SearchOrder {
@@ -729,21 +731,21 @@ package com.x.ordermanagement.v3 {
 	}
 	
 	record AddOrderComment {
-		summary "Add a comment to an existing order."
-		description "Add a comment to an existing order."
+		summary "Contains a comment that is be added to an existing order."
+		description "Captures a comment that is to be added to an existing order."
 		uri id "Unique order identifier of the order that will be updated with the supplied comment."
-		string comment "The comment that will be applied."	
+		string comment "Comment text."	
 	}
 	
 	record AddOrderCommentSucceeded {
-		summary "Return information about the successful update."
-		description "Return information about the successful update."
+		summary "Returns information about the successful update."
+		description "Returns information about the successful update."
 		uri id "Unique order identifier of the order that was updated with the comment."
 	}
 
 	record AddOrderCommentFailed {
-		summary "Return information about the failed update."
-		description "Return information about the failed update."
+		summary "Returns information about the failed update."
+		description "Returns information about the failed update."
 		uri id "Unique order identifier of the order that failed to be updated with the comment."
 	}
 }

@@ -14,7 +14,7 @@ package com.x.ordermanagement.v3 {
     	state PartiallyShipped[PartiallyCancelled, PartiallyReturned, Complete] "Order has shipped."
     	state PartiallyCancelled[PartiallyShipped, PartiallyReturned, Complete] "Order has been partially cancelled."
     	state PartiallyReturned[PartiallyShipped, PartiallyCancelled, Complete] "Order has been partially returned."
-    	state Complete "Order has been considered complete."
+    	state Complete "Order is complete."
     }
     
     process OrderSearch<NonSensitive> {
@@ -80,17 +80,17 @@ package com.x.ordermanagement.v3 {
     }
     
     process AddOrderComment {
-    	summary "Add a comment to an existing order."
-    	description "Add a comment to an existing order." 
+    	summary "Adds a comment to an existing order."
+    	description "Adds a comment to an existing order." 
     	
     	roles {		
-    		OrderCommentor "Submits an comments to the order processor." 
+    		OrderCommentor "Submits a comment to the order processor." 
     		OrderProcessor "Accepts and applies comments to orders."
     	}
     	
     	workflow {
-	    	summary "Add a comment to an existing order."
-	    	description "Add a comment to an existing order." 
+	    	summary "Adds a comment to an existing order."
+	    	description "Adds a comment to an existing order." 
     		
     		transaction AddOrderComment {
     			roles (OrderCommentor, OrderProcessor)
@@ -207,6 +207,7 @@ package com.x.ordermanagement.v3 {
         }    
     
 	    workflow {
+	    	description "Processes an order that was already created and is not associated with a sales channel."
 	    	
 			workflow OrderCreated<MarketplaceOrder> {
 			   	roles(OrderProcessor, OrderObserver)
