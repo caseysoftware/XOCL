@@ -17,8 +17,7 @@ package com.x.orderfulfillment.v1 {
 	
 	record DropShipFulfillment {
 		summary "Contains the dropship supplier information and fulfillment ID."
-		description "Captures the dropship supplier information and fulfillment ID."
-				
+		description "Captures the dropship supplier information and fulfillment ID."			
 		guid fulfillmenId "Identifier of the fulfillment."		
 		DropshipFulfillmentData fulfillment "Dropship supplier information."
 	}
@@ -125,10 +124,7 @@ package com.x.orderfulfillment.v1 {
 		summary "Contains fields that are added to the LineData record."
 		description "Contains the line data fields, which are added to the LineData record."
 
-//Travis I don't know what orderNumber is.		
-		/* Reference to FulfillmentData.orderNumber */
-		string? orderNumber ""
-	
+		string? orderNumber "Reference to FulfillmentData.orderNumber."
 		LineItemPrice unitPrice "Cost of one item (price per unit)."
 		FulfillmentLineStatus status "Status of the fulfillment line, such as Created, On_Hold, Released."
 		CurrencyAmount? price "Total price of the item(s) (quantity * unit price)."
@@ -234,7 +230,6 @@ package com.x.orderfulfillment.v1 {
 	record GiftWrap {
 		summary "Contains information for gift wrapping."
 		description "Captures information for gift wrapping."
-		/**  */
 		string giftwrapSKU "SKU number of the specific gift wrap to use."
 		CurrencyAmount giftwrapCost "Amount of the gift wrapping service."
 	}
@@ -251,7 +246,7 @@ package com.x.orderfulfillment.v1 {
 		summary "Contains details regarding the customization of an item."
 		description "Captures details regarding the customization of an item."
 		string customizationItemId "Unique identifier for this customization item."
-		string customizationType "Type of customization, such as Embroidery, Embossing, Engraving, etc."
+		string customizationType "Type of customization, such as embroidery, embossing, engraving, etc."
 		array <string> instructions "Instructions for where logos and such should be placed and other customization instructions. For example, CF, FB, FONT, COLR, TEXT, LOCN."
 		string instructionsDescription "Instructions for the customization. For example, Center, Front, Back, Name and Number."
 		string content "Customization content. For example 'JOHN DOE, 00', <font type>, <font size>, <font color>) or a SKU number of a logo/patch/sticker (e.g. 3983522)."
@@ -276,38 +271,37 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record FulfillmentShipped {
-		summary ""
-		description ""
-		guid fulfillmentId
-		/** warehouse that fulfilled the order. Mandatory for a third party fulfillment processor */
-		string? warehouseId
-		array<Shipment> shipments
-		datetime dateShipped		
+		summary "Contains the shipping information of a fulfillment that has bee shipped."
+		description "Captures the shipping information of a fulfillment that has bee shipped."
+		guid fulfillmentId "Identifier of the fulfillment."
+		string? warehouseId "Identifier of the  warehouse that fulfilled the order. This is required for a third-party fulfillment processor."
+		array<Shipment> shipments "Array of the  shipments use to ship this fulfillment."
+		datetime dateShipped "Date the fulfillment was shipped."	
 	}
 		
 	record TrackingDetail {
-		summary ""
-		description ""
-		array<string> trackingNumbers
-		string carrier
-		string service
+		summary "Contains the shipping tracking information."
+		description "Captures the shipping tracking information."
+		array<string> trackingNumbers "List of tracking numbers."
+		string carrier "Shipping carrier."
+		string service "Shipping service."
 	}
 	
 		
 	record FulfillmentCancelled {
-		summary ""
-		description ""
-		guid fulfillmentId
-		array <FulfillmentLineData> fulfillmentLines
-		string? cancelMessage
+		summary "Contains the information for the fulfillment cancellation message."
+		description "Captures the information used to notify the requester that the fulfillment was cancelled."
+		guid fulfillmentId "Identifier of the fulfillment used."
+		array <FulfillmentLineData> fulfillmentLines "List of the fulfillment lines."
+		string? cancelMessage "Message regarding the cancellation."
 	}
 	
 	record CancelFulfillment {
-		summary ""
-		description ""
-		guid fulfillmentId
-		array <FulfillmentLineData> fulfillmentLines
-		string? cancelMessage
+		summary "Contains the information for the fulfillment cancellation request message."
+		description "Captures the information for the fulfillment cancellation request message."
+		guid fulfillmentId "Identifier of the fulfillment."
+		array <FulfillmentLineData> fulfillmentLines "List of the fulfillment lines."
+		string? cancelMessage "Message regarding the cancellation."
 	}
 	
 	record FulfillmentProcessorCancelFulfillment extends CancelFulfillment{
@@ -317,202 +311,196 @@ package com.x.orderfulfillment.v1 {
 	}
 		
 	record MerchantComment {
-		summary ""
-		description ""
-		guid fulfillmentId
-		array<string> fulfillmentLineIds
-		string merchantComment 
+		summary "Contains the merchant comments regarding a fulfillment."
+		description "Captures the merchant comments regarding a fulfillment."
+		guid fulfillmentId "Identifier of the fulfillment."
+		array<string> fulfillmentLineIds "List of the fulfillment lines."
+		string merchantComment "Merchant's comment text."
 	}
 	
 	record ProcessThirdPartyFulfillment {
-		summary ""
-		description ""
-		Fulfillment fulfillment
+		summary "Contains the fulfillment information for a third-party fulfillment."
+		description "Captures the fulfillment information for a third-party fulfillment."
+		Fulfillment fulfillment "Fulfillment details."
 	}
 	
 	record ProcessDropshipFulfillment {
-		summary ""
-		description ""
-		DropShipFulfillment fulfillment
+		summary "Contains the fulfillment information for a dropship fulfillment."
+		description "Contains the fulfillment information for a dropship fulfillment."
+		DropShipFulfillment fulfillment "Fulfillment details."
 	}
 	
 	record FulfillmentCompleted {
-		summary ""
-		description ""
-		Fulfillment fulfillment
+		summary "Contains information for the fulfillment completed message."
+		description "Captures information for the fulfillment completed message."
+		Fulfillment fulfillment "Fulfillment details."
 	}
 	
 	record SearchShippingRate {		
-		summary ""
-		description ""
+		summary "Contains information of the products that the shipping rate needs to be determined."
+		description "Captures the information of the products that the shipping rate needs to be determined."
 		/** details of merchant to whom inventory belongs should come from tenantID */
-		/** identifier of warehouse where inventory is stored */
-		string warehouseId
-		array<LineData> lines  "The item information for which we are looking up shipping rates"
+		string warehouseId "Identifier of the warehouse where inventory is stored."
+		array<LineData> lines  "Information of the product that the shipping rates need to be determined."
 	}
 	
 	record SearchShippingRateSucceeded  {
-		summary ""
-		description ""
-		/** breakup of fulfillment into shipments, each shipment contains its shipping costs */
-		array<ShippingQuote> quotes
-		SearchShippingRate request
+		summary "Contains the shipping rates for the fulfillment."
+		description "Captures the shipping rates of the shipments for a fulfillment. Each shipment contains its shipping cost."
+		array<ShippingQuote> quotes "List of the individual shipments for a fulfillment and the cost of each."
+		SearchShippingRate request "Request submitted."
 	}
 	
 	record SearchShippingRateFailed {
-		summary ""
-		description ""
-		SearchShippingRate request
-		array<Error> errors
+		summary "Signals that determining shipping rates failed."
+		description "Failure response for determining the shipping rates for a fulfillment. It returns the information that was sent in the request and information about the failure, which is useful for troubleshooting"
+		SearchShippingRate request "Request submitted."
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms."
 	}
 	
 	record MerchantHoldFulfillment {
-		summary ""
-		description ""
-		guid fulfillmentId
-		array <string> fulfillmentLineIds
-		string? holdMessage
+		summary "Contains information for requesting a fulfillment be held."
+		description "Captures the information used in the request to hold a fulfillment."
+		guid fulfillmentId "Identifier of the fulfillment."
+		array <string> fulfillmentLineIds "List of the fulfillment lines."
+		string? holdMessage "Message text regarding this request."
 	}	
 
 	enum HoldReasonCode{
 		description "Defines the values used to specify the reasons a hold may occur."
-		INVENTORY_UNAVAILABLE
+		INVENTORY_UNAVAILABLE "Indicates the inventory is not available."
 	}
 
 	record FulfillmentProcessorHoldFulfillment {
-		summary ""
-		description ""
-		guid fulfillmentId
-		array <string> fulfillmentLineIds  "The line items that are in this hold"
-		array<HoldReasonCode>? reasonCodes;
-		string? holdMessage
+		summary "Contains information about a fulfillment that is being held."
+		description "Captures the  information about a fulfillment that is being held."
+		guid fulfillmentId "Identifier of the fulfillment."
+		array <string> fulfillmentLineIds  "The line items that are being held."
+		array<HoldReasonCode>? reasonCodes "Reason for the fulfillment hold.";
+		string? holdMessage "Message text regarding this hold."
 	}
 
 	record ReleaseFulfillment {
-		summary ""
-		description ""
-		guid fulfillmentId
-		array <string> fulfillmentLineIds
-		string? releaseMessage
+		summary "Contains information for requesting a held fulfillment be released."
+		description "Captures information for requesting a held fulfillment be released."
+		guid fulfillmentId "Identifier of the fulfillment."
+		array <string> fulfillmentLineIds "List of the fulfillment lines."
+		string? releaseMessage "Message text regarding the fulfillment release."
 	}
 	
 	
 	record FulfillmentInformationUpdated {
-		summary ""
-		description ""
-		guid fulfillmentId
-		FulfillmentStatus status 
-		DateRange? expectedShipDate  "The Updated expected ship date"
-		array<Shipment> shipmentUpdates  "All shipments shipped for a fulfillment"
-		string? comment
+		summary "Contains fulfillment information that was updated."
+		description "Captures fulfillment information that was updated."
+		guid fulfillmentId "Identifier of the fulfillment."
+		FulfillmentStatus status "State of the fulfillment."
+		DateRange? expectedShipDate  "Updated expected ship date."
+		array<Shipment> shipmentUpdates  "List of all shipments shipped for a fulfillment."
+		string? comment "Message text regarding the fulfillment."
 	}
 	
 	
 	record LookupFulfillments {
-		summary ""
-		description ""
-		string orderNumber   
+		summary "Contains the ID of the fulfillment order."
+		description "Captures the ID of the fulfillment order."
+		string orderNumber "Identifier of the order."   
 	}
 	
 	record LookupFulfillmentsSucceeded extends LookupFulfillments{
 		summary "Contains fields that are added to the LookupFulfillments record."
 		description "Contains the fulfillment information field, which is added to the LookupFulfillments record."
-		array<Fulfillment> fulfillments
+		array<Fulfillment> fulfillments "Fulfillment details."
 	}
 	
 	record LookupFulfillmentsFailed extends LookupFulfillments {
 		summary "Contains fields that are added to the LookupFulfillments record."
 		description "Contains the error field, which is added to the LookupFulfillments record."
-		array<Error> errors
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms."
 	}
 	
 	enum ReceivingInventoryStatus {
-		description "Defines the values used to specify ??."
-		NOT_RECEIVED
-		TRUCK_CHECKIN	
-		RECEIVED
-		PUT_AWAY
-		CANCELLED	
+		description "Defines the values used to specify the status of the receiving inventory."
+		NOT_RECEIVED "Indicates that the inventory has not been received."
+		TRUCK_CHECKIN "Indicates that the truck has been checked in."	
+		RECEIVED "Indicates that the inventory has been received"
+		PUT_AWAY "Indicates that the inventory has been put away."
+		CANCELLED "Indicates that the receiving has been cancelled."	
 	}
 	
 	record ReceivingLineData {
-		summary ""
-		description ""
-		string masterPurchaseOrderNumber "Master Purchase Order #" 
-		string? purchaseOrderLineNumber
-		string invoiceNumber  "purchase order # or ASN #"
-		DateRange? deliveryWindow		
-		string? cartonId  "mandatory if receipt is to be managed as ASN Identifies the carton # for ASN's, typically 20 digit bar code in UCC-128 format"
-		string? lotNumber "Product Lot number if needed to send on PO"
-	
-		ReceivingInventoryStatus status	"status of receiving inventory"
-		InventoryCondition condition
-		
-		array<RecievingContainer> recievingContainers;
+		summary "Contains the receiving line information."
+		description "Captures the receiving line information."
+		string masterPurchaseOrderNumber "Number of the master purchase order." 
+		string? purchaseOrderLineNumber "Line number of the purchase order."
+		string invoiceNumber  "Purchase order number or ASN (Autonomous System Number)."
+		DateRange? deliveryWindow "Delivery window date."		
+		string? cartonId  "Identifier of the carton. This is mandatory if receipt is to be managed as ASN Identifies. This is typically a 20 digit bar code in UCC-128 format."
+		string? lotNumber "Product lot number if needed for the purchase order."
+		ReceivingInventoryStatus status	"Status of the receiving inventory."
+		InventoryCondition condition "Condition of the receiving inventory."	
+		array<RecievingContainer> recievingContainers "List of receiving containers.";
 	}
 	
 	record RecievingContainer{
-		summary ""
-		description ""
-		string sku
-		int expectedQty
-		TrackingDetail? trackingDetail	
-		string? shippingMethod
-		string? shippingMessage
-		datetime? deliveredDate
-		
+		summary "Contains the information for a receiving container."
+		description "Captures the information for a receiving container."
+		string sku "SKU of the container."
+		int expectedQty "Number of expected containers."
+		TrackingDetail? trackingDetail "Shipping tracking information of the container."
+		string? shippingMethod "Method used to ship the container."
+		string? shippingMessage "Message text regarding the shipment."
+		datetime? deliveredDate "Delivery date of the shipment."		
 	}
 		
 	record ReceivingData {
-		summary ""
-		description ""
-		/** details of supplier */
-		string? supplierId
-		string? supplierName
-		string warehouseId "warehouse expected to receive products" 
-		string masterPurchaseOrderNumber "Master Purchase Order #"
-		DateRange? expectedDeliveryDate
-		datetime? shippedDate "Shipped Date for PO"
-		string? comments "Comments for a Purchase Order"
-		array<ReceivingLineData> receivingLines "Receiving line data"
+		summary "Contains the receiving information."
+		description "Captures the receiving information."
+		string? supplierId "Identifier of the supplier."
+		string? supplierName "Name of the supplier."
+		string warehouseId "Identifier of the warehouse expected to receive products." 
+		string masterPurchaseOrderNumber "Master purchase order number."
+		DateRange? expectedDeliveryDate "Expected day the receiving will be delivered."
+		datetime? shippedDate "Shipped Date for the purchase order."
+		string? comments "Comment text for the purchase order."
+		array<ReceivingLineData> receivingLines "List of receiving line data."
 	}
 	
 		
 	record Receiving {
-		summary ""
-		description ""
-		guid receivingId
-		ReceivingData receiving
+		summary "Contains information about the receiving."
+		description "Captures information about the receiving."
+		guid receivingId "Identifier of the receiving."
+		ReceivingData receiving "Receiving data."
 	}
 	
 	record ProcessReceiving {
-		summary ""
-		description ""
-		Receiving receiving
+		summary "Contains information used to process the receiving."
+		description "Captures information used to process the receiving."
+		Receiving receiving "Receiving data."
 	}
 	
 	record UpdateReceiving {
-		summary ""
-		description ""
-		Receiving receiving
+		summary "Contains information used to update the receiving."
+		description "Captures information used to update the receiving."
+		Receiving receiving "Receiving data."
 	}
 	
 	record LookupReceivings {
-		summary ""
-		description ""
-		string masterPurchaseOrderNumber
+		summary "Contains information used to process the receiving."
+		description "Contains information used to process the receiving."
+		string masterPurchaseOrderNumber "Master purchase order number."
 	}
 	
 	record LookupReceivingsSuceeded extends LookupReceivings{		
 		summary "Contains fields that are added to the LookupReceivings record."
 		description "Contains line data fields, which are added to the LookupReceivings record."
-		array<ReceivingLineData> receivings
+		array<ReceivingLineData> receivings "List of receiving line data."
 	}
 	
 	record LookupReceivingsFailed extends LookupReceivings{
 		summary "Contains fields that are added to the LookupReceivings record."
 		description "Contains the lookup receiving error field, which is added to the LookupReceivings record."
-		array<Error> errors
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms."
 	}
 	
 	record ReceivingInventoryStatusUpdated {
