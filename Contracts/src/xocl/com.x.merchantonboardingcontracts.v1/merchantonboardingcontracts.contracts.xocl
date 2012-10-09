@@ -1,4 +1,4 @@
-package com.x.merchantonboardingcontracts.v1 0.1 {
+package com.x.merchantonboardingcontracts.v1 0.2 candidaterecommendation {
 	packagetitle "Merchant Onboarding Contracts"
 	
 	import com.x.merchantonboarding.v1.*
