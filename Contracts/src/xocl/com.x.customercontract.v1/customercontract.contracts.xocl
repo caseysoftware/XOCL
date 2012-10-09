@@ -2,7 +2,6 @@ package com.x.customercontract.v1 0.5 candidaterecommendation
 {
 	description "Customer Contracts"
 	import com.x.customer.v2.*
-	
 	contract CustomerConsumer
     {
     		description "A read-only consumer and observer of customer data."
